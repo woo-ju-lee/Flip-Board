@@ -30,7 +30,7 @@ import type { Mode, Source, Train } from "./types";
 
 const PAGE_SIZE = 7;
 const STATE_LABELS: Record<string, string> = {
-  disabled: "수집 대기",
+  disabled: "수집 꺼짐",
   connecting: "연결 중",
   ok: "정상 수신",
   stale: "갱신 지연",
@@ -485,7 +485,7 @@ export default function App() {
                         : error
                           ? "전광판 서버에 연결하지 못했습니다"
                           : state === "disabled"
-                            ? "실시간 수집을 기다리고 있습니다"
+                            ? "실시간 수집이 꺼져 있습니다"
                             : "표시할 열차 정보가 없습니다"}
                   </h3>
                   <p>
@@ -494,7 +494,7 @@ export default function App() {
                       : error
                         ? "서버 실행 상태를 확인한 뒤 다시 조회해 주세요."
                         : state === "disabled"
-                          ? "수집 허용 조건을 확인한 후 실시간 전광판이 시작됩니다.\n기록 표본으로 전광판을 먼저 살펴보세요."
+                          ? "서버 설정에서 실시간 수집을 활성화한 뒤 서버를 다시 시작해 주세요.\n기록 표본으로 전광판을 먼저 살펴보세요."
                           : "수신 상태와 선택한 노선의 지원 범위를 확인해 주세요."}
                   </p>
                   {unavailable ? (

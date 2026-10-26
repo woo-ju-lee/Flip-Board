@@ -10,7 +10,7 @@ from .conftest import AT
 
 
 def enabled(**kwargs):
-    return Settings(_env_file=None, live_enabled=True, usage_policy_reference='test-mock-only', **kwargs)
+    return Settings(_env_file=None, live_enabled=True, **kwargs)
 
 
 @pytest.mark.parametrize('code', [401, 403, 429, 302])
@@ -53,15 +53,17 @@ async def test_timeout(matcher_factory):
         assert c.error_code == 'timeout' and c.status().state == 'error'
 
 
-async def test_disabled_or_permission_missing_never_requests(matcher_factory):
+async def test_disabled_never_requests(matcher_factory):
     def fail(request):
-        pytest.fail('An unauthorized request was sent')
+        pytest.fail('Disabled collection sent an upstream request')
     async with httpx.AsyncClient(transport=httpx.MockTransport(fail)) as client:
-        for settings in [Settings(_env_file=None), Settings(_env_file=None, live_enabled=True)]:
+        for reference in ['', 'test-note']:
+            settings = Settings(_env_file=None, usage_policy_reference=reference)
             c = Collector(settings, matcher_factory(), client)
             await c.refresh()
             await c.run()
             assert c.status().state == 'disabled'
+            assert not c.status().collection_enabled
 
 
 async def test_timestamp_age_not_reception_time(single, matcher_factory):

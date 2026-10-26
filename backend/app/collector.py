@@ -39,7 +39,7 @@ class Collector:
         freshness = ('none' if self.last_received_at is None else 'unknown' if source_age is None
                      else 'stale' if source_age > self.settings.stale_seconds or cache_age > self.settings.stale_seconds else 'fresh')
         if not self.settings.collection_allowed:
-            state, message = 'disabled', '실시간 수집 대기 · 이용 조건 및 접근 허용 확인 후 활성화합니다.'
+            state, message = 'disabled', '실시간 수집이 꺼져 있습니다. 서버 설정에서 활성화한 뒤 다시 시작하세요.'
         elif self.blocked:
             state, message = 'blocked', '접근 제한으로 자동 수집을 중단했습니다. 운영자가 접근 조건을 확인해야 합니다.'
         elif self.failures:

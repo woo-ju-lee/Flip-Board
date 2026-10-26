@@ -66,13 +66,13 @@ React 문자 플랩 ← 자체 DTO ← 역/노선 필터 ← 마지막 정상 �
 
 1. 해당 GIS API의 자동 수집·재사용·호출 주기에 관한 허용 조건을 확인합니다. 일반 홈페이지 저작권 정책이나 다른 공개 API의 라이선스를 이 내부 GIS API의 허가로 간주하지 않습니다.
 2. 실행 호스트에서 `gis.korail.com:443` HTTPS 접근이 허용되어야 합니다. 이 개발 환경의 도메인 허용 목록에는 해당 도메인이 없습니다. 프록시 우회는 구현하지 않았습니다.
-3. `.env`에서 실제 확인 근거와 `KORAIL_LIVE_ENABLED=true`를 설정한 뒤 서버를 재시작합니다. 문자열 설정 자체가 법적 허가를 만들어 주지는 않습니다.
+3. `.env`에서 `KORAIL_LIVE_ENABLED=true`를 설정한 뒤 서버를 재시작합니다. `KORAIL_USAGE_POLICY_REFERENCE`는 선택 사항인 기록용 메모이며, 수집 활성화나 API 인증에 사용하지 않습니다. 비워 두어도 됩니다.
 4. `/api/status`에서 원본·서버 시각과 상태를 확인합니다. 전체 열차 모드가 정상이어도 노선 도형이 없으면 노선 필터는 준비 상태입니다.
 
 | 변수 | 기본값 | 역할 |
 |---|---:|---|
 | `KORAIL_LIVE_ENABLED` | `false` | 실시간 수집 활성화 |
-| `KORAIL_USAGE_POLICY_REFERENCE` | 빈 문자열 | 확인된 허용 조건의 URL/기록. 비어 있으면 수집 중단 |
+| `KORAIL_USAGE_POLICY_REFERENCE` | 빈 문자열 | 이용 조건에 관한 선택 메모. 비워 두어도 수집 가능하며 API 인증에는 사용하지 않음 |
 | `KORAIL_POLL_SECONDS` | `60` | 공통 수집 주기. 최소 60초 |
 | `KORAIL_TIMEOUT_SECONDS` | `15` | 요청 타임아웃 |
 | `KORAIL_STALE_SECONDS` | `150` | 원본 또는 수신 시각의 지연 판단 |

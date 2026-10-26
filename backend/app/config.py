@@ -30,4 +30,4 @@ class Settings(BaseSettings):
 
     @property
     def collection_allowed(self) -> bool:
-        return self.live_enabled and bool(self.usage_policy_reference.strip())
+        return self.live_enabled

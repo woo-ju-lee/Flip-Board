@@ -47,11 +47,12 @@ def test_api_readers_never_trigger_upstream_requests(single):
         assert request.url.host == 'gis.korail.com'
         assert request.headers['referer'].startswith('https://gis.korail.com/')
         return httpx.Response(200, json=single)
-    app = create_app(Settings(_env_file=None, live_enabled=True, usage_policy_reference='mock-test-only'), httpx.MockTransport(handler))
+    app = create_app(Settings(_env_file=None, live_enabled=True), httpx.MockTransport(handler))
     with TestClient(app) as client:
         for _ in range(20):
-            assert client.get('/api/trains').status_code == 200
-            assert client.get('/api/status').status_code == 200
+            result = client.get('/api/trains')
+            assert result.status_code == 200 and result.json()['count'] == 1
+            assert client.get('/api/status').json()['collection_enabled'] is True
         assert len(calls) == 1
 
 
