@@ -67,20 +67,14 @@ try {
   await page.keyboard.press('Escape');
   assert.equal(await page.locator('.sound-settings').getAttribute('open'), null);
   const bankPresent = await page.evaluate(async () => {
-    try { const response = await fetch('/audio/pragotron.json'); return response.ok && (await response.json()).version === 1; }
+    try { const response = await fetch('/audio/split-flap.json'); return response.ok && (await response.json()).version === 1; }
     catch { return false; }
   });
   await page.getByRole('button', { name: '소리 켜기' }).click();
-  if (bankPresent) {
-    await page.getByRole('button', { name: '소리 끄기' }).waitFor();
-    await page.getByRole('button', { name: '소리 끄기' }).click();
-    results.push('Recorded bank decodes after user activation and mutes (not an acoustic listening test)');
-  } else {
-    await page.getByText(/Pragotron 음원 파일을 불러오지 못했습니다/).waitFor();
-    assert.equal(await page.getByRole('button', { name: '소리 켜기' }).getAttribute('aria-pressed'), 'false');
-    await page.getByRole('button', { name: '알림 닫기' }).click();
-    results.push('Missing recorded bank reports an error and stays muted; volume starts at 30%, zero disables preview');
-  }
+  assert.equal(bankPresent, true, 'The production build must include the recorded sound');
+  await page.getByRole('button', { name: '소리 끄기' }).waitFor();
+  await page.getByRole('button', { name: '소리 끄기' }).click();
+  results.push('Bundled Vestaboard recording decodes after user activation and mutes; volume starts at 30%, zero disables preview');
   await page.getByRole('button', { name: '전체 화면', exact: true }).click();
   await page.getByRole('button', { name: '전체 화면 종료' }).waitFor();
   assert.equal(await page.evaluate(() => Boolean(document.fullscreenElement)), true);

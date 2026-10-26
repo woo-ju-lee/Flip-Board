@@ -31,16 +31,14 @@ export function makeFlapPlan(from: string, to: string, identity: string, now: nu
   }
   return { steps, endAt: steps.at(-1)!.landAt, seed };
 }
-export type FlapSoundEvent = { at: number; pan: number; variant: number; kind: "flip" | "stop" | "roll" };
+export type FlapSoundEvent = { at: number; pan: number; variant: number; kind: "flip" | "stop" };
 export function soundEvents(plan: FlapPlan, pan: number): FlapSoundEvent[] {
   if (!plan.steps.length) return [];
-  const events: FlapSoundEvent[] = plan.steps.map((step, i) => ({
+  return plan.steps.map((step, i) => ({
     at: step.landAt, pan: Math.max(-0.85, Math.min(0.85, pan)),
     variant: (plan.seed + i * 17) >>> 0,
     kind: i === plan.steps.length - 1 ? "stop" : "flip",
   }));
-  // One short motor/rotation onset; subsequent impacts follow individual leaves.
-  return [{ at: plan.steps[0].at, pan: Math.max(-0.85, Math.min(0.85, pan)), variant: plan.seed, kind: "roll" }, ...events];
 }
 export function previewEvents(now: number): FlapSoundEvent[] {
   return Array.from("SEOUL서울", (letter, i) =>

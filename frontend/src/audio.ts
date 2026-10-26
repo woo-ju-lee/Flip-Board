@@ -1,13 +1,13 @@
-import { previewEvents, type FlapSoundEvent } from "./flapMotion";
+import { FLAP_MS, previewEvents, type FlapSoundEvent } from "./flapMotion";
 
-export type AudioCue = { offset: number; duration: number; kind: FlapSoundEvent["kind"] };
+export type AudioCue = { offset: number; duration: number; impact?: number; kind: FlapSoundEvent["kind"] };
 export type AudioManifest = { version: 1; file: string; cues: AudioCue[] };
 export type SoundState = { enabled: boolean; volume: number; loading: boolean; previewing: boolean };
 type Queued = FlapSoundEvent & { owner: string };
 type Voice = { source: AudioBufferSourceNode; gain: GainNode; pan: StereoPannerNode; owner: string; end: number };
 const MAX_VOICES = 24;
 const LOOKAHEAD_MS = 90;
-const MISSING_AUDIO = "Pragotron 음원 파일을 불러오지 못했습니다. 사운드 파일을 확인한 뒤 다시 시도해 주세요.";
+const MISSING_AUDIO = "플랩 음원 파일을 불러오지 못했습니다. 새로고침한 뒤 다시 시도해 주세요.";
 
 export class FlapAudio {
   private context: AudioContext | null = null;
@@ -54,17 +54,20 @@ export class FlapAudio {
     this.preparing = (async () => {
       try {
         const root = `${import.meta.env.BASE_URL}audio/`;
-        const response = await fetch(`${root}pragotron.json`);
+        const response = await fetch(`${root}split-flap.json`);
         if (!response.ok) throw new Error(MISSING_AUDIO);
         const manifest: AudioManifest = await response.json();
-        if (manifest.version !== 1 || !/^[\w.-]+\.wav$/.test(manifest.file) || !Array.isArray(manifest.cues) || !manifest.cues.length)
+        if (manifest.version !== 1 || !/^[\w.-]+\.(mp3|wav)$/.test(manifest.file) || !Array.isArray(manifest.cues) || !manifest.cues.length)
           throw new Error(MISSING_AUDIO);
-        const wav = await fetch(root + manifest.file);
-        if (!wav.ok) throw new Error(MISSING_AUDIO);
-        const buffer = await this.context!.decodeAudioData(await wav.arrayBuffer());
-        if (!manifest.cues.every(c => ["flip", "stop", "roll"].includes(c.kind) && Number.isFinite(c.offset) && Number.isFinite(c.duration) && c.offset >= 0 && c.duration > 0 && c.offset + c.duration <= buffer.duration + 0.001))
+        const recording = await fetch(root + manifest.file);
+        if (!recording.ok) throw new Error(MISSING_AUDIO);
+        const buffer = await this.context!.decodeAudioData(await recording.arrayBuffer());
+        if (!manifest.cues.every(c => ["flip", "stop"].includes(c.kind) && Number.isFinite(c.offset) && Number.isFinite(c.duration)
+          && c.offset >= 0 && c.duration >= 0.01 && c.duration / 0.97 <= FLAP_MS / 1000
+          && c.offset + c.duration <= buffer.duration + 0.001
+          && Number.isFinite(c.impact ?? 0) && (c.impact ?? 0) >= 0 && (c.impact ?? 0) < c.duration))
           throw new Error(MISSING_AUDIO);
-        if (!["flip", "stop", "roll"].every(kind => manifest.cues.some(c => c.kind === kind))) throw new Error(MISSING_AUDIO);
+        if (!manifest.cues.some(c => c.kind === "flip")) throw new Error(MISSING_AUDIO);
         const graph = this.graph(this.context!, this.state.volume);
         this.buffer = buffer;
         this.cues = manifest.cues;
@@ -134,8 +137,11 @@ export class FlapAudio {
     const rate = 0.97 + (event.variant % 7) * 0.01;
     source.playbackRate.value = rate;
     pan.pan.value = event.pan;
+    // The recorded strike is ~29 ms into the clip. Align that strike, not the
+    // beginning of the file, with the shared leaf-landing timestamp.
+    when = Math.max(ctx.currentTime, when - (cue.impact ?? 0) / rate);
     const duration = cue.duration / rate;
-    const level = (event.kind === "stop" ? 0.42 : event.kind === "roll" ? 0.13 : 0.34) / Math.sqrt(Math.max(1, density / 3));
+    const level = (event.kind === "stop" ? 0.42 : 0.34) / Math.sqrt(Math.max(1, density / 3));
     gain.gain.setValueAtTime(0, when);
     gain.gain.linearRampToValueAtTime(level, when + Math.min(0.002, duration / 4));
     gain.gain.setValueAtTime(level, when + Math.max(0.002, duration - 0.008));

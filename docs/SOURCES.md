@@ -41,4 +41,4 @@
 
 - 외형 참고: [JFK TWA 호텔 Solari 보드](https://www.twahotel.com/photos), [창이공항 구 터미널 2 전광판](https://www.roots.gov.sg/collection-landing/listing/1485619). 참고 사진 자체는 앱에 포함하지 않습니다.
 - 글꼴: `@fontsource/noto-sans-kr` 5.3.1의 Noto Sans KR 600. [SIL Open Font License 1.1](../frontend/public/licenses/Noto-Sans-KR-OFL.txt)과 함께 로컬 빌드에 포함합니다.
-- 선택한 효과음: matucha — [pragotron_split-flap-display.wav](https://freesound.org/people/matucha/sounds/174056/), [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/). 개인·비상업 사용. 개발 환경에서 원본 다운로드가 차단되어 실제 음원은 아직 포함하지 못했습니다. 대체 음원은 사용하지 않습니다. 원본 확보 후 구간·페이드·음량 가공과 원본 SHA-256을 기록하는 절차는 [AUDIO.md](AUDIO.md)에 있습니다.
+- 효과음: Robin Yang (robonyong)의 [Vestaboard 단일 모듈 녹음](https://github.com/robonyong/react-split-flap-display/blob/2b0daba04ab1b41d1347edc5f77d451a809ffd0a/src/assets/flip.mp3). 제작자는 README에서 직접 녹음했다고 명시합니다. 원본 MP3와 [MIT 라이선스·저작권 고지](../frontend/public/audio/LICENSE.txt)를 번들에 포함했습니다. 원본 해시와 런타임 재생 처리, 다른 구현의 조사 기록은 [AUDIO.md](AUDIO.md)에 있습니다.

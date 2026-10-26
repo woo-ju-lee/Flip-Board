@@ -32,7 +32,7 @@ export function SoundControls({ reduced, onNotice }: { reduced: boolean; onNotic
     <details ref={panel} className="sound-settings" onKeyDown={e => { if (e.key === "Escape" && panel.current) { panel.current.open = false; panel.current.querySelector("summary")?.focus(); } }}>
       <summary aria-label="사운드 설정" title="사운드 설정"><SlidersHorizontal size={16} /></summary>
       <div className="sound-panel" role="group" aria-label="플랩 사운드">
-        <div className="sound-panel-heading"><strong>기계의 소리</strong><span>PRAGOTRON</span></div>
+        <div className="sound-panel-heading"><strong>기계의 소리</strong><span>VESTABOARD</span></div>
         <label htmlFor="flap-volume">음량 <output>{Math.round(state.volume * 100)}%</output></label>
         <input id="flap-volume" type="range" min="0" max="100" step="1" value={Math.round(state.volume * 100)}
           aria-label="효과음 음량" onChange={e => flapAudio.setVolume(Number(e.target.value) / 100)} />
@@ -40,7 +40,7 @@ export function SoundControls({ reduced, onNotice }: { reduced: boolean; onNotic
           {state.previewing ? <Square size={13} /> : <Play size={13} />}{state.previewing ? "미리듣기 정지" : "소리 미리듣기"}
         </button>
         <p>{reduced ? "동작 줄이기 설정으로 효과음이 꺼져 있습니다." : "판이 넘어가는 소리를 짧게 들어보세요."}</p>
-        <a href="https://freesound.org/people/matucha/sounds/174056/" target="_blank" rel="noreferrer">matucha · CC BY-NC 4.0</a>
+        <a href="https://github.com/robonyong/react-split-flap-display#props" target="_blank" rel="noreferrer">Robin Yang · MIT</a>
       </div>
     </details>
   </div>;

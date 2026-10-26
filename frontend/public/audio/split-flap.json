@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "file": "vestaboard-flip.mp3",
+  "cues": [
+    { "kind": "flip", "offset": 0, "duration": 0.065, "impact": 0.02929705215419501 }
+  ],
+  "source": {
+    "title": "A single Vestaboard bit flipping",
+    "author": "Robin Yang (robonyong)",
+    "url": "https://github.com/robonyong/react-split-flap-display/blob/2b0daba04ab1b41d1347edc5f77d451a809ffd0a/src/assets/flip.mp3",
+    "license": "MIT",
+    "license_file": "LICENSE.txt",
+    "git_blob_sha1": "711572ea81902d51d32dca0711c9644a14015641",
+    "sha256": "3f14839d3179ab73d778456c0fa1be5c1d571099313a242a9fd48ec2cf28036f"
+  },
+  "processing": {
+    "file": "Original MP3, renamed only; no re-encoding or waveform edits",
+    "playback": "First 65 ms; 2 ms attack and 8 ms release envelope applied at runtime",
+    "synchronization": "Start early by impact / playbackRate so the recorded strike aligns with leaf landing",
+    "variants": "One recorded sample, playback rate 0.97–1.03; final strike uses the same recording with a slightly stronger gain"
+  }
+}

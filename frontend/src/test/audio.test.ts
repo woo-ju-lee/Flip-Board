@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi, type MockInstance } fr
 import { FlapAudio, type AudioManifest } from "../audio";
 import type { FlapSoundEvent } from "../flapMotion";
 
-// Test doubles only: no synthetic waveform is shipped as the Pragotron source.
+// Test doubles only. Browser checks also decode and render the bundled recording.
 const parameter = () => ({ value: 0, setValueAtTime: vi.fn(), linearRampToValueAtTime: vi.fn(), setTargetAtTime: vi.fn() });
 class Node {
   connect = vi.fn((next: unknown) => next);
@@ -32,8 +32,8 @@ class Context {
   createBufferSource() { const source = new Source(); this.sources.push(source); return source; }
 }
 const manifest: AudioManifest = {
-  version: 1, file: "pragotron.wav",
-  cues: [{ offset: 0, duration: .05, kind: "flip" }, { offset: .1, duration: .08, kind: "stop" }, { offset: .3, duration: .12, kind: "roll" }],
+  version: 1, file: "vestaboard-flip.mp3",
+  cues: [{ offset: 0, duration: .065, impact: .029, kind: "flip" }],
 };
 const event = (at: number, variant = 0): FlapSoundEvent => ({ at, variant, pan: -.6, kind: "flip" });
 let engine: FlapAudio;
@@ -59,7 +59,8 @@ describe("sample audio lifecycle", () => {
     expect(await engine.toggle()).toBe(true);
     engine.schedule("cell", [event(performance.now() + 50, 1)]);
     expect(context.resume).toHaveBeenCalled();
-    expect(context.sources[0].start).toHaveBeenCalledWith(expect.any(Number), 0, .05);
+    expect(context.sources[0].start).toHaveBeenCalledWith(expect.any(Number), 0, .065);
+    expect(context.sources[0].start.mock.calls[0][0]).toBeCloseTo(context.currentTime + .05 - .029 / .98);
     expect(context.sources[0].playbackRate.value).toBeCloseTo(.98);
     expect(context.pans[0].value).toBe(-.6);
   });
@@ -118,14 +119,14 @@ describe("sample audio lifecycle", () => {
 
   it("leaves sound off after a failed download and allows a retry", async () => {
     fetcher.mockRejectedValueOnce(new Error("network"));
-    await expect(engine.toggle()).rejects.toThrow("Pragotron");
+    await expect(engine.toggle()).rejects.toThrow("플랩 음원");
     expect(engine.getState()).toMatchObject({ enabled: false, loading: false });
     expect(await engine.toggle()).toBe(true);
   });
 
   it("rejects cue ranges outside the decoded recording", async () => {
     fetcher.mockResolvedValueOnce({ ok: true, json: async () => ({ ...manifest, cues: [{ kind: "flip", offset: 99, duration: .1 }] }) } as Response);
-    await expect(engine.toggle()).rejects.toThrow("Pragotron");
+    await expect(engine.toggle()).rejects.toThrow("플랩 음원");
     expect(context.sources).toHaveLength(0);
   });
 
@@ -139,4 +140,18 @@ describe("sample audio lifecycle", () => {
     expect(await loading).toBe(false);
     expect(engine.getState().enabled).toBe(false);
   });
+
+  it("uses the recorded flip for the final stop without requiring a separate motor sample", async () => {
+    await engine.toggle();
+    engine.schedule("final", [{ ...event(performance.now() + 70), kind: "stop" }]);
+    expect(context.sources[0].start).toHaveBeenCalledWith(expect.any(Number), 0, .065);
+  });
+
+  it.each([{ duration: .2, impact: .03 }, { duration: .065, impact: .07 }, { duration: .065, impact: -1 }])(
+    "rejects clips that exceed one leaf or have an invalid strike position: %j", async cue => {
+      fetcher.mockResolvedValueOnce({ ok: true, json: async () => ({ ...manifest, cues: [{ kind: "flip", offset: 0, ...cue }] }) } as Response);
+      await expect(engine.toggle()).rejects.toThrow("플랩 음원");
+      expect(engine.getState().enabled).toBe(false);
+    },
+  );
 });

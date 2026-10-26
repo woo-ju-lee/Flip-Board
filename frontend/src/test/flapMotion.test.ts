@@ -18,8 +18,7 @@ describe("shared mechanical timeline", () => {
         if (n) expect(step.at).toBe(plan.steps[n - 1].landAt);
       });
       const audio = soundEvents(plan, 2);
-      expect(audio[0]).toMatchObject({ kind: "roll", at: plan.steps[0].at });
-      expect(audio.slice(1).map(e => e.at)).toEqual(plan.steps.map(s => s.landAt));
+      expect(audio.map(e => e.at)).toEqual(plan.steps.map(s => s.landAt));
       expect(audio.at(-1)?.kind).toBe("stop");
       expect(audio.every(e => e.pan === .85)).toBe(true);
     }

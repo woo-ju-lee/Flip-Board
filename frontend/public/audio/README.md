@@ -1,11 +1,13 @@
-# Pragotron audio bank
+# Recorded split-flap sound
 
-Selected recording: **pragotron_split-flap-display.wav**, by **matucha**.
+**A single Vestaboard bit flipping**, recorded by **Robin Yang (robonyong)** according to the upstream README.
 
-- Source: <https://freesound.org/people/matucha/sounds/174056/>
-- License: [Creative Commons Attribution–NonCommercial 4.0](https://creativecommons.org/licenses/by-nc/4.0/)
-- Intended use: this personal, noncommercial board. No endorsement by the author is implied.
+- Source: [react-split-flap-display/src/assets/flip.mp3](https://github.com/robonyong/react-split-flap-display/blob/2b0daba04ab1b41d1347edc5f77d451a809ffd0a/src/assets/flip.mp3)
+- Recording description: [upstream README](https://github.com/robonyong/react-split-flap-display/blob/2b0daba04ab1b41d1347edc5f77d451a809ffd0a/README.md)
+- License: **MIT**, Copyright (c) 2020 Robin Yang. Full notice: [LICENSE.txt](LICENSE.txt).
+- Bundled file: `vestaboard-flip.mp3`, 2,608 bytes, renamed only; otherwise byte-identical to upstream.
+- SHA-256: `3f14839d3179ab73d778456c0fa1be5c1d571099313a242a9fd48ec2cf28036f`
 
-**The recording is not included yet.** Freesound's binary download is blocked by the development environment's network policy. No other recording or synthesized placeholder is used. The app starts muted and reports a loading error if sound is requested without the bank.
+`split-flap.json` contains provenance, hashes, cue duration and the recorded impact position. Playback uses the first 65 ms, 2 ms attack / 8 ms release fades, slight playback-rate variation and stereo positioning. The last landing uses the same recording with a stronger gain. No additional motor recording is layered in.
 
-Once the original WAV is supplied, `scripts/prepare_pragotron.py` creates `pragotron.wav` and `pragotron.json` here from reviewed source intervals. The JSON records the original SHA-256, each selected interval, silence trimming, fades, level normalization, and PCM conversion. Commit both generated files together with this attribution after listening and synchronization checks. See [audio workflow](../../../docs/AUDIO.md).
+The app starts muted at 30% volume. The recording ships locally with the production build. See [audio details and validation](../../../docs/AUDIO.md).
