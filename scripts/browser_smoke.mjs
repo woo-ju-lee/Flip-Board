@@ -19,21 +19,22 @@ try {
   const errors = [];
   page.on('pageerror', e => errors.push(e.message));
   await page.goto(base);
-  await page.getByRole('heading', { name: '실시간 수집을 기다리고 있습니다' }).waitFor();
+  await page.getByRole('heading', { name: '실시간 수집이 꺼져 있습니다' }).waitFor();
   assert.equal(await page.locator('.rows .board-row').count(), 0);
   results.push('Default live mode shows collection disabled, with no archived trains');
   await page.getByRole('button', { name: '기록 표본', exact: true }).click();
   await page.getByRole('row', { name: /^KTX 31,/ }).waitFor();
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(2300);
+  await page.evaluate(() => document.fonts.ready);
   assert.equal(await page.locator('.rows .board-row').count(), 7);
   await page.screenshot({ path: `${out}/board-desktop.png`, fullPage: true });
   results.push('Actual archived 148-record response renders with explicit historical label');
 
   await page.getByRole('button', { name: '다음 페이지' }).click();
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(2300);
   assert.match(await page.locator('.pagination').innerText(), /02/);
   await page.getByRole('button', { name: '이전 페이지' }).click();
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(2300);
   const animations = await page.evaluate(async () => {
     let flips = 0;
     const observer = new MutationObserver(mutations => {
@@ -58,10 +59,28 @@ try {
   await page.keyboard.press('Escape');
   assert.equal(await page.getByRole('dialog').count(), 0);
   results.push('Full position detail, native dialog focus, Escape close');
+  await page.getByLabel('사운드 설정', { exact: true }).click();
+  assert.equal(await page.getByRole('slider', { name: '효과음 음량' }).inputValue(), '30');
+  await page.getByRole('slider', { name: '효과음 음량' }).fill('0');
+  assert.equal(await page.getByRole('button', { name: '소리 미리듣기' }).isDisabled(), true);
+  await page.getByRole('slider', { name: '효과음 음량' }).fill('30');
+  await page.keyboard.press('Escape');
+  assert.equal(await page.locator('.sound-settings').getAttribute('open'), null);
+  const bankPresent = await page.evaluate(async () => {
+    try { const response = await fetch('/audio/pragotron.json'); return response.ok && (await response.json()).version === 1; }
+    catch { return false; }
+  });
   await page.getByRole('button', { name: '소리 켜기' }).click();
-  await page.getByRole('button', { name: '소리 끄기' }).waitFor();
-  await page.getByRole('button', { name: '소리 끄기' }).click();
-  results.push('AudioContext user activation and mute toggle (not an acoustic listening test)');
+  if (bankPresent) {
+    await page.getByRole('button', { name: '소리 끄기' }).waitFor();
+    await page.getByRole('button', { name: '소리 끄기' }).click();
+    results.push('Recorded bank decodes after user activation and mutes (not an acoustic listening test)');
+  } else {
+    await page.getByText(/Pragotron 음원 파일을 불러오지 못했습니다/).waitFor();
+    assert.equal(await page.getByRole('button', { name: '소리 켜기' }).getAttribute('aria-pressed'), 'false');
+    await page.getByRole('button', { name: '알림 닫기' }).click();
+    results.push('Missing recorded bank reports an error and stays muted; volume starts at 30%, zero disables preview');
+  }
   await page.getByRole('button', { name: '전체 화면', exact: true }).click();
   await page.getByRole('button', { name: '전체 화면 종료' }).waitFor();
   assert.equal(await page.evaluate(() => Boolean(document.fullscreenElement)), true);
@@ -80,19 +99,25 @@ try {
   await page.getByRole('row', { name: /^KTX 31,/ }).waitFor();
   results.push('Ulsan resolves to Gyeongbu; unsupported line geometry is explicit and excludes records');
 
-  for (const width of [1440, 1024, 768, 390, 360]) {
+  for (const width of [1920, 1440, 1024, 768, 390, 360]) {
     await page.setViewportSize({ width, height: 844 });
-    await page.waitForTimeout(400);
+    await page.waitForTimeout(2300);
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth > innerWidth);
     assert.equal(overflow, false, `horizontal overflow at ${width}px`);
+    const clipped = await page.locator('.board-row:not(.empty-row) > [role="cell"]').evaluateAll(cells =>
+      cells.filter(cell => cell.scrollWidth > cell.clientWidth + 1).map(cell => ({ class: cell.className, width: cell.clientWidth, content: cell.scrollWidth })));
+    assert.deepEqual(clipped, [], `cell contents clipped at ${width}px`);
+    assert.equal(await page.locator('.rows .board-row').count(), 7);
+    await page.screenshot({ path: `${out}/after-${width}.png`, fullPage: true });
     if (width === 390) await page.screenshot({ path: `${out}/board-mobile.png`, fullPage: true });
   }
-  results.push('No horizontal overflow at 1440 / 1024 / 768 / 390 / 360 pixels');
+  results.push('No page overflow or clipped cells at 1920 / 1440 / 1024 / 768 / 390 / 360 pixels; seven rows remain');
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.getByRole('combobox', { name: '표본 수신 시각' }).selectOption('141445');
   await page.getByText('145 TRAINS', { exact: true }).waitFor({ state: 'attached' });
   assert.equal(await page.locator('[data-flipping="true"]').count(), 0);
-  results.push('Reduced-motion mode suppresses flips');
+  assert.equal(await page.getByRole('button', { name: '소리 켜기' }).isDisabled(), true);
+  results.push('Reduced-motion mode suppresses flips and disables accompanying sound');
 
   await page.route('**/api/trains?**', route => route.abort());
   await page.getByRole('button', { name: '서버 캐시 다시 조회' }).click();

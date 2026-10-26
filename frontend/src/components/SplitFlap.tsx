@@ -1,10 +1,9 @@
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useId, useRef, useState } from "react";
 import { flapAudio } from "../audio";
+import { makeFlapPlan, soundEvents } from "../flapMotion";
 
 export function useReducedMotion() {
-  const [reduced, setReduced] = useState(
-    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-  );
+  const [reduced, setReduced] = useState(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
     const listener = () => setReduced(media.matches);
@@ -14,140 +13,68 @@ export function useReducedMotion() {
   return reduced;
 }
 
-const ROTOR = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-export const FlapCharacter = memo(function FlapCharacter({
-  value,
-  index,
-  reduced,
-}: {
-  value: string;
-  index: number;
-  reduced: boolean;
+export const FlapCharacter = memo(function FlapCharacter({ value, index, reduced }: {
+  value: string; index: number; reduced: boolean;
 }) {
+  const owner = useId();
+  const element = useRef<HTMLSpanElement>(null);
   const settled = useRef(" ");
-  const [frame, setFrame] = useState({
-    from: " ",
-    to: " ",
-    active: false,
-    serial: 0,
-  });
+  const [frame, setFrame] = useState({ from: " ", to: " ", active: false, serial: 0 });
   useEffect(() => {
-    if (reduced) {
-      settled.current = value;
-      setFrame((f) => ({
-        from: value,
-        to: value,
-        active: false,
-        serial: f.serial,
-      }));
-      return;
-    }
-    if (settled.current === value) {
-      setFrame((f) =>
-        f.active || f.to !== value
-          ? { from: value, to: value, active: false, serial: f.serial }
-          : f,
-      );
-      return;
-    }
     const timers: ReturnType<typeof setTimeout>[] = [];
-    const intermediate = value.trim()
-      ? [ROTOR[(value.codePointAt(0)! + index) % ROTOR.length], value]
-      : [value];
-    let from = settled.current;
-    intermediate.forEach((to, step) => {
-      const before = from;
-      timers.push(
-        setTimeout(
-          () => {
-            setFrame((f) => ({
-              from: before,
-              to,
-              active: true,
-              serial: f.serial + 1,
-            }));
-            flapAudio.click();
-          },
-          (index % 6) * 14 + step * 160,
-        ),
-      );
-      timers.push(
-        setTimeout(
-          () => {
-            settled.current = to;
-            setFrame((f) => ({
-              from: to,
-              to,
-              active: false,
-              serial: f.serial,
-            }));
-          },
-          (index % 6) * 14 + step * 160 + 150,
-        ),
-      );
-      from = to;
+    const finish = () => {
+      settled.current = value;
+      setFrame(f => ({ from: value, to: value, active: false, serial: f.serial }));
+    };
+    const cancel = () => {
+      timers.forEach(clearTimeout);
+      flapAudio.cancel(owner);
+    };
+    if (reduced || document.hidden || settled.current === value) {
+      finish();
+      return cancel;
+    }
+    const now = performance.now();
+    const plan = makeFlapPlan(settled.current, value, `${owner}:${index}`, now);
+    const bounds = element.current?.getBoundingClientRect();
+    const pan = bounds ? ((bounds.left + bounds.width / 2) / Math.max(1, window.innerWidth)) * 2 - 1 : 0;
+    flapAudio.schedule(owner, soundEvents(plan, pan));
+    plan.steps.forEach(step => {
+      timers.push(setTimeout(() => {
+        setFrame(f => ({ from: step.from, to: step.to, active: true, serial: f.serial + 1 }));
+      }, Math.max(0, step.at - now)));
+      timers.push(setTimeout(() => {
+        settled.current = step.to;
+        setFrame(f => ({ from: step.to, to: step.to, active: false, serial: f.serial }));
+      }, Math.max(0, step.landAt - now)));
     });
-    return () => timers.forEach(clearTimeout);
-  }, [value, reduced, index]);
+    const onVisibility = () => { if (document.hidden) { cancel(); finish(); } };
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => { cancel(); document.removeEventListener("visibilitychange", onVisibility); };
+  }, [value, reduced, index, owner]);
   return (
-    <span
-      className="flap"
-      aria-hidden="true"
-      data-flipping={frame.active ? "true" : "false"}
-      data-value={value}
-    >
-      <span className="flap-half flap-top">
-        <span>{frame.to}</span>
-      </span>
-      <span className="flap-half flap-bottom">
-        <span>{frame.active ? frame.from : frame.to}</span>
-      </span>
-      {frame.active && (
-        <span key={frame.serial} className="flap-motion">
-          <span className="flap-half flap-top flap-out">
-            <span>{frame.from}</span>
-          </span>
-          <span className="flap-half flap-bottom flap-in">
-            <span>{frame.to}</span>
-          </span>
-        </span>
-      )}
+    <span ref={element} className="flap" aria-hidden="true" data-flipping={frame.active ? "true" : "false"} data-value={value}>
+      <span className="flap-half flap-top"><span>{frame.to}</span></span>
+      <span className="flap-half flap-bottom"><span>{frame.active ? frame.from : frame.to}</span></span>
+      {frame.active && <span key={frame.serial} className="flap-motion">
+        <span className="flap-half flap-top flap-out"><span>{frame.from}</span></span>
+        <span className="flap-half flap-bottom flap-in"><span>{frame.to}</span></span>
+      </span>}
       <span className="flap-seam" />
+      <span className="flap-hinge hinge-left" /><span className="flap-hinge hinge-right" />
     </span>
   );
 });
 
-export const SplitFlap = memo(function SplitFlap({
-  text,
-  length,
-  className = "",
-  reduced,
-}: {
-  text: string;
-  length: number;
-  className?: string;
-  reduced: boolean;
+export const SplitFlap = memo(function SplitFlap({ text, length, className = "", reduced }: {
+  text: string; length: number; className?: string; reduced: boolean;
 }) {
   const chars = Array.from(text);
-  const fitted =
-    chars.length > length
-      ? [...chars.slice(0, length - 1), "…"]
-      : [...chars, ...Array(Math.max(0, length - chars.length)).fill(" ")];
+  const fitted = chars.length > length ? [...chars.slice(0, length - 1), "…"]
+    : [...chars, ...Array(Math.max(0, length - chars.length)).fill(" ")];
   return (
-    <span
-      className={`flap-word ${className}`}
-      aria-label={text || "빈칸"}
-      title={text}
-    >
-      {fitted.map((char, index) => (
-        <FlapCharacter
-          key={index}
-          value={char}
-          index={index}
-          reduced={reduced}
-        />
-      ))}
+    <span className={`flap-word ${className}`} aria-label={text || "빈칸"} title={text}>
+      {fitted.map((char, index) => <FlapCharacter key={index} value={char} index={index} reduced={reduced} />)}
     </span>
   );
 });

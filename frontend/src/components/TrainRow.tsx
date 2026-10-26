@@ -5,12 +5,14 @@ import type { Train } from "../types";
 
 export function TrainRow({
   train,
+  rowIndex = 0,
   reduced,
   positionLength,
   exiting,
   onSelect,
 }: {
   train: Train;
+  rowIndex?: number;
   reduced: boolean;
   positionLength: number;
   exiting: boolean;
@@ -32,6 +34,7 @@ export function TrainRow({
       aria-label={`${train.kind} ${train.number}, ${train.origin}에서 ${train.destination}, ${train.position_label}, ${delayText(train)}. 상세 보기`}
     >
       <span role="cell" className="train-cell">
+        <span className="row-number" aria-hidden="true">{String(rowIndex + 1).padStart(2, "0")}</span>
         <span className={`train-type ${type}`} title={train.kind}>
           {train.kind}
         </span>

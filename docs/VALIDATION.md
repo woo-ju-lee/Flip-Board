@@ -1,6 +1,6 @@
 # 구현 및 검증 결과
 
-검증일: 2026-10-26 (Asia/Seoul). 외부 코레일 API 요청 없이 제공된 원본 기록과 명시적인 테스트 데이터로 재현했습니다.
+검증일: 2026-10-26 (UTC). 외부 코레일 API 요청 없이 제공된 원본 기록과 명시적인 테스트 데이터로 재현했습니다. 공항식 화면·회전·오디오 엔진의 검사 결과이며, 선택한 Pragotron 원본 확보와 실제 음원 검증은 아래 미완료 항목에 구분합니다.
 
 ## 통과한 검증
 
@@ -9,7 +9,8 @@
 | `pytest -q` | 53개 통과 | 실제 145/148건 표본, 파싱, 결측, 좌표 오류, null/0 지연, 순서·feature.id 변경, 날짜 경계, 동일 키 충돌 |
 | 수집기 테스트 | 위 53개에 포함 | 401/403/429/302 중단, 503 백오프, 타임아웃, 정상 캐시 유지, 오래된 원본 시각, 동시 조회·공유 요청 |
 | 공간·필터 통합 | 위 53개에 포함 | EPSG:5179 미터 거리, 일반선 위 KTX 제외, 진입/이탈, 병행 선로 모호성, 미검증 경쟁 도형, 도약, 노선 변경 관측, 울산 별칭, 다중 노선 선택, 매핑 없음 |
-| `npm test` | 13개 통과 | 문자 변화·무변화, 도중 취소, 축소 동작, 시연 구분, 지연 변경, 페이지·역·노선 선택, 음소거·전체 화면 오류, 상세, 연결 오류, 퇴장 행 비활성화·제거 |
+| `npm test` | 31개 통과 | 기존 화면 동작, 6–12회·160 ms 공통 일정, 문자 종류 구분, 동일 값 무동작, 연속 갱신·숨김·축소 동작 취소, 기본 음소거·30%, 큐/노드 취소, 음량 0, 24음 제한, 미리듣기, 로드 실패·재시도 |
+| `pytest -q scripts/tests` | 3개 통과 | 테스트 전용 PCM으로 24-bit stereo 디코딩, 트림·페이드·피크 상한, sprite 오프셋·원본 해시·출처 기록 재현. 실제 Pragotron 음질 검사는 아님 |
 | `npm run build` | 통과 | TypeScript 검사 및 Vite 운영 번들 생성 |
 | 매핑 파일 검증 | 통과 | 역 1개, 노선 2개, 선로 0개. 운영 geometry가 없음을 확인 |
 | 실제 Chromium 통합 검사 | 10개 통과 | 아래 항목 참조. 페이지 실행 오류 0개 |
@@ -17,18 +18,20 @@
 
 실제 브라우저 검사의 항목:
 
-1. 기본 실시간 화면은 수집 대기, 과거 열차 자동 혼입 없음.
+1. 기본 실시간 화면은 수집 꺼짐, 과거 열차 자동 혼입 없음.
 2. 과거 148건을 표본으로 명시하여 표시하고 145건 표본으로도 전환.
 3. 페이지 이동 및 같은 캐시 재조회 시 문자 애니메이션 0회.
 4. 전체 좌표 상세·네이티브 모달·Escape 닫기.
-5. 사용자 클릭 후 AudioContext 활성화 및 음소거 전환.
+5. 음량 초기 30%, 음량 0에서 미리듣기 비활성화, 음원 누락 시 안내와 음소거 유지, 설정 Escape 닫기. 실제 샘플 디코딩·재생은 미완료.
 6. 전체 화면 진입·종료.
 7. 울산역 → 경부고속선 안내와 geometry 미지원 상태, 호남고속선 전환.
-8. 1440 / 1024 / 768 / 390 / 360px 너비에서 가로 넘침 없음.
-9. reduced-motion에서 플립 생략.
+8. 1920 / 1440 / 1024 / 768 / 390 / 360px 너비에서 페이지 가로 넘침·칸 내부 잘림 없음, 7행 유지. 모바일에서도 출발·도착·현재 위치·지연 표시.
+9. reduced-motion에서 플립 생략·소리 비활성화.
 10. 프런트엔드 API 연결 실패 시 기존 표시 유지와 연결 실패 상태.
 
-브라우저 결과 및 화면은 `artifacts/browser-validation.json`, `artifacts/board-desktop.png`, `artifacts/board-mobile.png`, `artifacts/board-ulsan-unavailable.png`에 있습니다. 실행 생성물이므로 Git에는 포함하지 않고 전달 ZIP에 포함합니다.
+브라우저 결과는 `artifacts/browser-validation.json`에 있습니다. 변경 전 화면은 `before-1440.png`, `before-390.png`, 변경 후 화면은 `after-1920.png`, `after-1440.png`, `after-1024.png`, `after-390.png` 등에 저장했습니다. 이미지에서 한글·숫자·중앙 틈·축·열 정렬을 확인했습니다.
+
+`artifacts/transition-silent.mp4`는 약 12.24초의 **무음** 전환 영상입니다. 7행의 초기 회전, 수동 다음 페이지, 이전 페이지 회전 중 새 기록 표본 선택, 최신 표본으로 마무리하는 흐름을 담았습니다. `transition-notes.json`에 순서와 음원 미포함 상태를 기록했습니다. 동영상과 화면은 실행 생성물이므로 Git에는 포함하지 않습니다. 실제 Pragotron 오디오 미리듣기는 아직 없습니다.
 
 Starlette 테스트 클라이언트가 현재 httpx 지원에 대해 deprecation warning 1개를 출력합니다. 테스트 실패는 없으며 HTTP 런타임의 동작 오류가 아닙니다. 향후 테스트 클라이언트 의존성 업데이트 때 재확인할 항목입니다.
 
@@ -42,6 +45,11 @@ npm install --no-save --package-lock=false playwright@1.57.0
 npx playwright install chromium
 cd ..
 node scripts/browser_smoke.mjs
+# 시각 전환 영상 (Playwright ffmpeg 설치 필요)
+npx --prefix frontend playwright install ffmpeg
+node scripts/record_transition.mjs
+# 선택 사항: MP4로 변환 (시스템 ffmpeg 필요)
+ffmpeg -i artifacts/transition-silent.webm -c:v libx264 -pix_fmt yuv420p -movflags +faststart artifacts/transition-silent.mp4
 ```
 
 기존 Chromium이 있으면 `KORAIL_BROWSER_EXECUTABLE`로 실행 경로를 지정합니다. 별도 설치의 Playwright는 `KORAIL_BROWSER_MODULE`로 `index.mjs` 경로를 지정할 수 있습니다. 기본 검사 대상은 `http://127.0.0.1:8000`; 변경은 `KORAIL_TEST_URL`입니다. 스크립트의 네트워크 차단은 로컬 테스트 페이지에만 적용됩니다.
@@ -52,7 +60,7 @@ node scripts/browser_smoke.mjs
 - 실제 경부고속선·호남고속선 geometry와 일반선 병행·분기점의 전체 커버리지.
 - 실제 열차의 물리 노선 정답과 비교한 정확도·오탐률·미탐률. 합성 도형의 테스트 통과로 운영 정확도를 주장하지 않습니다.
 - 장시간 수집, 운영 서버 배포, 다중 인스턴스, Safari/Firefox, 실제 모바일 기기.
-- 실제 스피커에서 소리를 듣는 청감 검증. 오디오 합성과 사용자 활성화 흐름만 테스트했습니다.
+- **Pragotron 원본 확보·샘플 구간 선택·가공·실제 청음·화면과의 음향 동기·오디오 미리듣기.** 환경 프록시가 Freesound 다운로드에 CONNECT 403을 반환하여 원본을 가져오지 못했습니다. 원본 WAV 첨부가 필요합니다. 오디오 수명 검사는 Web Audio 테스트 더블로, 처리 도구는 테스트 전용 PCM으로 수행했습니다. 이를 실제 녹음의 음질·음량·동기 검증으로 간주하지 않습니다. [AUDIO.md](AUDIO.md)에 가공 절차와 출처·라이선스를 기록했습니다.
 - 원본 열차 목록의 전국 모든 열차 포함 여부, 위치 좌표의 센서 원천, 병결·분리 사례의 완전한 식별.
 
 ## 현재 운영 범위

@@ -36,3 +36,9 @@
 | 코레일 `/api/data/rail_ktx?` | 첨부 기록상 32개 LineString, properties 빈 객체 | 원본 geometry 미첨부. 노선명을 임의 배정하지 않음 |
 
 기록에 언급된 `rail_normal`, `rail_semi`, `rail_logis` 응답의 구조와 실제 사용 가능성도 미검증입니다. 실제 도형이 확보되기 전에는 테스트용 직선을 운영 선로로 복사하지 않습니다. 수동 매핑 구조와 도구는 [GEOMETRY.md](GEOMETRY.md)에 설명합니다.
+
+## 화면·글꼴·효과음
+
+- 외형 참고: [JFK TWA 호텔 Solari 보드](https://www.twahotel.com/photos), [창이공항 구 터미널 2 전광판](https://www.roots.gov.sg/collection-landing/listing/1485619). 참고 사진 자체는 앱에 포함하지 않습니다.
+- 글꼴: `@fontsource/noto-sans-kr` 5.3.1의 Noto Sans KR 600. [SIL Open Font License 1.1](../frontend/public/licenses/Noto-Sans-KR-OFL.txt)과 함께 로컬 빌드에 포함합니다.
+- 선택한 효과음: matucha — [pragotron_split-flap-display.wav](https://freesound.org/people/matucha/sounds/174056/), [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/). 개인·비상업 사용. 개발 환경에서 원본 다운로드가 차단되어 실제 음원은 아직 포함하지 못했습니다. 대체 음원은 사용하지 않습니다. 원본 확보 후 구간·페이드·음량 가공과 원본 SHA-256을 기록하는 절차는 [AUDIO.md](AUDIO.md)에 있습니다.

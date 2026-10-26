@@ -1,6 +1,7 @@
 import { Clock } from "./components/Clock";
 import { TrainRow } from "./components/TrainRow";
 import { TrainDetail } from "./components/TrainDetail";
+import { SoundControls } from "./components/SoundControls";
 import { formatTime } from "./format";
 import { useEffect, useMemo, useState } from "react";
 import {
@@ -18,13 +19,10 @@ import {
   RefreshCw,
   Route,
   TrainFront,
-  Volume2,
-  VolumeX,
   X,
 } from "lucide-react";
 import { SplitFlap, useReducedMotion } from "./components/SplitFlap";
 import { useRowPresence } from "./components/useRowPresence";
-import { flapAudio } from "./audio";
 import { useBoard, useCatalog } from "./useBoard";
 import type { Mode, Source, Train } from "./types";
 
@@ -64,7 +62,6 @@ export default function App() {
   const [line, setLine] = useState("");
   const [page, setPage] = useState(0);
   const [sort, setSort] = useState("number");
-  const [sound, setSound] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
   const [notice, setNotice] = useState("");
   const [details, setDetails] = useState<Train | null>(null);
@@ -164,14 +161,6 @@ export default function App() {
     setMode(next);
     setLine(next === "line" ? "gyeongbu-hsr" : "");
   };
-  async function toggleSound() {
-    try {
-      setSound(await flapAudio.toggle());
-      setNotice("");
-    } catch {
-      setNotice("이 브라우저에서 소리를 재생할 수 없습니다.");
-    }
-  }
   async function toggleFullscreen() {
     try {
       if (document.fullscreenElement) await document.exitFullscreen();
@@ -193,34 +182,17 @@ export default function App() {
             <strong>
               KORAIL<span className="brand-light"> LIVE</span>
             </strong>
-            <small>RAILWAY OBSERVATORY</small>
+            <small>대한민국 철도 운행 전광판</small>
           </span>
         </a>
         <div className="header-center">
-          <span className="tiny-cross">+</span> 움직이는 지금을, 한눈에.{" "}
-          <span className="tiny-cross">+</span>
+          <span className="header-rule" /> RAILWAY INFORMATION <span className="header-rule" />
         </div>
         <Clock />
       </header>
 
       <main>
-        <section className="intro">
-          <div>
-            <div className="eyebrow">
-              <span className="accent-line" /> THE RAILWAY, IN MOTION
-            </div>
-            <h1>
-              기차가 지나는 순간<span>.</span>
-            </h1>
-            <p>선로 위의 움직임을 담은, 나만의 열차 전광판.</p>
-          </div>
-          <div className="intro-side">
-            <span className="edition">LIVE TRAIN BOARD</span>
-            <span className="edition-number">
-              01 <span>/ 대한민국 철도</span>
-            </span>
-          </div>
-        </section>
+        <h1 className="sr-only">대한민국 철도 운행 전광판</h1>
 
         <section className="controls" aria-label="열차 필터">
           <div className="mode-tabs" role="tablist" aria-label="조회 방식">
@@ -389,15 +361,7 @@ export default function App() {
                 {STATE_LABELS[state] ?? state}
               </span>
               <span className="tool-divider" />
-              <button
-                className={sound ? "active-tool" : ""}
-                onClick={toggleSound}
-                aria-label={sound ? "소리 끄기" : "소리 켜기"}
-                aria-pressed={sound}
-                title={sound ? "소리 켜짐" : "소리 꺼짐"}
-              >
-                {sound ? <Volume2 size={18} /> : <VolumeX size={18} />}
-              </button>
+              <SoundControls reduced={reduced} onNotice={setNotice} />
               <button
                 onClick={toggleFullscreen}
                 aria-label={fullscreen ? "전체 화면 종료" : "전체 화면"}
@@ -421,7 +385,8 @@ export default function App() {
                 출발 <small>FROM</small>
               </span>
               <span role="columnheader" className="destination-cell">
-                도착 <small>TO</small>
+                <span className="desktop-label">도착</span><span className="mobile-label">출발 · 도착</span>
+                <small><span className="desktop-label">TO</span><span className="mobile-label">FROM / TO</span></small>
               </span>
               <span role="columnheader">
                 현재 위치 <small>POSITION</small>
@@ -431,10 +396,11 @@ export default function App() {
               </span>
             </div>
             <div className="rows" role="rowgroup">
-              {presentRows.map(({ train, exiting }) => (
+              {presentRows.map(({ train, exiting }, rowIndex) => (
                 <TrainRow
-                  key={train.id}
+                  key={`${source}:${archive}:${mode}:${station}:${line}:${safePage}:${sort}:${train.id}`}
                   train={train}
+                  rowIndex={rowIndex}
                   reduced={reduced}
                   positionLength={positionLength}
                   exiting={exiting}
@@ -462,9 +428,9 @@ export default function App() {
                       </span>
                       <span className="position-cell">
                         <span className="position-indicator" />
-                        <SplitFlap text="" length={13} reduced={true} />
+                        <SplitFlap text="" length={positionLength} reduced={true} />
                       </span>
-                      <span>
+                      <span className="delay-cell">
                         <SplitFlap text="" length={5} reduced={true} />
                       </span>
                     </div>
@@ -599,9 +565,7 @@ export default function App() {
             <span>ABOUT THIS BOARD</span>
           </div>
           <p>
-            열차의 종류나 목적지가 아닌,{" "}
-            <strong>수신 좌표와 검증된 선로</strong>를 기준으로 노선을
-            판별합니다.
+            수신 위치와 운행 상태를 한눈에 확인하세요.
           </p>
           <button
             onClick={() => setShowInfo(!showInfo)}
