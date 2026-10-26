@@ -1,0 +1,60 @@
+import { ChevronRight } from "lucide-react";
+import { SplitFlap } from "./SplitFlap";
+import { delayText } from "../format";
+import type { Train } from "../types";
+
+export function TrainRow({
+  train,
+  reduced,
+  positionLength,
+  exiting,
+  onSelect,
+}: {
+  train: Train;
+  reduced: boolean;
+  positionLength: number;
+  exiting: boolean;
+  onSelect: (t: Train) => void;
+}) {
+  const type = train.kind.startsWith("KTX")
+    ? "ktx"
+    : train.kind.startsWith("ITX")
+      ? "itx"
+      : "regular";
+  return (
+    <button
+      type="button"
+      role="row"
+      className={`board-row${exiting ? " row-exiting" : ""}`}
+      disabled={exiting}
+      aria-hidden={exiting || undefined}
+      onClick={() => onSelect(train)}
+      aria-label={`${train.kind} ${train.number}, ${train.origin}에서 ${train.destination}, ${train.position_label}, ${delayText(train)}. 상세 보기`}
+    >
+      <span role="cell" className="train-cell">
+        <span className={`train-type ${type}`} title={train.kind}>
+          {train.kind}
+        </span>
+        <SplitFlap text={train.number} length={4} reduced={reduced} />
+      </span>
+      <span role="cell" className="origin-cell">
+        <SplitFlap text={train.origin} length={5} reduced={reduced} />
+      </span>
+      <span role="cell" className="destination-cell">
+        <SplitFlap text={train.destination} length={5} reduced={reduced} />
+      </span>
+      <span role="cell" className="position-cell">
+        <span className="position-indicator" />
+        <SplitFlap
+          text={train.position_label.replaceAll(" > ", " › ")}
+          length={positionLength}
+          reduced={reduced}
+        />
+      </span>
+      <span role="cell" className={`delay-cell delay-${train.delay_status}`}>
+        <SplitFlap text={delayText(train)} length={5} reduced={reduced} />
+        <ChevronRight size={14} className="row-more" />
+      </span>
+    </button>
+  );
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "lines": [
+    {"id": "gyeongbu-hsr", "name": "경부고속선", "type": "high_speed", "coverage": "unavailable", "source": "사용자 요구사항의 노선 정의; 실제 선로 geometry 미확보", "note": "검증된 선로 도형을 등록해야 좌표 필터를 사용할 수 있습니다."},
+    {"id": "honam-hsr", "name": "호남고속선", "type": "high_speed", "coverage": "unavailable", "source": "사용자 요구사항의 노선 정의; 실제 선로 geometry 미확보", "note": "검증된 선로 도형을 등록해야 좌표 필터를 사용할 수 있습니다."}
+  ],
+  "stations": [
+    {"id": "ulsan", "name": "울산(통도사)", "aliases": ["울산", "울산역", "울산(통도사)역", "울산 통도사", "Ulsan"], "coordinates": [129.1379315, 35.5509062], "source": "첨부 README_KO.txt: station.10459, 2026-10-26 관찰; 원본 정적 응답은 미첨부"}
+  ],
+  "station_line_mappings": [
+    {"station_id": "ulsan", "line_id": "gyeongbu-hsr", "verified": true, "source": "사용자가 명시한 울산(통도사)역 → 경부고속선 매핑", "verification_scope": "station_membership_only_not_track_geometry"}
+  ]
+}
