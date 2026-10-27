@@ -50,11 +50,13 @@ function usePositionLength() {
   return length;
 }
 
-export default function App() {
+export default function App({ request = fetch, initialSource, homeHref = "/" }: {
+  request?: typeof fetch; initialSource?: Source; homeHref?: string;
+} = {}) {
   const [source, setSource] = useState<Source>(() =>
-    new URLSearchParams(window.location.search).get("source") === "archive"
+    initialSource ?? (new URLSearchParams(window.location.search).get("source") === "archive"
       ? "archive"
-      : "live",
+      : "live"),
   );
   const [archive, setArchive] = useState("141536");
   const [mode, setMode] = useState<Mode>("all");
@@ -69,13 +71,14 @@ export default function App() {
   const [clientNow, setClientNow] = useState(Date.now());
   const reduced = useReducedMotion();
   const positionLength = usePositionLength();
-  const { lines, stations, catalogError } = useCatalog();
+  const { lines, stations, catalogError } = useCatalog(request);
   const { data, error, loading, refresh } = useBoard(
     source,
     archive,
     mode,
     station,
     line,
+    request,
   );
   useEffect(() => {
     const id = setInterval(() => setClientNow(Date.now()), 5000);
@@ -174,7 +177,7 @@ export default function App() {
   return (
     <div className="app-shell">
       <header className="topbar">
-        <a className="brand" href="/" aria-label="KORAIL Live 홈">
+        <a className="brand" href={homeHref} aria-label="KORAIL Live 홈">
           <span className="brand-mark">
             <TrainFront size={22} strokeWidth={1.7} />
           </span>
@@ -398,7 +401,7 @@ export default function App() {
             <div className="rows" role="rowgroup">
               {presentRows.map(({ train, exiting }, rowIndex) => (
                 <TrainRow
-                  key={`${source}:${archive}:${mode}:${station}:${line}:${safePage}:${sort}:${train.id}`}
+                  key={`board-slot-${rowIndex}`}
                   train={train}
                   rowIndex={rowIndex}
                   reduced={reduced}

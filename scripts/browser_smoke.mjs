@@ -16,6 +16,9 @@ const browser = await chromium.launch({
 const results = [];
 try {
   const page = await browser.newPage({ viewport: { width: 1440, height: 1100 } });
+  const settled = () => page.waitForFunction(() => [...document.querySelectorAll('.rows .flap')].every(cell =>
+    cell.dataset.flipping === 'false' && cell.querySelector(':scope > .flap-top > span').textContent === cell.dataset.value),
+    undefined, { timeout: 20000 });
   const errors = [];
   page.on('pageerror', e => errors.push(e.message));
   await page.goto(base);
@@ -30,11 +33,13 @@ try {
   await page.screenshot({ path: `${out}/board-desktop.png`, fullPage: true });
   results.push('Actual archived 148-record response renders with explicit historical label');
 
+  await page.evaluate(() => { window.__firstBoardSlot = document.querySelector('.rows .board-row'); });
   await page.getByRole('button', { name: '다음 페이지' }).click();
-  await page.waitForTimeout(2300);
+  assert.equal(await page.evaluate(() => window.__firstBoardSlot === document.querySelector('.rows .board-row')), true);
+  await settled();
   assert.match(await page.locator('.pagination').innerText(), /02/);
   await page.getByRole('button', { name: '이전 페이지' }).click();
-  await page.waitForTimeout(2300);
+  await settled();
   const animations = await page.evaluate(async () => {
     let flips = 0;
     const observer = new MutationObserver(mutations => {
@@ -47,7 +52,7 @@ try {
     return flips;
   });
   assert.equal(animations, 0);
-  results.push('Pagination works; re-reading identical cache starts no character flips');
+  results.push('Pagination preserves physical cells until their indexed targets settle; identical cache starts no character flips');
   await page.getByRole('combobox', { name: '표본 수신 시각' }).selectOption('141445');
   await page.getByText('145 TRAINS', { exact: true }).waitFor();
   await page.getByRole('combobox', { name: '표본 수신 시각' }).selectOption('141536');

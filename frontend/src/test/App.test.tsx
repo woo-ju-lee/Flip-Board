@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import App from "../App";
 import { flapAudio } from "../audio";
@@ -141,6 +141,40 @@ describe("board interactions", () => {
     ).not.toBeInTheDocument();
   });
 
+  it("uses indexed drums and preserves physical cells across pages in the live board", async () => {
+    vi.useFakeTimers();
+    const response = fixture("live");
+    for (const train of response.trains) {
+      train.origin = "서울";
+      train.destination = "부산";
+    }
+    response.trains[7].origin = "부산";
+    const fetcher = mockServer({ response });
+    const schedule = vi.spyOn(flapAudio, "schedule").mockImplementation(() => {});
+    await act(async () => { render(<App />); });
+    await act(async () => { vi.advanceTimersByTime(2300); });
+    const row = screen.getByRole("row", { name: /KTX 1,/ });
+    const leaves = Array.from(row.querySelectorAll(".flap"));
+    schedule.mockClear();
+
+    fireEvent.click(screen.getByRole("button", { name: "다음 페이지" }));
+    expect(screen.getByRole("row", { name: /KTX 8,/ })).toBe(row);
+    expect(Array.from(row.querySelectorAll(".flap"))).toEqual(leaves);
+    expect(row.querySelector(".origin-cell .flap-top > span")).toHaveTextContent("서");
+    expect(schedule.mock.calls.map(([, events]) => events.length)).toEqual(expect.arrayContaining([7, 93, 72]));
+    expect(row.querySelector(".destination-cell [data-flipping=true]")).toBeNull();
+    await act(async () => { vi.advanceTimersByTime(16000); });
+    expect(Array.from(row.querySelectorAll(".origin-cell .flap-top > span"), leaf => leaf.textContent).join("")).toBe("부산   ");
+
+    fireEvent.click(screen.getByRole("button", { name: "이전 페이지" }));
+    expect(screen.getByRole("row", { name: /KTX 1,/ })).toBe(row);
+    expect(row.querySelector(".origin-cell .flap-top > span")).toHaveTextContent("부");
+    await act(async () => { vi.advanceTimersByTime(16000); });
+    expect(Array.from(row.querySelectorAll(".origin-cell .flap-top > span"), leaf => leaf.textContent).join("")).toBe("서울   ");
+    expect(fetcher).toHaveBeenCalledWith(expect.stringContaining("source=live"), expect.anything());
+    expect(screen.getByRole("link", { name: "KORAIL Live 홈" })).toHaveAttribute("href", "/");
+  });
+
   it("offers a line choice when a station has multiple mappings", async () => {
     mockServer({ multi: true });
     render(<App />);
@@ -199,21 +233,32 @@ describe("board interactions", () => {
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
-  it("reflects a new delay when the server cache is refreshed", async () => {
-    const response = fixture();
-    window.history.replaceState(null, "", "/?source=archive");
-    mockServer({ response });
-    render(<App />);
-    await screen.findByRole("row", { name: /KTX 1,.*정상/ });
-    response.trains[0].delay_minutes = 4;
+  it("turns only the changed live delay digit and stays quiet for metadata-only refreshes", async () => {
+    vi.useFakeTimers();
+    const response = fixture("live");
+    response.trains[0].delay_minutes = 3;
     response.trains[0].delay_status = "delayed";
-    fireEvent.click(
-      screen.getByRole("button", { name: "서버 캐시 다시 조회" }),
-    );
-    await screen.findByRole("row", { name: /KTX 1,.*\+4분/ });
+    mockServer({ response });
+    const schedule = vi.spyOn(flapAudio, "schedule").mockImplementation(() => {});
+    await act(async () => { render(<App />); });
+    await act(async () => { vi.advanceTimersByTime(2300); });
+    const row = screen.getByRole("row", { name: /KTX 1,.*\+3분/ });
+    schedule.mockClear();
+    response.trains[0].delay_minutes = 4;
+    await act(async () => { fireEvent.click(screen.getByRole("button", { name: "서버 캐시 다시 조회" })); });
+    expect(screen.getByRole("row", { name: /KTX 1,.*\+4분/ })).toBe(row);
+    expect(schedule).toHaveBeenCalledTimes(1);
+    expect(schedule.mock.calls[0][1]).toHaveLength(1);
+    act(() => { vi.advanceTimersByTime(400); });
+    expect(row.querySelector(".delay-cell .flap:nth-child(2) .flap-top > span")).toHaveTextContent("4");
+    schedule.mockClear();
+    response.trains[0].received_at = "2026-10-26T05:16:36Z";
+    response.status.last_received_at = response.trains[0].received_at;
+    await act(async () => { fireEvent.click(screen.getByRole("button", { name: "서버 캐시 다시 조회" })); });
+    expect(schedule).not.toHaveBeenCalled();
   });
 
-  it("disables a departed train during its exit and then removes it", async () => {
+  it("disables a departed train during its exit and then reuses its physical slot", async () => {
     const response = fixture();
     window.history.replaceState(null, "", "/?source=archive");
     mockServer({ response });
@@ -223,6 +268,8 @@ describe("board interactions", () => {
     response.count--;
     fireEvent.click(screen.getByRole("button", { name: "서버 캐시 다시 조회" }));
     await waitFor(() => expect(row).toBeDisabled());
-    await waitFor(() => expect(row).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.getByRole("row", { name: /KTX 2,/ })).toBe(row));
+    expect(screen.queryByRole("row", { name: /KTX 1,/ })).not.toBeInTheDocument();
+    expect(row).toBeEnabled();
   });
 });

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Mode, RailLine, Source, Station, TrainResponse } from "./types";
 
-export function useCatalog() {
+export function useCatalog(request: typeof fetch = fetch) {
   const [catalog, setCatalog] = useState<{
     lines: RailLine[];
     stations: Station[];
@@ -11,7 +11,7 @@ export function useCatalog() {
     const abort = new AbortController();
     Promise.all(
       ["/api/lines", "/api/stations"].map(async (path) => {
-        const response = await fetch(path, { signal: abort.signal });
+        const response = await request(path, { signal: abort.signal });
         if (!response.ok)
           throw new Error("역·노선 목록을 불러오지 못했습니다.");
         return response.json();
@@ -22,7 +22,7 @@ export function useCatalog() {
         if (!abort.signal.aborted) setError(e.message);
       });
     return () => abort.abort();
-  }, []);
+  }, [request]);
   return { ...catalog, catalogError: error };
 }
 
@@ -32,6 +32,7 @@ export function useBoard(
   mode: Mode,
   station: string,
   line: string,
+  request: typeof fetch = fetch,
 ) {
   const params = new URLSearchParams({ source, archive });
   if (mode === "station" && station) params.set("station_id", station);
@@ -53,7 +54,7 @@ export function useBoard(
       inFlight = true;
       setLoading(true);
       try {
-        const response = await fetch(`/api/trains?${key}`, {
+        const response = await request(`/api/trains?${key}`, {
           signal: abort.signal,
         });
         if (!response.ok) throw new Error("전광판 서버에 연결할 수 없습니다.");
@@ -85,7 +86,7 @@ export function useBoard(
       clearInterval(interval);
       document.removeEventListener("visibilitychange", visible);
     };
-  }, [key, source]);
+  }, [key, source, request]);
   return {
     data: stored?.key === key ? stored.data : null,
     error,

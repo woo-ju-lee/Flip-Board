@@ -86,12 +86,12 @@ try {
       strikeErrorMs: (last.when + .02929705215419501 / last.rate - __singleLanding) * 1000,
       tailAfterLandingMs: (last.when + last.duration / last.rate - __singleLanding) * 1000 };
   });
-  assert.ok(singleCharacter.leaves >= 6 && singleCharacter.leaves <= 12);
+  assert.equal(singleCharacter.leaves, 1);
   assert.ok(Math.abs(singleCharacter.strikeErrorMs) < 45);
   await page.unroute('**/api/trains?**', oneDigitRoute);
   await page.getByRole('button', { name: '소리 끄기' }).click();
   await page.getByLabel('사운드 설정', { exact: true }).click();
-  checks.push('One changed digit plays 6–12 recorded impacts and its final strike aligns with DOM landing within 45 ms');
+  checks.push('Delay digit 3 → 4 plays one recorded impact and its strike aligns with DOM landing within 45 ms');
 
   await page.getByRole('slider', { name: '효과음 음량' }).fill('0');
   assert.equal(await page.getByRole('button', { name: '소리 미리듣기' }).isDisabled(), true);
@@ -122,7 +122,10 @@ try {
   await page.getByRole('button', { name: '이전 페이지' }).click();
   await page.waitForTimeout(300);
   await page.getByRole('combobox', { name: '표본 수신 시각' }).selectOption('141445');
-  await page.waitForTimeout(2300);
+  await page.getByText('145 TRAINS', { exact: true }).waitFor();
+  await page.waitForFunction(() => [...document.querySelectorAll('.rows .flap')].every(cell =>
+    cell.dataset.flipping === 'false' && cell.querySelector(':scope > .flap-top > span').textContent === cell.dataset.value),
+    undefined, { timeout: 20000 });
   await quiet();
   const settled = await page.locator('.flap').evaluateAll(cells => cells.every(cell => cell.dataset.flipping === 'false'
     && cell.querySelector('.flap-top > span').textContent === cell.dataset.value

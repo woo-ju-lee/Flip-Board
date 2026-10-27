@@ -1,6 +1,6 @@
 import { memo, useEffect, useId, useRef, useState } from "react";
 import { flapAudio } from "../audio";
-import { makeFlapPlan, soundEvents } from "../flapMotion";
+import { DIGIT_ROTOR, makeFlapPlan, makeIndexedFlapPlan, soundEvents } from "../flapMotion";
 
 export function useReducedMotion() {
   const [reduced, setReduced] = useState(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches);
@@ -13,13 +13,14 @@ export function useReducedMotion() {
   return reduced;
 }
 
-export const FlapCharacter = memo(function FlapCharacter({ value, index, reduced }: {
-  value: string; index: number; reduced: boolean;
+export const FlapCharacter = memo(function FlapCharacter({ value, index, reduced, rotor }: {
+  value: string; index: number; reduced: boolean; rotor?: readonly string[];
 }) {
   const owner = useId();
   const element = useRef<HTMLSpanElement>(null);
-  const settled = useRef(" ");
-  const [frame, setFrame] = useState({ from: " ", to: " ", active: false, serial: 0 });
+  // Indexed drums begin at their displayed value. Changes preserve this physical position.
+  const settled = useRef(rotor ? value : " ");
+  const [frame, setFrame] = useState({ from: settled.current, to: settled.current, active: false, serial: 0 });
   useEffect(() => {
     const timers: ReturnType<typeof setTimeout>[] = [];
     const finish = () => {
@@ -35,7 +36,11 @@ export const FlapCharacter = memo(function FlapCharacter({ value, index, reduced
       return cancel;
     }
     const now = performance.now();
-    const plan = makeFlapPlan(settled.current, value, `${owner}:${index}`, now);
+    const plan = rotor
+      ? makeIndexedFlapPlan(settled.current, value, rotor, `${owner}:${index}`, now)
+      : makeFlapPlan(settled.current, value, `${owner}:${index}`, now);
+    if (!plan.steps.length) { finish(); return cancel; }
+    setFrame(f => ({ from: settled.current, to: settled.current, active: false, serial: f.serial }));
     const bounds = element.current?.getBoundingClientRect();
     const pan = bounds ? ((bounds.left + bounds.width / 2) / Math.max(1, window.innerWidth)) * 2 - 1 : 0;
     flapAudio.schedule(owner, soundEvents(plan, pan));
@@ -51,7 +56,7 @@ export const FlapCharacter = memo(function FlapCharacter({ value, index, reduced
     const onVisibility = () => { if (document.hidden) { cancel(); finish(); } };
     document.addEventListener("visibilitychange", onVisibility);
     return () => { cancel(); document.removeEventListener("visibilitychange", onVisibility); };
-  }, [value, reduced, index, owner]);
+  }, [value, reduced, index, owner, rotor]);
   return (
     <span ref={element} className="flap" aria-hidden="true" data-flipping={frame.active ? "true" : "false"} data-value={value}>
       <span className="flap-half flap-top"><span>{frame.to}</span></span>
@@ -66,15 +71,16 @@ export const FlapCharacter = memo(function FlapCharacter({ value, index, reduced
   );
 });
 
-export const SplitFlap = memo(function SplitFlap({ text, length, className = "", reduced }: {
-  text: string; length: number; className?: string; reduced: boolean;
+export const SplitFlap = memo(function SplitFlap({ text, length, className = "", reduced, rotor, indexedDigits = false }: {
+  text: string; length: number; className?: string; reduced: boolean; rotor?: readonly string[]; indexedDigits?: boolean;
 }) {
   const chars = Array.from(text);
   const fitted = chars.length > length ? [...chars.slice(0, length - 1), "…"]
     : [...chars, ...Array(Math.max(0, length - chars.length)).fill(" ")];
   return (
     <span className={`flap-word ${className}`} aria-label={text || "빈칸"} title={text}>
-      {fitted.map((char, index) => <FlapCharacter key={index} value={char} index={index} reduced={reduced} />)}
+      {fitted.map((char, index) => <FlapCharacter key={index} value={char} index={index} reduced={reduced}
+        rotor={rotor ?? (indexedDigits && /^\d$/.test(char) ? DIGIT_ROTOR : undefined)} />)}
     </span>
   );
 });
