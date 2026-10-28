@@ -37,7 +37,7 @@ class RailwayMatcher:
     def __init__(self, path: Path, line_ids: set[str], settings: Settings):
         self.settings = settings
         self.history: dict[str, History] = {}
-        raw = json.loads(path.read_text())
+        raw = json.loads(path.read_text(encoding='utf-8'))
         if raw.get('type') != 'FeatureCollection' or not isinstance(raw.get('features'), list):
             raise ValueError('Expected segments FeatureCollection')
         if raw.get('crs', {}).get('properties', {}).get('name', 'EPSG:4326') not in ('EPSG:4326', 'urn:ogc:def:crs:EPSG::4326'):

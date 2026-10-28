@@ -14,7 +14,7 @@ TO_WGS84 = Transformer.from_crs(5179, 4326, always_xy=True)
 
 @pytest.fixture
 def capture():
-    return json.loads((DATA_DIR / 'snapshots/trains_20261026_141536_KST.json').read_text())
+    return json.loads((DATA_DIR / 'snapshots/trains_20261026_141536_KST.json').read_text(encoding='utf-8'))
 
 
 @pytest.fixture

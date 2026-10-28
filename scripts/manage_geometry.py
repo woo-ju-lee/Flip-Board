@@ -10,7 +10,7 @@ from backend.app.matcher import RailwayMatcher
 
 
 def prepare(input_path: Path, output_path: Path, source: str, license_reference: str):
-    payload = json.loads(input_path.read_text())
+    payload = json.loads(input_path.read_text(encoding='utf-8'))
     if payload.get('type') != 'FeatureCollection' or not isinstance(payload.get('features'), list):
         raise ValueError('Expected GeoJSON FeatureCollection')
     crs = payload.get('crs', {}).get('properties', {}).get('name', 'EPSG:4326')
@@ -33,7 +33,7 @@ def prepare(input_path: Path, output_path: Path, source: str, license_reference:
         }})
     result = {'type': 'FeatureCollection', 'schema_version': 1, 'features': features}
     # Exclusive creation avoids accidentally overwriting an existing reviewed mapping.
-    with output_path.open('x') as stream:
+    with output_path.open('x', encoding='utf-8') as stream:
         json.dump(result, stream, ensure_ascii=False, indent=2)
     print(f'Prepared {len(features)} UNVERIFIED segments in {output_path}')
 

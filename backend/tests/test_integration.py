@@ -12,7 +12,7 @@ from .conftest import AT, TO_WGS84, synthetic_segment
 
 
 def test_normalize_match_station_filter_pipeline(single, tmp_path):
-    catalog = json.loads((DATA_DIR / 'catalog.json').read_text())
+    catalog = json.loads((DATA_DIR / 'catalog.json').read_text(encoding='utf-8'))
     catalog['lines'].append({'id': 'ordinary', 'name': '합성 테스트 일반선', 'coverage': 'partial'})
     (tmp_path / 'catalog.json').write_text(json.dumps(catalog))
     geometry = {'type': 'FeatureCollection', 'features': [

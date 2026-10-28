@@ -10,3 +10,4 @@ artifacts/
 .DS_Store
 *.egg-info/
 *.tsbuildinfo
+build/

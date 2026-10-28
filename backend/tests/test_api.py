@@ -34,7 +34,7 @@ def test_ulsan_alias_maps_line_but_does_not_fake_geometry():
 
 
 def test_unknown_mapping_and_multiline_require_choice(tmp_path):
-    raw = json.loads((DATA_DIR / 'catalog.json').read_text())
+    raw = json.loads((DATA_DIR / 'catalog.json').read_text(encoding='utf-8'))
     raw['stations'].append({'id': 'synthetic-unmapped', 'name': '테스트역', 'aliases': []})
     raw['station_line_mappings'].append({'station_id': 'ulsan', 'line_id': 'honam-hsr', 'verified': True, 'source': 'test-only, NOT real station membership'})
     (tmp_path / 'catalog.json').write_text(json.dumps(raw))
