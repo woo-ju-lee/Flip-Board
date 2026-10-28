@@ -1,6 +1,8 @@
 """One loopback listener, reusable across orderly single-worker restarts."""
+import asyncio
 import json
 import logging
+import os
 from pathlib import Path
 import socket
 import threading
@@ -126,7 +128,12 @@ class BoardServer:
                 return
             # Uvicorn owns its duplicate; the master keeps the URL stable during restarts.
             owned_socket = self.listener.dup()
-            self.server.run(sockets=[owned_socket])
+            # A Windows socket stays associated with its first IOCP even when duplicated.
+            # SelectorEventLoop lets each restart reuse the listener without registering
+            # it with a new Proactor loop. Keep this choice local to the server thread.
+            loop_factory = asyncio.SelectorEventLoop if os.name == 'nt' else None
+            with asyncio.Runner(loop_factory=loop_factory) as runner:
+                runner.run(self.server.serve(sockets=[owned_socket]))
             if not self.stop_requested.is_set():
                 raise RuntimeError('서버가 예기치 않게 종료되었습니다. 로그를 확인하세요.')
         except BaseException as error:
