@@ -7,7 +7,7 @@ DATA_DIR = Path(__file__).resolve().parents[1] / 'data'
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_prefix='KORAIL_', env_file='.env', extra='ignore')
+    model_config = SettingsConfigDict(env_prefix='KORAIL_', env_file='.env', env_file_encoding='utf-8-sig', extra='ignore')
 
     live_enabled: bool = False
     usage_policy_reference: str = ''

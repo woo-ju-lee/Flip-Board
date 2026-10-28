@@ -25,7 +25,7 @@ def test_actual_captures_and_nullable_delay(capture):
 
 def test_id_stability_across_real_captures(capture):
     import json
-    old = json.loads((DATA_DIR / 'snapshots/trains_20261026_141445_KST.json').read_text())
+    old = json.loads((DATA_DIR / 'snapshots/trains_20261026_141445_KST.json').read_text(encoding='utf-8'))
     before = {t.number: t.id for t in normalize(old, AT).trains}
     after = {t.number: t.id for t in normalize(capture, AT).trains}
     assert len(before) == 145

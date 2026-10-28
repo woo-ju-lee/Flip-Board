@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "korail-live-board"
-version = "0.1.0"
+version = "0.2.0"
 description = "Source-aware KORAIL split-flap display"
 requires-python = ">=3.11"
 dependencies = [

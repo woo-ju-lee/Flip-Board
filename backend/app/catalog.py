@@ -11,7 +11,7 @@ def canonical_station_name(value: str) -> str:
 
 class Catalog:
     def __init__(self, data_dir: Path):
-        raw = json.loads((data_dir / 'catalog.json').read_text())
+        raw = json.loads((data_dir / 'catalog.json').read_text(encoding='utf-8'))
         if raw.get('schema_version') != 1:
             raise ValueError('Unsupported catalog version')
         self.lines = {item['id']: item for item in raw['lines']}

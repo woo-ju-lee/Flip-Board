@@ -2,7 +2,19 @@
 
 React + TypeScript + Vite / FastAPI 기반의 기계식 열차 전광판입니다. 좌표 수집, 정규화, 공유 캐시, 보수적인 선로 매칭, 역·노선 필터와 공항식 문자별 플랩을 구현했습니다. 실제 Vestaboard 한 칸의 녹음을 앱에 포함하고 각 플랩의 착지에 맞춰 재생합니다.
 
-**현재 배포본의 한계:** 실시간 수집 허용 조건을 확인하지 못했고 개발 환경에서 `gis.korail.com` 서버 통신이 허용되지 않습니다. 실시간 수집은 기본 OFF입니다. 또한 검증된 명명 선로 도형이 없어 경부고속선·호남고속선 필터는 `unavailable`입니다. **현재 실제 경부고속선 열차를 조회하는 최종 운영 목표까지 검증된 상태는 아닙니다.** 첨부된 2026-10-26 표본으로 전체 열차 전광판을 즉시 시연할 수 있습니다. 과거 자료가 자동으로 실시간 데이터로 대체되는 동작은 없습니다.
+**현재 배포본의 한계:** 실시간 수집 허용 조건을 확인하지 못했고 개발 환경에서 `gis.korail.com` 서버 통신이 허용되지 않습니다. 소스 실행의 실시간 수집은 기본 OFF이며, Windows 실행본은 신규 사용자 설정을 ON으로 만듭니다. 또한 검증된 명명 선로 도형이 없어 경부고속선·호남고속선 필터는 `unavailable`입니다. **현재 실제 경부고속선 열차를 조회하는 최종 운영 목표까지 검증된 상태는 아닙니다.** 첨부된 2026-10-26 표본으로 전체 열차 전광판을 즉시 시연할 수 있습니다. 과거 자료가 자동으로 실시간 데이터로 대체되는 동작은 없습니다.
+
+## Windows에서 더블클릭으로 실행
+
+Windows 10/11 x64에서는 **`FlipBoard-버전-windows-x64.zip`의 압축을 전부 풀고 `FlipBoard.exe`를 실행**합니다. Python·Node.js 설치나 관리자 권한이 필요하지 않습니다. EXE와 `_internal` 폴더를 함께 보관하세요. 준비가 끝나면 기존 브라우저에서 전광판이 열립니다.
+
+- 버전 배포본: [GitHub Releases](https://github.com/woo-ju-lee/Flip-Board/releases)의 `windows-x64.zip`.
+- 개발 빌드: [Windows portable build](https://github.com/woo-ju-lee/Flip-Board/actions/workflows/windows.yml)의 성공한 실행 → **Artifacts → FlipBoard-windows-x64**. Artifacts 압축 파일 안에 실행용 ZIP과 SHA-256이 있습니다. GitHub 로그인이 필요할 수 있습니다.
+- **Code → Download ZIP 및 Source code (zip)은 소스 코드이며 실행용 배포본이 아닙니다.**
+
+작은 실행 창에서 브라우저를 다시 열거나 실시간 수집을 설정할 수 있습니다. 새 사용자는 수집 켜짐으로 시작하고, 체크박스를 바꾼 뒤 **적용 후 재시작**을 누르면 같은 주소로 재시작합니다. 브라우저만 닫으면 수집은 계속되며 **실행 창을 닫으면 서버도 종료**합니다. 8000번 포트가 사용 중이면 다른 빈 포트를 자동 선택합니다.
+
+설정은 `%LOCALAPPDATA%\FlipBoard\.env`, 로그는 `%LOCALAPPDATA%\FlipBoard\logs`에 저장합니다. 첫 실행 전에 EXE 옆에 기존 `.env`를 두면 가져오며, 이미 사용자 설정이 있으면 덮어쓰지 않습니다. 새 버전은 다른 폴더에 압축을 풀고 이전 실행 창을 종료한 다음 실행하세요. 자세한 안내: [Windows 사용법](docs/WINDOWS-QUICKSTART.txt), [Windows 빌드·검증](docs/WINDOWS.md).
 
 ## 빠른 실행
 
