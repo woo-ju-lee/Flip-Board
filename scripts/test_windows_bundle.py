@@ -145,6 +145,7 @@ def main():
         assert data['frozen'] and data['frontend'] and data['font_count'] > 0
         assert data['audio_bytes'] == 2608 and data['stations'] > 0 and data['snapshots'] == 2
         assert data['projection'] and data['geos'] and data['ca_count'] > 0 and data['tcl']
+        assert data['timezone'] == 'Asia/Seoul'
         assert Path(data['proj_data']).is_relative_to(bundle)
         assert Path(data['certifi']).is_relative_to(bundle)
         checks.append('ZIP checksum and bundled Python/Tcl, Korean data, fonts, audio, GEOS/PROJ and certificates')

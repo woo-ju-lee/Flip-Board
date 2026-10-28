@@ -9,7 +9,7 @@ datas = [(str(root / 'backend' / 'data'), 'backend/data'),
 binaries = []
 hiddenimports = ['uvicorn.logging', 'uvicorn.loops.asyncio',
     'uvicorn.protocols.http.h11_impl', 'uvicorn.lifespan.on', 'anyio._backends._asyncio']
-for package in ('pyproj', 'shapely', 'certifi'):
+for package in ('pyproj', 'shapely', 'certifi', 'tzdata'):
     datas += collect_data_files(package)
     datas += copy_metadata(package)
     binaries += collect_dynamic_libs(package)

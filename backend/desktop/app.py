@@ -178,6 +178,7 @@ def diagnostics(destination: Path):
     import certifi
     import pyproj
     import tkinter
+    from zoneinfo import ZoneInfo
     from shapely.geometry import Point
     from backend.app.config import DATA_DIR
     from backend.app.catalog import Catalog
@@ -199,6 +200,7 @@ def diagnostics(destination: Path):
         'certifi': certifi.where(),
         'ca_count': len(ssl.create_default_context(cafile=certifi.where()).get_ca_certs()),
         'tcl': tkinter.Tcl().eval('info patchlevel'),
+        'timezone': ZoneInfo('Asia/Seoul').key,
     }
     atomic_text(destination, json.dumps(report, ensure_ascii=False, indent=2))
 
