@@ -100,4 +100,4 @@ jobs:
         run: |
           gh release create "$RELEASE_TAG" release/* \
             --verify-tag --title "FlipBoard $RELEASE_TAG — Windows" \
-            --notes 'Windows 10/11 x64: download windows-x64.zip, extract the whole folder, then open FlipBoard.exe. Python and Node.js are bundled. Source code archives are for development.'
+            --notes 'Windows 10/11 x64: download windows-x64.zip, extract the whole folder, then open FlipBoard.exe. The Python runtime and built frontend are included; installing Python or Node.js is unnecessary. Source code archives are for development.'
