@@ -1,9 +1,10 @@
 import { Clock } from "./components/Clock";
 import { TrainRow } from "./components/TrainRow";
+import { TrainLogo } from "./components/TrainLogo";
 import { TrainDetail } from "./components/TrainDetail";
 import { SoundControls } from "./components/SoundControls";
 import { formatTime } from "./format";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowDown,
   ArrowUpRight,
@@ -26,7 +27,7 @@ import { useRowPresence } from "./components/useRowPresence";
 import { useBoard, useCatalog } from "./useBoard";
 import type { Mode, Source, Train } from "./types";
 
-const PAGE_SIZE = 7;
+const PAGE_SIZE = 10;
 const STATE_LABELS: Record<string, string> = {
   disabled: "수집 꺼짐",
   connecting: "연결 중",
@@ -38,15 +39,16 @@ const STATE_LABELS: Record<string, string> = {
   archive: "기록 표본",
   unverified_time: "시각 미확인",
 };
-function usePositionLength() {
+function usePositionLength(fullscreen: boolean) {
   const getLength = () =>
-    window.innerWidth <= 480 ? 9 : window.innerWidth <= 760 ? 11 : 13;
+    fullscreen ? 13 : window.innerWidth <= 480 ? 9 : window.innerWidth <= 760 ? 11 : 13;
   const [length, setLength] = useState(getLength);
   useEffect(() => {
     const resize = () => setLength(getLength());
+    resize();
     window.addEventListener("resize", resize);
     return () => window.removeEventListener("resize", resize);
-  }, []);
+  }, [fullscreen]);
   return length;
 }
 
@@ -65,12 +67,13 @@ export default function App({ request = fetch, initialSource, homeHref = "/" }: 
   const [page, setPage] = useState(0);
   const [sort, setSort] = useState("number");
   const [fullscreen, setFullscreen] = useState(false);
+  const boardElement = useRef<HTMLElement>(null);
   const [notice, setNotice] = useState("");
   const [details, setDetails] = useState<Train | null>(null);
   const [showInfo, setShowInfo] = useState(false);
   const [clientNow, setClientNow] = useState(Date.now());
   const reduced = useReducedMotion();
-  const positionLength = usePositionLength();
+  const positionLength = usePositionLength(fullscreen);
   const { lines, stations, catalogError } = useCatalog(request);
   const { data, error, loading, refresh } = useBoard(
     source,
@@ -167,8 +170,8 @@ export default function App({ request = fetch, initialSource, homeHref = "/" }: 
   async function toggleFullscreen() {
     try {
       if (document.fullscreenElement) await document.exitFullscreen();
-      else if (document.documentElement.requestFullscreen)
-        await document.documentElement.requestFullscreen();
+      else if (boardElement.current?.requestFullscreen)
+        await boardElement.current.requestFullscreen();
       else setNotice("이 브라우저는 전체 화면을 지원하지 않습니다.");
     } catch {
       setNotice("전체 화면으로 전환하지 못했습니다.");
@@ -334,7 +337,7 @@ export default function App({ request = fetch, initialSource, homeHref = "/" }: 
           )}
         </div>
 
-        <section className="board-housing" aria-label="열차 운행 전광판">
+        <section ref={boardElement} className="board-housing" aria-label="열차 운행 전광판">
           <i className="screw screw-tl" />
           <i className="screw screw-tr" />
           <i className="screw screw-bl" />
@@ -420,7 +423,8 @@ export default function App({ request = fetch, initialSource, homeHref = "/" }: 
                       aria-hidden="true"
                     >
                       <span className="train-cell">
-                        <span className="train-type" />
+                        <span className="row-number" aria-hidden="true">{String(presentRows.length + i + 1).padStart(2, "0")}</span>
+                        <TrainLogo kind="" index={presentRows.length + i} reduced={true} />
                         <SplitFlap text="" length={4} reduced={true} />
                       </span>
                       <span className="origin-cell">

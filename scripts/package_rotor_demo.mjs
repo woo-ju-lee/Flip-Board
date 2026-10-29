@@ -11,9 +11,10 @@ const { build } = require('esbuild');
 const result = await build({
   stdin: { contents: `import React from 'react'; import { createRoot } from 'react-dom/client';
     import RotorDemo from './src/RotorDemo';
-    createRoot(document.getElementById('root')).render(<React.StrictMode><RotorDemo /></React.StrictMode>);`,
+    createRoot(document.getElementById('root')).render(<React.StrictMode><div className="board-theme monochrome-board"><RotorDemo /></div></React.StrictMode>);`,
     loader: 'tsx', resolveDir: frontend },
   bundle: true, write: false, format: 'iife', minify: true, jsx: 'automatic',
+  loader: { '.svg': 'dataurl', '.png': 'dataurl' },
   define: { 'process.env.NODE_ENV': '"production"', 'import.meta.env.BASE_URL': '"/"' },
 });
 const html = await readFile(join(frontend, 'dist/index.html'), 'utf8');
@@ -29,7 +30,8 @@ for (const asset of fontAssets) {
 const manifest = await readFile(join(frontend, 'public/audio/split-flap.json'), 'utf8');
 const mp3 = await readFile(join(frontend, 'public/audio/vestaboard-flip.mp3'));
 const license = await readFile(join(frontend, 'public/audio/LICENSE.txt'), 'utf8');
-const fontLicense = await readFile(join(frontend, 'public/licenses/Noto-Sans-KR-OFL.txt'), 'utf8');
+const fontLicenses = await Promise.all(['Noto-Sans-KR-OFL.txt', 'IBM-Plex-Sans-KR-OFL.txt']
+  .map(name => readFile(join(frontend, 'public/licenses', name), 'utf8')));
 const bootstrap = `const nativeFetch = window.fetch.bind(window);
   window.fetch = (input, options) => {
     const url = String(input);
@@ -43,6 +45,6 @@ await writeFile(join(out, 'rotor-demo-character-layout.html'), `<!doctype html><
   <meta name="viewport" content="width=device-width, initial-scale=1"><title>순차 회전 · 스플릿 플랩 데모</title>
   <style>${css}</style></head><body><div id="root"></div><script>${script}</script>
   <!-- Bundled sound license: ${license} -->
-  <!-- Bundled font license: ${fontLicense} -->
+  ${fontLicenses.map(license => `<!-- Bundled font license: ${license} -->`).join('\n')}
   </body></html>`);
 console.log(`Offline demo: ${join(out, 'rotor-demo-character-layout.html')}`);

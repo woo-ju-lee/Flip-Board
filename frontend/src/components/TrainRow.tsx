@@ -1,5 +1,6 @@
 import { ChevronRight } from "lucide-react";
 import { SplitFlap } from "./SplitFlap";
+import { TrainLogo } from "./TrainLogo";
 import { DIGIT_ROTOR } from "../flapMotion";
 import { STATION_CHARACTER_ROTOR } from "../stationCharacters";
 import { delayText } from "../format";
@@ -20,11 +21,6 @@ export function TrainRow({
   exiting: boolean;
   onSelect: (t: Train) => void;
 }) {
-  const type = train.kind.startsWith("KTX")
-    ? "ktx"
-    : train.kind.startsWith("ITX")
-      ? "itx"
-      : "regular";
   return (
     <button
       type="button"
@@ -37,9 +33,7 @@ export function TrainRow({
     >
       <span role="cell" className="train-cell">
         <span className="row-number" aria-hidden="true">{String(rowIndex + 1).padStart(2, "0")}</span>
-        <span className={`train-type ${type}`} title={train.kind}>
-          {train.kind}
-        </span>
+        <TrainLogo kind={train.kind} index={rowIndex} reduced={reduced} />
         <SplitFlap text={train.number} length={4} reduced={reduced} rotor={DIGIT_ROTOR} />
       </span>
       <span role="cell" className="origin-cell">

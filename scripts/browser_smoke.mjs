@@ -17,7 +17,9 @@ const results = [];
 try {
   const page = await browser.newPage({ viewport: { width: 1440, height: 1100 } });
   const settled = () => page.waitForFunction(() => [...document.querySelectorAll('.rows .flap')].every(cell =>
-    cell.dataset.flipping === 'false' && cell.querySelector(':scope > .flap-top > span').textContent === cell.dataset.value),
+    cell.dataset.flipping === 'false' && (cell.classList.contains('flap-panel')
+      ? cell.querySelector(':scope > .flap-top').innerHTML === cell.querySelector(':scope > .flap-bottom').innerHTML
+      : cell.querySelector(':scope > .flap-top > span').textContent === cell.dataset.value)),
     undefined, { timeout: 20000 });
   const errors = [];
   page.on('pageerror', e => errors.push(e.message));
@@ -29,7 +31,7 @@ try {
   await page.getByRole('row', { name: /^KTX 31,/ }).waitFor();
   await page.waitForTimeout(2300);
   await page.evaluate(() => document.fonts.ready);
-  assert.equal(await page.locator('.rows .board-row').count(), 7);
+  assert.equal(await page.locator('.rows .board-row').count(), 10);
   await page.screenshot({ path: `${out}/board-desktop.png`, fullPage: true });
   results.push('Actual archived 148-record response renders with explicit historical label');
 
@@ -106,11 +108,11 @@ try {
     const clipped = await page.locator('.board-row:not(.empty-row) > [role="cell"]').evaluateAll(cells =>
       cells.filter(cell => cell.scrollWidth > cell.clientWidth + 1).map(cell => ({ class: cell.className, width: cell.clientWidth, content: cell.scrollWidth })));
     assert.deepEqual(clipped, [], `cell contents clipped at ${width}px`);
-    assert.equal(await page.locator('.rows .board-row').count(), 7);
+    assert.equal(await page.locator('.rows .board-row').count(), 10);
     await page.screenshot({ path: `${out}/after-${width}.png`, fullPage: true });
     if (width === 390) await page.screenshot({ path: `${out}/board-mobile.png`, fullPage: true });
   }
-  results.push('No page overflow or clipped cells at 1920 / 1440 / 1024 / 768 / 390 / 360 pixels; seven rows remain');
+  results.push('No page overflow or clipped cells at 1920 / 1440 / 1024 / 768 / 390 / 360 pixels; ten rows remain');
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.getByRole('combobox', { name: '표본 수신 시각' }).selectOption('141445');
   await page.getByText('145 TRAINS', { exact: true }).waitFor({ state: 'attached' });
@@ -121,7 +123,7 @@ try {
   await page.route('**/api/trains?**', route => route.abort());
   await page.getByRole('button', { name: '서버 캐시 다시 조회' }).click();
   await page.getByText('연결 실패', { exact: true }).waitFor();
-  assert.equal(await page.locator('.rows .board-row').count(), 7);
+  assert.equal(await page.locator('.rows .board-row').count(), 10);
   results.push('Browser connection failure retains last displayed cache and changes status');
   assert.deepEqual(errors, []);
   await writeFile(`${out}/browser-validation.json`, JSON.stringify({ browser: await browser.version(), passed: results, pageErrors: errors }, null, 2));

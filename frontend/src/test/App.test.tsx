@@ -6,7 +6,7 @@ import type { TrainResponse } from "../types";
 
 function fixture(source = "archive"): TrainResponse {
   return {
-    trains: Array.from({ length: 9 }, (_, i) => ({
+    trains: Array.from({ length: 12 }, (_, i) => ({
       id: `test-only-${i}`,
       number: `${i + 1}`,
       kind: "KTX",
@@ -28,9 +28,9 @@ function fixture(source = "archive"): TrainResponse {
         reason: "no_verified_geometry",
       },
     })),
-    count: 9,
-    total_received: 9,
-    unknown_count: 9,
+    count: 12,
+    total_received: 12,
+    unknown_count: 12,
     ambiguous_count: 0,
     status: {
       source: source as "archive" | "live",
@@ -45,7 +45,7 @@ function fixture(source = "archive"): TrainResponse {
       stale_after_seconds: 150,
       error_code: null,
       geometry_available: false,
-      quality: { accepted_count: 9, rejected_count: 0, duplicate_count: 0 },
+      quality: { accepted_count: 12, rejected_count: 0, duplicate_count: 0 },
     },
     filter: {
       station_id: null,
@@ -116,8 +116,14 @@ describe("board interactions", () => {
     expect(
       screen.getByRole("row", { name: /KTX 2,.*미확인/ }),
     ).toBeInTheDocument();
+    expect(document.querySelectorAll(".rows .board-row")).toHaveLength(10);
+    expect(screen.getByText("1–10")).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "다음 페이지" }));
-    expect(screen.getByRole("row", { name: /KTX 8,/ })).toBeInTheDocument();
+    expect(screen.getByRole("row", { name: /KTX 11,/ })).toBeInTheDocument();
+    expect(document.querySelectorAll(".rows .board-row")).toHaveLength(10);
+    expect(document.querySelectorAll(".empty-row")).toHaveLength(8);
+    expect(document.querySelectorAll(".empty-row .logo-leaf[data-value=\"\"]")).toHaveLength(8);
+    expect(screen.getByRole("button", { name: "다음 페이지" })).toBeDisabled();
     expect(
       fetcher.mock.calls.every(([url]) => String(url).startsWith("/api/")),
     ).toBe(true);
@@ -148,7 +154,7 @@ describe("board interactions", () => {
       train.origin = "서울";
       train.destination = "부산";
     }
-    response.trains[7].origin = "부산";
+    response.trains[10].origin = "부산";
     const fetcher = mockServer({ response });
     const schedule = vi.spyOn(flapAudio, "schedule").mockImplementation(() => {});
     await act(async () => { render(<App />); });
@@ -158,10 +164,10 @@ describe("board interactions", () => {
     schedule.mockClear();
 
     fireEvent.click(screen.getByRole("button", { name: "다음 페이지" }));
-    expect(screen.getByRole("row", { name: /KTX 8,/ })).toBe(row);
+    expect(screen.getByRole("row", { name: /KTX 11,/ })).toBe(row);
     expect(Array.from(row.querySelectorAll(".flap"))).toEqual(leaves);
     expect(row.querySelector(".origin-cell .flap-top > span")).toHaveTextContent("서");
-    expect(schedule.mock.calls.map(([, events]) => events.length)).toEqual(expect.arrayContaining([7, 93, 72]));
+    expect(schedule.mock.calls.map(([, events]) => events.length)).toEqual(expect.arrayContaining([93, 72]));
     expect(row.querySelector(".destination-cell [data-flipping=true]")).toBeNull();
     await act(async () => { vi.advanceTimersByTime(16000); });
     expect(Array.from(row.querySelectorAll(".origin-cell .flap-top > span"), leaf => leaf.textContent).join("")).toBe("부산   ");
@@ -204,14 +210,17 @@ describe("board interactions", () => {
   });
 
   it("requests fullscreen and reports browser failure", async () => {
-    Object.defineProperty(document.documentElement, "requestFullscreen", {
-      configurable: true,
-      value: vi.fn().mockRejectedValue(new Error("denied")),
-    });
     mockServer();
     render(<App />);
+    const board = screen.getByRole("region", { name: "열차 운행 전광판" });
+    const requestFullscreen = vi.fn().mockRejectedValue(new Error("denied"));
+    Object.defineProperty(board, "requestFullscreen", {
+      configurable: true,
+      value: requestFullscreen,
+    });
     fireEvent.click(screen.getByRole("button", { name: "전체 화면" }));
     await screen.findByText("전체 화면으로 전환하지 못했습니다.");
+    expect(requestFullscreen).toHaveBeenCalledOnce();
   });
 
   it("shows connection failure and lets the user retry", async () => {

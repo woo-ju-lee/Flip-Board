@@ -107,7 +107,7 @@ try {
   await page.getByRole('slider', { name: '효과음 음량' }).fill('30');
   await page.keyboard.press('Escape');
   await page.getByRole('button', { name: '이전 페이지' }).click();
-  await page.waitForTimeout(350);
+  await page.waitForFunction(() => __flapAudioProbe.active.size > 0, undefined, { timeout: 5000 });
   assert.ok((await state()).active > 0);
   await page.getByRole('button', { name: '소리 끄기' }).click();
   const mutedAt = await quiet();
@@ -124,10 +124,12 @@ try {
   await page.getByRole('combobox', { name: '표본 수신 시각' }).selectOption('141445');
   await page.getByText('145 TRAINS', { exact: true }).waitFor();
   await page.waitForFunction(() => [...document.querySelectorAll('.rows .flap')].every(cell =>
-    cell.dataset.flipping === 'false' && cell.querySelector(':scope > .flap-top > span').textContent === cell.dataset.value),
+    cell.dataset.flipping === 'false' && (cell.classList.contains('flap-panel')
+      ? cell.querySelector(':scope > .flap-top').innerHTML === cell.querySelector(':scope > .flap-bottom').innerHTML
+      : cell.querySelector(':scope > .flap-top > span').textContent === cell.dataset.value)),
     undefined, { timeout: 20000 });
   await quiet();
-  const settled = await page.locator('.flap').evaluateAll(cells => cells.every(cell => cell.dataset.flipping === 'false'
+  const settled = await page.locator('.flap:not(.flap-panel)').evaluateAll(cells => cells.every(cell => cell.dataset.flipping === 'false'
     && cell.querySelector('.flap-top > span').textContent === cell.dataset.value
     && cell.querySelector('.flap-bottom > span').textContent === cell.dataset.value));
   assert.ok(settled);
@@ -150,6 +152,8 @@ try {
   await page.getByRole('button', { name: '이전 페이지' }).click();
   await page.waitForTimeout(300);
   await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.waitForFunction(() => document.querySelector('button[aria-label="소리 켜기"]')?.disabled
+    && document.querySelectorAll('[data-flipping="true"]').length === 0, undefined, { timeout: 3000 });
   const reducedAt = await quiet();
   await page.waitForTimeout(2300);
   assert.equal((await state()).starts, reducedAt);

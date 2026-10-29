@@ -48,7 +48,9 @@ def collect_notices(destination: Path):
                 target.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(source, target)
     shutil.copy2(ROOT / 'frontend/public/audio/LICENSE.txt', destination / 'Vestaboard-recording-MIT.txt')
-    shutil.copy2(ROOT / 'frontend/public/licenses/Noto-Sans-KR-OFL.txt', destination / 'Noto-Sans-KR-OFL.txt')
+    for source in (ROOT / 'frontend/public/licenses').iterdir():
+        if source.is_file():
+            shutil.copy2(source, destination / source.name)
     (destination / 'python-packages.json').write_text(json.dumps(inventory, ensure_ascii=False, indent=2), encoding='utf-8')
 
 

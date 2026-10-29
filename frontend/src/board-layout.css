@@ -1,0 +1,281 @@
+/* The original information layout, ten compact rows, and monochrome printed logos. */
+html:has(.monochrome-board), body:has(.monochrome-board) { background: #000000; }
+.board-theme.monochrome-board {
+  --amber: #dedede;
+  --muted: #999;
+  --line: #242424;
+  --flap-width: clamp(22px, 1.65vw, 28px);
+  --flap-height: calc(var(--flap-width) * 1.65);
+  --flap-size: clamp(20px, 1.5vw, 26px);
+  --flap-gap: 3px;
+  color: #eee;
+  background: #000000;
+}
+.monochrome-board .board-housing { background: #000000; border-color: #242424; box-shadow: none; }
+.monochrome-board .topbar { border-bottom: 0; }
+.monochrome-board .header-rule { background: #333; }
+.monochrome-board .brand-mark,
+.monochrome-board .board-icon { background: #141414; color: #eee; box-shadow: inset 0 0 0 1px #333; }
+.monochrome-board .brand-light,
+.monochrome-board .brand small,
+.monochrome-board .header-center,
+.monochrome-board .board-title h2 > span,
+.monochrome-board .count-label,
+.monochrome-board .source-notice,
+.monochrome-board .source-notice select,
+.monochrome-board .network-label .muted,
+.monochrome-board .board-tools { color: #aaa; }
+.monochrome-board .board-title h2,
+.monochrome-board .header-clock strong { color: #eee; }
+.monochrome-board .small-dot { background: #ccc; }
+.monochrome-board .mode-tabs button[aria-selected="true"] { color: #eee; background: #141414; border-color: #444; }
+.monochrome-board .source-switch { border-color: #3b3b3b; }
+.monochrome-board .source-switch button[aria-pressed="true"] { color: #111; background: #ddd; }
+.monochrome-board .board-columns,
+.monochrome-board .board-row {
+  grid-template-columns: minmax(248px, 1.7fr) minmax(128px, 1fr) minmax(128px, 1fr) minmax(0, 2.55fr) minmax(calc(var(--flap-width) * 5 + var(--flap-gap) * 4 + 20px), 1fr);
+}
+.monochrome-board .board-columns { border-top: 0; color: #ddd; }
+.monochrome-board .board-columns small { color: #999; }
+.monochrome-board .rows { border-color: transparent; box-shadow: none; }
+.monochrome-board .board-row {
+  min-height: calc(var(--flap-height) + 12px);
+  padding-top: 6px;
+  padding-bottom: 6px;
+  border-bottom: 0;
+  color: #eee;
+  background: #000000;
+  box-shadow: none;
+}
+.monochrome-board .board-row:hover:not(:disabled):not(.empty-row) { background: #000000; color: #fff; }
+.monochrome-board .board-row:focus-visible { outline: 1px solid #777; outline-offset: -2px; }
+.monochrome-board .empty-row { opacity: 1; }
+.monochrome-board .train-cell { gap: 8px; }
+.monochrome-board .row-number { color: #777; }
+.monochrome-board .position-indicator { background: #aaa; }
+.monochrome-board .row-more { color: #888; }
+.monochrome-board .flap {
+  background: #212121;
+  box-shadow: 0 0 0 1px #080808;
+}
+.monochrome-board .flap::after { box-shadow: none; }
+.monochrome-board .flap-top,
+.monochrome-board .flap-bottom {
+  background: #212121;
+  box-shadow: none;
+}
+.monochrome-board .flap-half > span { text-shadow: none; }
+.monochrome-board .flap-seam { background: #000000; box-shadow: none; }
+.monochrome-board .flap-hinge { background: #090909; }
+.monochrome-board .empty-state { min-height: calc((var(--flap-height) + 12px) * 10); background: #000000; }
+
+.monochrome-board .train-logo { display: block; width: 96px; flex: 0 0 96px; }
+.monochrome-board .train-logo .flap {
+  --flap-height: 30px;
+  display: block;
+  width: 100%;
+  height: var(--flap-height);
+}
+.monochrome-board .train-logo .panel-face { display: flex; align-items: center; justify-content: center; padding: 3px 4px; }
+.monochrome-board .train-logo-art { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; gap: 4px; line-height: 1; }
+.monochrome-board .train-logo-image {
+  display: block;
+  width: 100%; height: 100%; object-fit: contain;
+  /* Original files stay intact. White source backgrounds become black and
+     screen blending removes them; the original colored marks become white. */
+  filter: grayscale(1) invert(1) brightness(4);
+  mix-blend-mode: screen;
+}
+.monochrome-board .train-logo-with-subtitle .train-logo-image { width: 72%; min-width: 0; flex: 1 1 0; }
+.monochrome-board .train-logo-subtitle { flex-shrink: 0; color: #fff; font-size: 12px; font-weight: 600; line-height: 1; white-space: nowrap; }
+.monochrome-board .train-logo-label { color: #fff; font-size: 14px; font-weight: 600; font-style: italic; letter-spacing: -.6px; line-height: 1; white-space: nowrap; }
+.monochrome-board .board-footer,
+.monochrome-board .update-label,
+.monochrome-board .pagination > span,
+.monochrome-board .pagination strong > span,
+.monochrome-board .under-board { color: #999; }
+.monochrome-board .update-label strong,
+.monochrome-board .pagination strong { color: #ddd; }
+.monochrome-board .pagination button { border-color: #444; }
+.monochrome-board .info-strip,
+.monochrome-board .data-info { border: 0; }
+.monochrome-board .page-footer,
+.monochrome-board .page-footer .muted,
+.monochrome-board .info-strip p { color: #888; }
+.monochrome-board .sound-panel,
+.monochrome-board .train-dialog { background: #161616; color: #eee; border-color: #444; }
+.monochrome-board .board-tools button:hover:not(:disabled),
+.monochrome-board .sound-settings summary:hover,
+.monochrome-board .sound-settings[open] summary { background: #212121; color: #fff; }
+.monochrome-board option { background: #212121; color: #eee; }
+.monochrome-board .tool-divider { background: #333; }
+
+@media (max-width: 1199px) and (min-width: 951px) {
+  .board-theme.monochrome-board { --flap-width: 21px; --flap-height: 35px; --flap-size: 20px; --flap-gap: 2px; }
+  .monochrome-board .board-columns,
+  .monochrome-board .board-row { grid-template-columns: minmax(194px, 1.65fr) minmax(113px, 1fr) minmax(113px, 1fr) minmax(0, 2.6fr) minmax(134px, 1.05fr); column-gap: 12px; }
+  .monochrome-board .train-logo { width: 84px; flex-basis: 84px; }
+  .monochrome-board .train-logo .flap { --flap-height: 28px; }
+  .monochrome-board .position-cell .flap { --flap-width: 19px; --flap-size: 18px; }
+}
+@media (min-width: 951px) and (max-width: 1023px) {
+  .monochrome-board .position-cell .flap {
+    --flap-width: clamp(15px, calc((100vw - 756px) / 13), 19px);
+    --flap-size: 14px;
+  }
+}
+@media (min-width: 768px) and (max-width: 950px) {
+  .board-theme.monochrome-board { --flap-width: 18px; --flap-height: 33px; --flap-size: 17px; --flap-gap: 2px; }
+  .monochrome-board .board-columns,
+  .monochrome-board .board-row { grid-template-columns: 92px 98px 98px minmax(0, 1fr) 98px; column-gap: 9px; }
+  .monochrome-board .train-cell { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .monochrome-board .train-logo { width: 78px; flex: 0 0 auto; }
+  .monochrome-board .train-logo .flap { --flap-height: 23px; }
+  .monochrome-board .position-cell .flap { --flap-width: 14px; --flap-size: 14px; }
+  .monochrome-board .train-logo-label { font-size: 12px; }
+}
+@media (max-width: 767px) {
+  .board-theme.monochrome-board { --flap-width: clamp(16px, 4.3vw, 20px); --flap-height: 32px; --flap-size: 16px; --flap-gap: 2px; }
+  .monochrome-board .board-columns,
+  .monochrome-board .board-row { grid-template-columns: 1fr 1.18fr .82fr; gap: 6px; padding-left: 8px; padding-right: 8px; }
+  .monochrome-board .board-row { min-height: 126px; padding-top: 6px; padding-bottom: 6px; }
+  .monochrome-board .train-cell { flex-direction: column; align-items: flex-start; justify-content: center; gap: 6px; }
+  .monochrome-board .train-logo { width: clamp(60px, 18vw, 76px); flex: 0 0 auto; }
+  .monochrome-board .train-logo .flap { --flap-height: 24px; }
+  .monochrome-board .train-logo-label { font-size: 11px; }
+  .monochrome-board .train-logo-subtitle { font-size: 10px; }
+  .monochrome-board .board-row .origin-cell::before,
+  .monochrome-board .board-row .destination-cell::before,
+  .monochrome-board .position-cell::before { color: #999; }
+}
+
+/* Fullscreen is a ten-row display fitted to both viewport dimensions. The
+   42.8 units include all character leaves, the logo, and horizontal gaps. */
+.monochrome-board .board-housing:fullscreen {
+  --fs-inset-x: clamp(12px, 2vw, 64px);
+  --fs-inset-y: clamp(8px, 1.8dvh, 40px);
+  --fs-columns-height: clamp(28px, 4.8dvh, 64px);
+  --fs-controls-height: clamp(32px, 4dvh, 48px);
+  --fs-row-height: calc((100dvh - var(--fs-inset-y) * 2 - var(--fs-columns-height) - var(--fs-controls-height)) / 10);
+  --fs-unit: min(calc((100vw - var(--fs-inset-x) * 2) / 42.8), calc(var(--fs-row-height) * .48));
+  --fs-leaf-height: calc(var(--fs-unit) * 1.65);
+  --fs-font-size: calc(var(--fs-unit) * .94);
+  --flap-gap: calc(var(--fs-unit) * .12);
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) var(--fs-controls-height);
+  width: 100%;
+  height: 100dvh;
+  padding: var(--fs-inset-y) var(--fs-inset-x);
+  overflow: hidden;
+  border: 0;
+  border-radius: 0;
+}
+.monochrome-board .board-housing:fullscreen::backdrop { background: #000000; }
+.monochrome-board .board-housing:fullscreen .board-titlebar { display: contents; }
+.monochrome-board .board-housing:fullscreen .board-title,
+.monochrome-board .board-housing:fullscreen .connection-state,
+.monochrome-board .board-housing:fullscreen .tool-divider,
+.monochrome-board .board-housing:fullscreen .update-label,
+.monochrome-board .board-housing:fullscreen .pagination > span,
+.monochrome-board .board-housing:fullscreen .row-number,
+.monochrome-board .board-housing:fullscreen .position-indicator,
+.monochrome-board .board-housing:fullscreen .row-more { display: none; }
+.monochrome-board .board-housing:fullscreen .display-table {
+  display: grid;
+  grid-template-rows: var(--fs-columns-height) minmax(0, 1fr);
+  min-height: 0;
+}
+.monochrome-board .board-housing:fullscreen .rows {
+  display: grid;
+  grid-template-rows: repeat(10, minmax(0, 1fr));
+  min-height: 0;
+  border: 0;
+}
+.monochrome-board .board-housing:fullscreen .board-columns,
+.monochrome-board .board-housing:fullscreen .board-row {
+  grid-template-columns: minmax(0, 9.12fr) minmax(0, 5.48fr) minmax(0, 5.48fr) minmax(0, 14.44fr) minmax(0, 5.48fr);
+  column-gap: calc(var(--fs-unit) * .7);
+  row-gap: 0;
+  padding: 0;
+  min-height: 0;
+  height: 100%;
+}
+.monochrome-board .board-housing:fullscreen .board-columns { font-size: clamp(9px, calc(var(--fs-unit) * .32), 24px); }
+.monochrome-board .board-housing:fullscreen .board-columns small { font-size: clamp(6px, calc(var(--fs-unit) * .22), 16px); }
+.monochrome-board .board-housing:fullscreen .board-columns > span { display: block; }
+.monochrome-board .board-housing:fullscreen .desktop-label { display: inline; }
+.monochrome-board .board-housing:fullscreen .mobile-label { display: none; }
+.monochrome-board .board-housing:fullscreen .board-row { grid-template-areas: none; grid-template-rows: 1fr; }
+.monochrome-board .board-housing:fullscreen .board-row > span { grid-area: auto; }
+.monochrome-board .board-housing:fullscreen .board-row .origin-cell::before,
+.monochrome-board .board-housing:fullscreen .board-row .destination-cell::before,
+.monochrome-board .board-housing:fullscreen .position-cell::before { display: none; }
+.monochrome-board .board-housing:fullscreen .train-cell { flex-direction: row; align-items: center; gap: calc(var(--fs-unit) * .36); }
+.monochrome-board .board-housing:fullscreen .position-cell,
+.monochrome-board .board-housing:fullscreen .delay-cell { gap: 0; }
+.monochrome-board .board-housing:fullscreen .flap {
+  --flap-width: var(--fs-unit);
+  --flap-height: var(--fs-leaf-height);
+  --flap-size: var(--fs-font-size);
+}
+.monochrome-board .board-housing:fullscreen .train-logo { width: calc(var(--fs-unit) * 4.4); flex: 0 0 auto; }
+.monochrome-board .board-housing:fullscreen .train-logo .flap { --flap-height: calc(var(--fs-unit) * 1.25); }
+.monochrome-board .board-housing:fullscreen .train-logo .panel-face { padding: 2px 4px; }
+.monochrome-board .board-housing:fullscreen .train-logo-label { font-size: calc(var(--fs-unit) * .64); }
+.monochrome-board .board-housing:fullscreen .train-logo-subtitle { font-size: calc(var(--fs-unit) * .54); }
+.monochrome-board .board-housing:fullscreen .board-tools {
+  position: absolute;
+  left: var(--fs-inset-x);
+  bottom: calc(var(--fs-inset-y) + (var(--fs-controls-height) - 32px) / 2);
+  gap: 8px;
+  z-index: 10;
+}
+.monochrome-board .board-housing:fullscreen .board-footer {
+  min-height: 0;
+  height: var(--fs-controls-height);
+  padding: 0;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+}
+.monochrome-board .board-housing:fullscreen .sound-panel { top: auto; bottom: 42px; left: 0; right: auto; }
+.monochrome-board .board-housing:fullscreen .rows:has(.empty-state) { display: block; }
+.monochrome-board .board-housing:fullscreen .empty-state { min-height: 0; height: 100%; }
+
+/* Portrait phones retain the stacked route, fitted into ten equal row slots.
+   Landscape phones use the five-column display above. */
+@media (max-width: 767px) and (orientation: portrait) {
+  .monochrome-board .board-housing:fullscreen {
+    --fs-inset-x: 8px;
+    --fs-inset-y: 8px;
+    --fs-columns-height: 28px;
+    --fs-controls-height: 36px;
+    --fs-unit: min(calc((100vw - 16px) / 25), calc(var(--fs-row-height) * .24));
+    --fs-leaf-height: min(calc(var(--fs-row-height) * .3), calc(var(--fs-unit) * 1.65));
+    --fs-font-size: min(calc(var(--fs-unit) * .94), calc(var(--fs-leaf-height) * .75));
+    --flap-gap: 1px;
+  }
+  .monochrome-board .board-housing:fullscreen .board-columns,
+  .monochrome-board .board-housing:fullscreen .board-row { grid-template-columns: .28fr .44fr .28fr; column-gap: 6px; }
+  .monochrome-board .board-housing:fullscreen .board-row {
+    grid-template-areas: "train origin delay" "train destination delay" "position position position";
+    grid-template-rows: minmax(0, .36fr) minmax(0, .36fr) minmax(0, .28fr);
+    row-gap: 2px;
+  }
+  .monochrome-board .board-housing:fullscreen .board-row .train-cell { grid-area: train; flex-direction: column; align-items: flex-start; gap: 3px; }
+  .monochrome-board .board-housing:fullscreen .board-row .origin-cell { grid-area: origin; }
+  .monochrome-board .board-housing:fullscreen .board-row .destination-cell { grid-area: destination; }
+  .monochrome-board .board-housing:fullscreen .board-row .delay-cell { grid-area: delay; }
+  .monochrome-board .board-housing:fullscreen .board-row .position-cell { grid-area: position; gap: 5px; }
+  .monochrome-board .board-housing:fullscreen .board-columns .origin-cell,
+  .monochrome-board .board-housing:fullscreen .board-columns > span:nth-child(4),
+  .monochrome-board .board-housing:fullscreen .desktop-label { display: none; }
+  .monochrome-board .board-housing:fullscreen .mobile-label { display: inline; }
+  .monochrome-board .board-housing:fullscreen .board-row .origin-cell::before,
+  .monochrome-board .board-housing:fullscreen .board-row .destination-cell::before,
+  .monochrome-board .board-housing:fullscreen .position-cell::before { display: inline; }
+  .monochrome-board .board-housing:fullscreen .train-logo .flap { --flap-height: calc(var(--fs-unit) * 1.1); }
+  .monochrome-board .board-housing:fullscreen .position-cell .flap {
+    --flap-height: calc(var(--fs-row-height) * .22);
+    --flap-size: min(calc(var(--fs-unit) * .84), calc(var(--fs-row-height) * .17));
+  }
+}

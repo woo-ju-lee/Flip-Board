@@ -148,7 +148,13 @@ def main():
         assert data['timezone'] == 'Asia/Seoul'
         assert Path(data['proj_data']).is_relative_to(bundle)
         assert Path(data['certifi']).is_relative_to(bundle)
+        font_source = ROOT / 'frontend/src/assets/fonts/IBMPlexSansKR-Regular.woff2'
+        font_files = list((bundle / '_internal/frontend/dist/assets').glob('IBMPlexSansKR-Regular-*.woff2'))
+        assert len(font_files) == 1
+        assert font_files[0].read_bytes() == font_source.read_bytes()
+        assert (bundle / 'licenses/IBM-Plex-Sans-KR-OFL.txt').read_bytes() == (ROOT / 'frontend/public/licenses/IBM-Plex-Sans-KR-OFL.txt').read_bytes()
         checks.append('ZIP checksum and bundled Python/Tcl, Korean data, fonts, audio, GEOS/PROJ and certificates')
+        checks.append('Original IBM Plex Sans KR Regular font and OFL license are included in the Windows ZIP')
 
         try:
             busy.bind(('127.0.0.1', 8000))
@@ -186,7 +192,7 @@ def main():
         browser_env = dict(os.environ, KORAIL_TEST_URL=first['url'])
         for name in ('KORAIL_BROWSER_EXECUTABLE', 'KORAIL_BROWSER_MODULE'):
             browser_env.pop(name, None)
-        for script in ('browser_smoke.mjs', 'browser_audio.mjs'):
+        for script in ('browser_smoke.mjs', 'browser_layout.mjs', 'browser_audio.mjs'):
             subprocess.run([shutil.which('node'), str(ROOT / 'scripts' / script)],
                 cwd=ROOT, env=browser_env, timeout=180, check=True)
         checks.append('Existing browser layout and actual decoded audio checks pass against the packaged EXE')
