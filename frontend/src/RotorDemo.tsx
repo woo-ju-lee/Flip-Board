@@ -21,6 +21,6 @@ const demoRequest: typeof fetch = async (input, init) => {
   return new Response(JSON.stringify(body), { headers: { "Content-Type": "application/json" } });
 };
 
-export default function RotorDemo() {
-  return <App request={demoRequest} initialSource="archive" homeHref="?demo=rotors" />;
+export default function RotorDemo({ homeHref = "?demo=rotors" }: { homeHref?: string } = {}) {
+  return <App request={demoRequest} initialSource="archive" homeHref={homeHref} />;
 }

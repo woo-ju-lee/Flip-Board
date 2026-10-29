@@ -8,12 +8,17 @@ import "./board-surface.css";
 import "./board-layout.css";
 
 const RotorDemo = lazy(() => import("./RotorDemo"));
+const PerformanceDemo = lazy(() => import("./PerformanceDemo"));
+const params = new URLSearchParams(window.location.search);
+const demo = params.get("demo");
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <div className="board-theme monochrome-board">
       <Suspense fallback={null}>
-        {new URLSearchParams(window.location.search).get("demo") === "rotors" ? <RotorDemo /> : <App />}
+        {demo === "performance"
+          ? <PerformanceDemo renderer={params.get("renderer") === "legacy" ? "legacy" : "optimized"} />
+          : demo === "rotors" ? <RotorDemo /> : <App />}
       </Suspense>
     </div>
   </React.StrictMode>,

@@ -1,6 +1,7 @@
-import { memo, useEffect, useId, useRef, useState } from "react";
+import { memo, useContext, useEffect, useId, useRef, useState } from "react";
 import { flapAudio } from "../audio";
 import { DIGIT_ROTOR, makeFlapPlan, makeIndexedFlapPlan, soundEvents } from "../flapMotion";
+import { FlapRendererContext } from "./FlapRendererContext";
 
 export function useReducedMotion() {
   const [reduced, setReduced] = useState(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches);
@@ -74,12 +75,13 @@ export const FlapCharacter = memo(function FlapCharacter({ value, index, reduced
 export const SplitFlap = memo(function SplitFlap({ text, length, className = "", reduced, rotor, indexedDigits = false }: {
   text: string; length: number; className?: string; reduced: boolean; rotor?: readonly string[]; indexedDigits?: boolean;
 }) {
+  const Character = useContext(FlapRendererContext) ?? FlapCharacter;
   const chars = Array.from(text);
   const fitted = chars.length > length ? [...chars.slice(0, length - 1), "…"]
     : [...chars, ...Array(Math.max(0, length - chars.length)).fill(" ")];
   return (
     <span className={`flap-word ${className}`} aria-label={text || "빈칸"} title={text}>
-      {fitted.map((char, index) => <FlapCharacter key={index} value={char} index={index} reduced={reduced}
+      {fitted.map((char, index) => <Character key={index} value={char} index={index} reduced={reduced}
         rotor={rotor ?? (indexedDigits && /^\d$/.test(char) ? DIGIT_ROTOR : undefined)} />)}
     </span>
   );
