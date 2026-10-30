@@ -7,6 +7,6 @@ export type FlapCharacterProps = {
   rotor?: readonly string[];
 };
 
-// Only the performance demo supplies an alternative. The regular app retains
-// its existing renderer and does not load the experimental animation engine.
+// The app and offline entrypoints supply the shared renderer provider.
+// Null explicitly selects the legacy renderer, including unsupported browsers.
 export const FlapRendererContext = createContext<ComponentType<FlapCharacterProps> | null>(null);

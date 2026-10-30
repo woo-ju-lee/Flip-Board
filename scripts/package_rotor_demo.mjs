@@ -44,7 +44,8 @@ for (const variant of variants) {
   const result = await build({
     stdin: { contents: `import React from 'react'; import { createRoot } from 'react-dom/client';
       import Demo from './src/${variant.component}';
-      createRoot(document.getElementById('root')).render(<React.StrictMode><div className="board-theme monochrome-board"><Demo ${variant.props} /></div></React.StrictMode>);`,
+      import { FlapRendererProvider } from './src/components/FlapRendererProvider';
+      createRoot(document.getElementById('root')).render(<React.StrictMode><div className="board-theme monochrome-board"><FlapRendererProvider><Demo ${variant.props} /></FlapRendererProvider></div></React.StrictMode>);`,
       loader: 'tsx', resolveDir: frontend },
     bundle: true, write: false, format: 'iife', minify: true, jsx: 'automatic',
     loader: { '.svg': 'dataurl', '.png': 'dataurl' },

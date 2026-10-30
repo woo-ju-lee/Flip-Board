@@ -16,11 +16,25 @@ const browser = await chromium.launch({
 const results = [];
 try {
   const page = await browser.newPage({ viewport: { width: 1440, height: 1100 } });
+  await page.addInitScript(() => {
+    const request = window.requestAnimationFrame.bind(window);
+    const cancel = window.cancelAnimationFrame.bind(window);
+    const probe = window.__boardFrames = { pending: new Set(), maxPending: 0, requests: 0 };
+    window.requestAnimationFrame = callback => {
+      const id = request(now => { probe.pending.delete(id); callback(now); });
+      probe.pending.add(id);
+      probe.requests++;
+      probe.maxPending = Math.max(probe.maxPending, probe.pending.size);
+      return id;
+    };
+    window.cancelAnimationFrame = id => { probe.pending.delete(id); cancel(id); };
+  });
   const settled = () => page.waitForFunction(() => [...document.querySelectorAll('.rows .flap')].every(cell =>
     cell.dataset.flipping === 'false' && (cell.classList.contains('flap-panel')
       ? cell.querySelector(':scope > .flap-top').innerHTML === cell.querySelector(':scope > .flap-bottom').innerHTML
       : cell.querySelector(':scope > .flap-top > span').textContent === cell.dataset.value)),
-    undefined, { timeout: 20000 });
+    // Poll with a timer so the test itself does not add a frame request to the probe.
+    undefined, { timeout: 20000, polling: 100 });
   const errors = [];
   page.on('pageerror', e => errors.push(e.message));
   await page.goto(base);
@@ -29,16 +43,36 @@ try {
   results.push('Default live mode shows collection disabled, with no archived trains');
   await page.getByRole('button', { name: '기록 표본', exact: true }).click();
   await page.getByRole('row', { name: /^KTX 31,/ }).waitFor();
-  await page.waitForTimeout(2300);
+  await settled();
   await page.evaluate(() => document.fonts.ready);
   assert.equal(await page.locator('.rows .board-row').count(), 10);
+  assert.ok(await page.locator('.rows .flap-optimized').count() > 0);
+  assert.equal(await page.locator('.rows .flap:not(.flap-panel):not(.flap-optimized)').count(), 0);
   await page.screenshot({ path: `${out}/board-desktop.png`, fullPage: true });
   results.push('Actual archived 148-record response renders with explicit historical label');
 
-  await page.evaluate(() => { window.__firstBoardSlot = document.querySelector('.rows .board-row'); });
+  await page.evaluate(() => {
+    window.__firstBoardSlot = document.querySelector('.rows .board-row');
+    window.__originalFlapNodes = [...document.querySelectorAll('.rows .flap-optimized, .rows .flap-optimized *')];
+    window.__flapChildChanges = 0;
+    window.__flapObserver = new MutationObserver(records => {
+      window.__flapChildChanges += records.reduce((count, record) => count + record.addedNodes.length + record.removedNodes.length, 0);
+    });
+    for (const leaf of document.querySelectorAll('.rows .flap-optimized')) {
+      window.__flapObserver.observe(leaf, { childList: true, subtree: true });
+    }
+  });
   await page.getByRole('button', { name: '다음 페이지' }).click();
   assert.equal(await page.evaluate(() => window.__firstBoardSlot === document.querySelector('.rows .board-row')), true);
   await settled();
+  assert.deepEqual(await page.evaluate(() => {
+    window.__flapObserver.disconnect();
+    const nodes = [...document.querySelectorAll('.rows .flap-optimized, .rows .flap-optimized *')];
+    return { sameNodes: nodes.length === __originalFlapNodes.length && nodes.every((node, index) => node === __originalFlapNodes[index]),
+      childChanges: __flapChildChanges, pendingFrames: __boardFrames.pending.size, maxPendingFrames: __boardFrames.maxPending,
+      runningAnimations: document.getAnimations().filter(animation => animation.playState === 'running').length };
+  }), { sameNodes: true, childChanges: 0, pendingFrames: 0, maxPendingFrames: 1, runningAnimations: 0 });
+  results.push('Default production board uses optimized text flaps, reuses all character nodes, shares one frame request, and stops animation work after landing');
   assert.match(await page.locator('.pagination').innerText(), /02/);
   await page.getByRole('button', { name: '이전 페이지' }).click();
   await settled();
@@ -55,6 +89,23 @@ try {
   });
   assert.equal(animations, 0);
   results.push('Pagination preserves physical cells until their indexed targets settle; identical cache starts no character flips');
+  const idleFrames = await page.evaluate(() => __boardFrames.requests);
+  await page.waitForTimeout(200);
+  assert.equal(await page.evaluate(() => __boardFrames.requests), idleFrames);
+
+  await page.getByRole('button', { name: '다음 페이지' }).click();
+  await page.waitForTimeout(180);
+  await page.getByRole('button', { name: '이전 페이지' }).click();
+  await page.waitForTimeout(180);
+  await page.getByRole('button', { name: '다음 페이지' }).click();
+  await settled();
+  assert.match(await page.locator('.pagination').innerText(), /02/);
+  assert.equal(await page.evaluate(() => __boardFrames.pending.size), 0);
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.getByRole('button', { name: '이전 페이지' }).click();
+  await settled();
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  results.push('Rapid next/previous/next changes settle to the last requested page with no pending frame work');
   await page.getByRole('combobox', { name: '표본 수신 시각' }).selectOption('141445');
   await page.getByText('145 TRAINS', { exact: true }).waitFor();
   await page.getByRole('combobox', { name: '표본 수신 시각' }).selectOption('141536');
@@ -102,7 +153,9 @@ try {
 
   for (const width of [1920, 1440, 1024, 768, 390, 360]) {
     await page.setViewportSize({ width, height: 844 });
-    await page.waitForTimeout(2300);
+    await page.waitForFunction(length => [...document.querySelectorAll('.rows .position-cell')]
+      .every(cell => cell.querySelectorAll('.flap').length === length), width <= 480 ? 9 : width <= 760 ? 11 : 13);
+    await settled();
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth > innerWidth);
     assert.equal(overflow, false, `horizontal overflow at ${width}px`);
     const clipped = await page.locator('.board-row:not(.empty-row) > [role="cell"]').evaluateAll(cells =>
@@ -125,6 +178,30 @@ try {
   await page.getByText('연결 실패', { exact: true }).waitFor();
   assert.equal(await page.locator('.rows .board-row').count(), 10);
   results.push('Browser connection failure retains last displayed cache and changes status');
+
+  const comparison = await browser.newPage({ reducedMotion: 'reduce' });
+  comparison.on('pageerror', error => errors.push(error.message));
+  for (const renderer of ['optimized', 'legacy']) {
+    await comparison.goto(`${base}/?demo=performance&renderer=${renderer}`);
+    await comparison.getByRole('row', { name: /^KTX 31,/ }).waitFor();
+    assert.equal(await comparison.locator('.rows .flap-optimized').count() > 0, renderer === 'optimized');
+  }
+  await comparison.goto(`${base}/?demo=rotors`);
+  await comparison.getByRole('row', { name: /^KTX 31,/ }).waitFor();
+  assert.ok(await comparison.locator('.rows .flap-optimized').count() > 0);
+  await comparison.close();
+  const fallback = await browser.newPage({ reducedMotion: 'reduce' });
+  fallback.on('pageerror', error => errors.push(error.message));
+  await fallback.addInitScript(() => { Object.defineProperty(Element.prototype, 'animate', { configurable: true, value: undefined }); });
+  await fallback.goto(`${base}/?source=archive`);
+  await fallback.getByRole('row', { name: /^KTX 31,/ }).waitFor();
+  assert.equal(await fallback.locator('.rows .flap-optimized').count(), 0);
+  await fallback.getByRole('button', { name: '다음 페이지' }).click();
+  assert.match(await fallback.locator('.pagination').innerText(), /02/);
+  assert.ok(await fallback.locator('.rows .flap:not(.flap-panel)').evaluateAll(cells => cells.length > 0 && cells.every(cell =>
+    cell.dataset.flipping === 'false' && cell.querySelector(':scope > .flap-top > span').textContent === cell.dataset.value)));
+  await fallback.close();
+  results.push('Demo routes preserve explicit legacy selection and default optimization; browsers without Web Animations can paginate using the legacy renderer');
   assert.deepEqual(errors, []);
   await writeFile(`${out}/browser-validation.json`, JSON.stringify({ browser: await browser.version(), passed: results, pageErrors: errors }, null, 2));
   console.log(JSON.stringify({ passed: results.length, checks: results, pageErrors: errors }, null, 2));

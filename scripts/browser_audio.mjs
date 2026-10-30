@@ -13,7 +13,7 @@ const browser = await chromium.launch({ headless: true,
   ...(process.env.KORAIL_BROWSER_EXECUTABLE ? { executablePath: process.env.KORAIL_BROWSER_EXECUTABLE } : {}),
   args: ['--no-sandbox'] });
 const checks = [];
-let singleCharacter;
+let singleCharacter, maxAudibleVoices;
 try {
   const page = await browser.newPage({ viewport: { width: 1440, height: 1080 } });
   await installAudioProbe(page);
@@ -70,7 +70,18 @@ try {
   await digit.evaluate(element => {
     __flapAudioProbe.starts = [];
     const observer = new MutationObserver(() => {
-      if (element.dataset.value === '4' && element.dataset.flipping === 'false') {
+      if (element.dataset.value === '4' && element.dataset.flipping === 'true') {
+        const animation = element.querySelector('.flap-in')?.getAnimations()[0];
+        if (typeof animation?.startTime === 'number') {
+          const landing = animation.startTime + animation.effect.getComputedTiming().endTime;
+          window.__singleTimelineLanding = __flapAudioProbe.contexts[0].currentTime + (landing - performance.now()) / 1000;
+        }
+      }
+      // Reusable faces also report an idle preparation state before the flip.
+      // The impact belongs to the actual displayed target, not that preparation.
+      if (element.dataset.value === '4' && element.dataset.flipping === 'false'
+        && element.querySelector(':scope > .flap-top > span').textContent === '4'
+        && element.querySelector(':scope > .flap-bottom > span').textContent === '4') {
         window.__singleLanding = __flapAudioProbe.contexts[0].currentTime;
         observer.disconnect();
       }
@@ -80,18 +91,22 @@ try {
   await page.getByRole('button', { name: '서버 캐시 다시 조회' }).click();
   await page.waitForFunction(() => typeof window.__singleLanding === 'number');
   await quiet();
+  assert.equal(await page.evaluate(() => __flapAudioProbe.starts.length), 1, 'One digit change must play exactly one impact');
   singleCharacter = await page.evaluate(() => {
     const last = __flapAudioProbe.starts.at(-1);
     return { leaves: __flapAudioProbe.starts.length,
-      strikeErrorMs: (last.when + .02929705215419501 / last.rate - __singleLanding) * 1000,
+      timelineStrikeErrorMs: (last.when + .02929705215419501 / last.rate - window.__singleTimelineLanding) * 1000,
+      domLandingDelayMs: (__singleLanding - window.__singleTimelineLanding) * 1000,
       tailAfterLandingMs: (last.when + last.duration / last.rate - __singleLanding) * 1000 };
   });
-  assert.equal(singleCharacter.leaves, 1);
-  assert.ok(Math.abs(singleCharacter.strikeErrorMs) < 45);
+  // WAAPI and Web Audio keep their planned clocks when a main-thread frame is
+  // delayed. Record DOM catch-up separately instead of treating it as the impact clock.
+  assert.ok(Math.abs(singleCharacter.timelineStrikeErrorMs) < 45, JSON.stringify(singleCharacter));
+  assert.ok(singleCharacter.domLandingDelayMs >= -45, JSON.stringify(singleCharacter));
   await page.unroute('**/api/trains?**', oneDigitRoute);
   await page.getByRole('button', { name: '소리 끄기' }).click();
   await page.getByLabel('사운드 설정', { exact: true }).click();
-  checks.push('Delay digit 3 → 4 plays one recorded impact and its strike aligns with DOM landing within 45 ms');
+  checks.push('Delay digit 3 → 4 plays one impact aligned with the animation timeline within 45 ms and settles to the target glyph');
 
   await page.getByRole('slider', { name: '효과음 음량' }).fill('0');
   assert.equal(await page.getByRole('button', { name: '소리 미리듣기' }).isDisabled(), true);
@@ -133,7 +148,19 @@ try {
     && cell.querySelector('.flap-top > span').textContent === cell.dataset.value
     && cell.querySelector('.flap-bottom > span').textContent === cell.dataset.value));
   assert.ok(settled);
-  assert.ok((await state()).maxActive <= 24);
+  // A stopped source can stay in the probe's active set until its asynchronous
+  // ended event arrives. Count overlapping audible intervals, as in the offline checks.
+  maxAudibleVoices = await page.evaluate(() => {
+    const edges = __flapAudioProbe.starts.flatMap(voice => {
+      const start = Math.max(voice.when, voice.contextTime);
+      const end = Math.min(voice.when + voice.duration / voice.rate, voice.stopped ?? Infinity);
+      return end > start ? [[start, 1], [end, -1]] : [];
+    }).sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+    let active = 0, peak = 0;
+    for (const [, delta] of edges) { active += delta; peak = Math.max(peak, active); }
+    return peak;
+  });
+  assert.ok(maxAudibleVoices <= 24, `At most 24 simultaneously audible voices, got ${maxAudibleVoices}`);
   const beforeRefresh = (await state()).starts;
   await page.getByRole('button', { name: '서버 캐시 다시 조회' }).click();
   await page.waitForTimeout(600);
@@ -170,7 +197,7 @@ try {
   await failure.close();
   checks.push('Failed audio download reports an error without enabling sound');
   assert.deepEqual(errors, []);
-  const report = { browser: await browser.version(), checks, singleCharacter, pageErrors: errors, ...await state() };
+  const report = { browser: await browser.version(), checks, singleCharacter, maxAudibleVoices, pageErrors: errors, ...await state() };
   await writeFile(`${out}/audio-validation.json`, JSON.stringify(report, null, 2));
   console.log(JSON.stringify(report, null, 2));
 } finally { await browser.close(); }

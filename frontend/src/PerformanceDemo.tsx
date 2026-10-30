@@ -1,15 +1,12 @@
-import { FlapRendererContext } from "./components/FlapRendererContext";
-import { OptimizedFlapCharacter } from "./components/OptimizedFlapCharacter";
+import { FlapRendererProvider, type FlapRenderer } from "./components/FlapRendererProvider";
 import RotorDemo from "./RotorDemo";
 
-export type DemoRenderer = "optimized" | "legacy";
+export type DemoRenderer = FlapRenderer;
 
 export default function PerformanceDemo({ renderer = "optimized" }: { renderer?: DemoRenderer }) {
-  const Character = renderer === "optimized" && typeof Element.prototype.animate === "function"
-    ? OptimizedFlapCharacter : null;
   return (
-    <FlapRendererContext.Provider value={Character}>
+    <FlapRendererProvider renderer={renderer}>
       <RotorDemo homeHref={`?demo=performance&renderer=${renderer}`} />
-    </FlapRendererContext.Provider>
+    </FlapRendererProvider>
   );
 }
