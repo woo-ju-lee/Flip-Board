@@ -134,6 +134,10 @@ main { padding-top: 16px; }
 .flap-out { z-index: 4; animation: flap-out 80ms cubic-bezier(.45,0,.95,.55) forwards; }
 .flap-in { z-index: 4; transform: rotateX(90deg); animation: flap-in 80ms 80ms cubic-bezier(.15,.55,.3,1) forwards; }
 .flap-motion { position: absolute; inset: 0; }
+.flap-optimized .flap-out, .flap-optimized .flap-in { animation: none; filter: none; }
+.flap-optimized .flap-motion { visibility: hidden; pointer-events: none; }
+.flap-optimized[data-flipping="true"] .flap-motion { visibility: visible; }
+.flap-optimized .flap-shade { position: absolute; inset: 0; background: #000; opacity: 0; pointer-events: none; }
 @keyframes flap-out { from { transform: rotateX(0); filter: brightness(1); } to { transform: rotateX(-90deg); filter: brightness(.55); } }
 @keyframes flap-in { from { transform: rotateX(90deg); filter: brightness(.65); } 87% { transform: rotateX(-3deg); filter: brightness(1.02); } to { transform: rotateX(0); filter: brightness(1); } }
 .empty-row { opacity: .45; }
