@@ -2,12 +2,13 @@
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
+import { resolve } from 'node:path';
 import { installAudioProbe } from './audio_probe.mjs';
 
 const modulePath = process.env.KORAIL_BROWSER_MODULE || new URL('../frontend/node_modules/playwright/index.mjs', import.meta.url).href;
 const { chromium } = await import(modulePath);
 const base = process.env.KORAIL_TEST_URL || 'http://127.0.0.1:8000';
-const out = fileURLToPath(new URL('../artifacts/', import.meta.url));
+const out = process.env.KORAIL_ARTIFACT_DIR ? resolve(process.env.KORAIL_ARTIFACT_DIR) : fileURLToPath(new URL('../artifacts/', import.meta.url));
 await mkdir(out, { recursive: true });
 const browser = await chromium.launch({ headless: true,
   ...(process.env.KORAIL_BROWSER_EXECUTABLE ? { executablePath: process.env.KORAIL_BROWSER_EXECUTABLE } : {}),
@@ -160,12 +161,12 @@ try {
     for (const [, delta] of edges) { active += delta; peak = Math.max(peak, active); }
     return peak;
   });
-  assert.ok(maxAudibleVoices <= 24, `At most 24 simultaneously audible voices, got ${maxAudibleVoices}`);
+  assert.ok(maxAudibleVoices <= 8, `At most 8 simultaneously audible voices, including fade tails, got ${maxAudibleVoices}`);
   const beforeRefresh = (await state()).starts;
   await page.getByRole('button', { name: '서버 캐시 다시 조회' }).click();
   await page.waitForTimeout(600);
   assert.equal((await state()).starts, beforeRefresh);
-  checks.push('Rapid page/snapshot changes settle to current glyphs, finish audio, stay within 24 voices, and identical refresh stays silent');
+  checks.push('Rapid page/snapshot changes settle to current glyphs, finish audio, stay within 8 voices including fade tails, and identical refresh stays silent');
 
   await page.getByRole('button', { name: '다음 페이지' }).click();
   await page.waitForTimeout(300);

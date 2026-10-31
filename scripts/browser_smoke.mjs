@@ -2,11 +2,12 @@
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
+import { resolve } from 'node:path';
 
 const modulePath = process.env.KORAIL_BROWSER_MODULE || new URL('../frontend/node_modules/playwright/index.mjs', import.meta.url).href;
 const { chromium } = await import(modulePath);
 const base = process.env.KORAIL_TEST_URL || 'http://127.0.0.1:8000';
-const out = fileURLToPath(new URL('../artifacts/', import.meta.url));
+const out = process.env.KORAIL_ARTIFACT_DIR ? resolve(process.env.KORAIL_ARTIFACT_DIR) : fileURLToPath(new URL('../artifacts/', import.meta.url));
 await mkdir(out, { recursive: true });
 const browser = await chromium.launch({
   headless: true,

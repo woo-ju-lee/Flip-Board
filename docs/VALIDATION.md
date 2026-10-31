@@ -1,8 +1,115 @@
 # 구현 및 검증 결과
 
-최종 레이아웃 검증일: 2026-10-30 (KST). 외부 코레일 API 요청 없이 기존 서버와 제공된 원본 기록으로 재현했습니다. 아래 2026-10-27 항목은 당시 7행 디자인의 검증 이력입니다.
+최종 레이아웃·오디오 검증일: 2026-11-01 (KST). 외부 코레일 API 요청 없이 기존 서버와 제공된 원본 기록으로 재현했습니다. 아래 이전 날짜 항목은 당시 구현의 검증 이력입니다.
 
 ## 통과한 검증
+
+### 초반 오디오 공백 개선 — 2026-11-01 KST
+
+이번 기준선은 아래 첫 개선을 적용한 **현재 로컬의 90 ms 예약 버전**입니다. 기존 GitHub 버전이나 legacy 렌더러로 바꾸어 비교하지 않았습니다. 변경 전에 소스 전체(`baseline-source.tar.gz`), 미커밋 패치, 운영 빌드(`baseline-site/`)를 `artifacts/audio-continuity/`에 보존했습니다. 수정본은 준비 microtask에서 첫 애니메이션 전에 오디오를 등록하고, 500 ms를 선예약하며, 실제 예약에 성공한 후보만 이웃 타격을 제거합니다.
+
+첫 구현은 오디오를 일찍 예약하는 대신 첫 프레임의 작업량이 늘어 성능 기준을 넘었습니다. 실행 추적으로 위치 측정과 전체 미래 일정의 계산·정렬 비용을 확인한 뒤, 보드 좌표 재사용, 유휴 오디오 채널 준비, 예약 범위의 타격만 계산·정렬하는 방식으로 줄였습니다. 이미 끝난 문자 애니메이션의 반복 취소도 제거했습니다. 실패한 측정과 진단용 표본은 `attempts/`에 보존하며, 진단용 3회 표본을 최종 전체 조건 측정으로 대신하지 않습니다.
+
+- 프런트엔드 **163개 테스트**와 TypeScript/Vite 운영 빌드 통과. 보드 좌표 재사용·관찰 API 미지원 대체 처리, 준비·등록·프레임 순서, 취소·숨김·StrictMode, 500 ms 경계, 예약 중 기한 초과, 100–400 ms 정지, 800 ms 초과 부하, 채널 재사용과 페이드 종료 전 소유권, 여러 음원의 선택·속도·타격 시각, 미래 입력의 복사·등록 순서와 애니메이션의 반복 취소 방지를 포함합니다.
+- 실제 Chromium **154.0.8037.57**에서 변경 전후 × 음량 30%/100% × 7개 조건, 총 **28개 고정 입력 사례**를 검사했습니다. 입력은 첫 목표 +70 ms부터 30 ms마다 67타격이며, 양쪽 모두 실제 MP3와 실제 Web Audio를 사용합니다. 컨텍스트와 검사 전용 PCM 계측기는 동일하게 250 ms 준비한 뒤 시작합니다.
+- 수정본은 최초 예약 완료 후 **100·200·300·400 ms 정지에서도 67타격 모두 유지**, 최대 타격 간격 **30 ms**, 최장 무음 및 정상 대조 대비 무음 증가 **0 ms**였습니다. 두 음량 모두 클리핑·비유한 샘플 **0개**, 실제 동시 재생 최대 **3음**입니다. 고정 입력의 최대 PCM 피크는 30%에서 **0.15684**, 100%에서 **0.52280**였습니다.
+
+기본 음량 30%에서의 비교입니다. 타격 전의 정상 대기와 마지막 타격 이후는 무음 판정에서 제외합니다.
+
+| 메인 스레드 정지 | 변경 전 최대 타격 간격 | 수정 후 | 변경 전 최장 무음 | 수정 후 |
+|---|---:|---:|---:|---:|
+| 100 ms | 90.29 ms | 30 ms | 30 ms | 0 ms |
+| 200 ms | 178.47 ms | 30 ms | 120 ms | 0 ms |
+| 300 ms | 267.36 ms | 30 ms | 200 ms | 0 ms |
+| 400 ms | 388.64 ms | 30 ms | 330 ms | 0 ms |
+
+최대 음량 100%의 400 ms 정지에서도 변경 전 **388.74 ms 타격 간격·320 ms 무음·13타격 누락**이 수정 후 **30 ms·0 ms·누락 없음**으로 바뀌었습니다. 800 ms 정지에서는 수정본도 만료된 11타격을 버려 360 ms 간격과 음량 30%/100% 각각 300/290 ms 무음이 남습니다. 최초 준비 microtask 이전의 400 ms 정지는 12타격이 빠지고 330 ms 무음이 남는 별도 한계 사례입니다. 이 두 조건을 연속 재생 성공으로 집계하지 않습니다.
+
+검증 중 처음에는 500 ms 예약만으로도 200 ms 정지 사례에서 한 타격이 누락됐습니다. 점검마다 화면/오디오 시계 매핑을 다시 계산해 정상 30 ms 간격이 25 ms 제한에 걸리는 문제였습니다. 활성 일정 동안 시계 기준을 고정하고, 유휴·컨텍스트 중단 이후 갱신하도록 수정했습니다. 실제 실패 기록을 보존했으며, 9–12 ms 시각 갱신 지터·페이드·이전 예약 기록·중지/재개 회귀 검사도 추가했습니다.
+
+PCM은 오디오 스레드에서 모든 샘플을 집계하고 10 ms RMS, −55 dBFS로 무음을 판정합니다. 빈 측정이나 누락 구간으로 통과하지 않도록 활동 구간의 연속적인 측정 범위·샘플 수·실제 정지 동안 오디오 시계 진행을 검사합니다. Chromium의 간헐적인 과거 `currentFrame` 값은 샘플 커서로 구간 시각을 계산해 처리하되, 원래 블록 시각을 보존하고 앞으로 건너뛴 프레임이나 샘플 수 불일치는 통과시키지 않습니다. 수정본의 상대 타격 시각 오차 허용은 0.001 ms이며, 첫 타격이 목표 0번인지도 검사합니다. 시계 간 비교에만 별도 측정한 갱신 단위 허용치를 적용합니다.
+
+결과와 재현 가능한 원시 자료는 `artifacts/audio-continuity/audio-continuity-validation.json`, `continuity-raw/`, 계측 보완 및 실제 실패 이력은 `continuity-harness-history/run-log.json`에 있습니다. 최종 수치와 소스 출처를 모은 파일은 `audio-final-validation-summary.json`입니다. 최종 빌드의 엔진으로 28개 사례를 모두 새로 녹음하고 원시 PCM·예약 시각에서 판정했습니다. 최초 목표 번호 계산의 JavaScript `−0`를 `0`으로 정규화하는 계측 수정도 실패 원시 자료와 함께 남겼으며, 시각·무음 허용치는 바꾸지 않았습니다. 자동 검사는 Linux Chromium의 장치 출력 전 믹서 기준이며, **실제 Windows 스피커·헤드폰 청감은 확인하지 않았습니다.**
+
+실제 운영 화면에서도 첫 Web Animations API 호출 전에 **11개 네이티브 음원 예약**이 완료됐고, 첫 예약은 애니메이션보다 **6.6 ms** 먼저였습니다. 90 ms 기준선에서는 첫 화면 애니메이션 이후 약 **86.8 ms**에 첫 음원이 예약됐습니다. 초기 로고가 빈 상태를 정착 완료로 오인하지 않도록 로고 내용과 문자판의 위·아래 면도 확인합니다.
+
+좌표 재사용은 기본 상태·창 크기 변경·실제 전체 화면·상위 요소 이동·가로 스크롤·실제 글꼴 로드 완료의 **6개 브라우저 사례**에서 확인했습니다. 실제 네이티브 패닝 값과 현재 칸 좌표의 최대 오차는 **2.81×10⁻⁸**이었고, 각 숫자 변경은 타격 1회와 애니메이션 전 예약을 유지했습니다. 결과는 `regressions/audio-pan-validation.json`에 있습니다.
+
+운영 화면의 100–400 ms 정지·페이지 연타·음소거·탭 숨김 검사에서 두 음량 모두 실제 동시 최대 **3음**, 최소 간격 **25.0 / 25.0 ms**, 늦은 시작 **0건**이었습니다. PCM **1,340,672 / 1,352,192개**의 클리핑·비유한 값은 0개이며 피크는 **0.184576 / 0.622034**입니다. 첫 처리 프레임부터 종료까지 샘플 수가 맞고 앞으로 누락된 처리 프레임은 없었습니다. 미래 예약 취소 **41회**와 활성 음원의 **8 ms 페이드 6회**도 확인했습니다. 자연 종료가 먼저인 음원은 더 짧게 끝납니다.
+
+기존 실제 오디오 회귀 **9개**도 통과했습니다. 단일 숫자 `3 → 4`는 타격 **1회**, 목표 착지와 예약된 타격의 차이 **−1.777 ms**, 최종 활성 음원·출력 **0**입니다. 미래 예약과 종료 콜백 대기까지 합친 계측상의 최대 노드는 32개였지만, 실제 시작·종료 구간으로 계산한 동시 재생은 3음이었습니다. 운영 화면 결과는 `artifacts/audio-continuity/regressions/audio-resilience-validation.json`과 `audio-validation.json`에 기록했습니다.
+
+화면 회귀 **48개**(기능 13·레이아웃 4·단일 HTML 데모 9·렌더러별 오프라인 검사 11개씩)도 통과했습니다. 12가지 전체 화면 크기·15페이지·10종 로고, 숫자 9단계와 역명 93단계의 중간 회전, 문자 DOM 재사용, 최종 내용과 종료 후 작업 정리를 확인했습니다. 브라우저 오류와 추가 오프라인 요청은 0개였습니다. 관리형 브라우저의 `file://` 제한 때문에 정확한 HTML을 localhost 메모리 경로에서 읽고 오프라인으로 전환했으며, Windows 파일 더블클릭은 검사하지 않았습니다. 결과·로그는 같은 `regressions/` 디렉터리에 있습니다.
+
+성능은 같은 Chromium·1440×1080 화면·자료·18초 관찰에서 CPU 1×/4× × 소리 끔/켬을 각각 3회 측정했습니다. 기준선 12회와 최종 수정본 12회 모두 다른 테스트·빌드·브라우저 녹화와 겹치지 않았습니다. 다음은 각 3회의 중앙값이며 `이전 → 수정` 순서입니다.
+
+| CPU | 소리 | JS 실행 시간 | 첫 프레임 지연 | 50 ms 초과 간격 | 최대 프레임 간격 | 긴 작업 총시간 |
+|---|---|---:|---:|---:|---:|---:|
+| 1× | 끔 | 153.66 → 159.16 ms | 12.7 → 12.7 ms | 5 → 4회 | 83.4 → 83.3 ms | 165 → 134 ms |
+| 1× | 켬 | 235.04 → 238.38 ms | 13.8 → 13.5 ms | 9 → 5회 | 83.4 → 83.2 ms | 304 → 204 ms |
+| 4× | 끔 | 556.76 → 550.63 ms | 65.7 → 64.9 ms | 22 → 30회 | 400.1 → 383.3 ms | 3,231 → 3,478 ms |
+| 4× | 켬 | 820.70 → 818.06 ms | 72.4 → 77.8 ms | 30 → 33회 | 366.6 → 350.1 ms | 3,337 → 3,461 ms |
+
+**4×·소리 켬의 세 가지 합격 기준은 통과**했습니다. JS는 −0.32%, 첫 프레임은 +7.46%, 50 ms 초과 간격은 +10%로 정한 한도 이내입니다. 첫 프레임의 개별 표본 120.6·77.8·64.7 ms를 모두 보존하고 중앙값으로 판정했습니다. 4×·음소거에서는 50 ms 초과 간격이 22→30회로 늘었고, 4× 두 조건 모두 긴 작업 총시간이 증가했습니다. 따라서 화면 정지가 사라졌거나 모든 성능 지표가 개선됐다고 해석하지 않습니다. 최대 간격도 각 실행의 최대값에 대한 중앙값이며, rAF 간격은 실제 표시 FPS가 아닙니다.
+
+최종 성능 빌드는 `index-DuQxnKbq.js`, 전체 빌드 SHA-256은 `1fbd17284626258fec958749f58d57d0a5da7616dd0e2ed9eddc4d484a400747`입니다. 원본 24회·중앙값·판정·빌드 출처는 `artifacts/audio-continuity/transition-performance-{baseline,candidate,comparison}.json`에 있습니다.
+
+소리 포함 비교 영상은 `artifacts/audio-continuity/transition-normal-comparison.mp4`(**31.40초, 2.04 MB**)와 `transition-stall-comparison.mp4`(**31.46초, 2.02 MB**)입니다. 모두 1440×1080 H.264/AAC이며 변경 전 다음에 변경 후가 이어집니다. 실제 앱 믹서를 기본 30% 음량으로 녹음했고, 강제 정지 영상은 실제 400 ms 정지 구간에 노란 표시를 넣었습니다. 정지 표시와 최종 화면을 프레임으로 확인했고, 두 영상의 실제 오디오 트랙과 비영점 출력을 검사했습니다. 영상 피크는 각각 −13.4/−13.7 dBFS이며, 인코딩된 영상의 피크를 앞의 원본 PCM 클리핑 검사로 대신하지 않았습니다. 녹화는 모든 성능·회귀 검사가 끝난 뒤 별도로 수행했습니다. 녹화 부하가 포함되므로 영상 프레임 수는 성능 판정에 사용하지 않습니다. 시나리오별 동작 시각은 같은 이름의 JSON, 미디어 검사는 `video-validation.json`에 있습니다.
+
+이번 검증의 재현 명령입니다. 먼저 보존된 90 ms 기준선과 최종 수정본 빌드를 각각 4173·4174 포트에서 서빙하고, 일반 API 검사는 실시간 수집을 끈 8000 포트 백엔드를 사용합니다. 성능 측정과 다른 테스트·빌드·영상 녹화를 겹치지 않습니다. `KORAIL_BROWSER_MODULE`·`KORAIL_BROWSER_EXECUTABLE`로 Playwright/Chromium 경로를 지정할 수 있습니다.
+
+```bash
+KORAIL_ARTIFACT_DIR=artifacts/audio-continuity node scripts/browser_audio_continuity.mjs
+KORAIL_ARTIFACT_DIR=artifacts/audio-continuity/regressions KORAIL_TEST_URL=http://127.0.0.1:8000 node scripts/browser_audio_resilience.mjs
+KORAIL_PERF_OUTPUT_DIR=artifacts/audio-continuity KORAIL_PERF_STAGE=baseline KORAIL_PERF_ROOT=artifacts/audio-continuity/baseline-site KORAIL_TEST_URL=http://127.0.0.1:4173 node scripts/browser_transition_performance.mjs
+KORAIL_PERF_OUTPUT_DIR=artifacts/audio-continuity KORAIL_PERF_STAGE=candidate KORAIL_PERF_ROOT=artifacts/audio-continuity/candidate-site KORAIL_TEST_URL=http://127.0.0.1:4174 node scripts/browser_transition_performance.mjs
+KORAIL_PERF_OUTPUT_DIR=artifacts/audio-continuity KORAIL_PERF_STAGE=compare node scripts/browser_transition_performance.mjs
+KORAIL_VIDEO_OUTPUT_DIR=artifacts/audio-continuity KORAIL_VIDEO_SCENARIO=normal node scripts/record_transition_comparison.mjs
+KORAIL_VIDEO_OUTPUT_DIR=artifacts/audio-continuity KORAIL_VIDEO_SCENARIO=stall node scripts/record_transition_comparison.mjs
+```
+
+### 페이지 전환 오디오·로고 개선 — 2026-11-01 KST
+
+- 프런트엔드 **100개 테스트**와 TypeScript/Vite 운영 빌드 통과. 오디오 정책·수명 검사 45개와 최적화 로고 패널 검사 9개를 포함합니다. 시작 시각을 놓친 타격 폐기, 25 ms 경계·90 ms 예약 경계, 세대별 취소, 어택·릴리스 중 페이드, 지연된 종료 콜백, 실시간·오프라인 미리듣기 일치, 프레임·React 커밋 지연과 로고 목표 변경을 검사합니다.
+- 실제 Chromium에서 **100·200·300 ms 메인 스레드 정지**를 기본 음량 30%와 최대 음량 100%에서 각각 주입했습니다. 선택된 타격 최소 간격은 각각 **25.0249 ms / 25.0000 ms**, 실제 동시 재생 최대 **3음**, 과거 시작 시각으로 예약된 음원 **0개**였습니다. 설정 상한은 8음이며, 정지 후 다음 유효 타격이 계속 재생됨을 확인했습니다.
+- 검사 전용 AudioWorklet으로 30%에서 **1,340,416개**, 100%에서 **1,352,192개** PCM 샘플을 집계했습니다. 두 조건 모두 클리핑·비유한 샘플 **0개**이며 피크는 각각 **0.181763 / 0.616997**입니다. 메인 스레드가 멈춘 동안의 출력도 포함하며, 압축된 녹음 파일의 피크를 대신 사용하지 않았습니다.
+- 연속 페이지 변경·음소거에서 재생 중인 음원의 **7.908–8 ms 페이드 5회**, 미래 예약의 즉시 취소 **3회**를 관찰했습니다. 페이드도 재생 구간 중첩 계산에 포함했으며 음소거·탭 숨김 이후 활성 음원·출력이 사라지고 취소된 일정이 다시 재생되지 않았습니다.
+- 기존 실제 오디오 회귀 검사 **9개**도 통과했습니다. 단일 지연 숫자 `3 → 4` 변경에서 타격 **1회**, 애니메이션 일정과 타격 예약 시각 차이 **−0.830 ms**, 검사 종료 시 활성 음원·출력 **0**, 브라우저 오류 **0개**였습니다. 음원 다운로드 실패·미리듣기·음량 0·동작 줄이기도 검사했습니다.
+- 기존 브라우저 기능 **13개**, 레이아웃 **4개**(12가지 화면 크기·15페이지·10종 로고), 단일 HTML 회전 데모 **9개**, 오프라인 렌더러 검사 **각 11개 × 2종**을 통과했습니다. 숫자 9단계·역명 93단계의 순차 회전, 문자 DOM 유지, 공유 rAF 1개, 종료 후 작업 정리를 확인했습니다. 로고 외곽 DOM 재사용은 새 로고 단위 검사에서 확인했습니다. 브라우저 오류와 오프라인 추가 요청은 0개였습니다. 관리형 브라우저의 `file://` 접근 제한 때문에 단일 HTML은 기존 검사의 localhost 메모리 경로로 읽고 브라우저를 오프라인으로 전환했으며, Windows 파일 더블클릭 실행은 검증하지 않았습니다.
+- 최초 브라우저 스트레스 검사는 임의 시점의 음소거가 미래 예약 취소 경로를 거치지 않아 **검사 시나리오 커버리지 조건**에서 실패했습니다. 재생 중인 음원과 미래 예약이 동시에 있는 순간에 음소거하도록 검사를 동기화한 후 통과했으며, 음량·간격·클리핑 조건은 완화하지 않았습니다. 실행 기록은 `artifacts/audio-resilience-run-log.json`에 보존합니다.
+
+오디오 결과: `artifacts/audio-resilience-validation.json`, 실제 녹음: `artifacts/audio-resilience-30.webm`, `artifacts/audio-resilience-100.webm`. 자동 검사 환경은 Linux headless Chromium이며 Windows 장치·스피커·헤드폰의 물리적 출력이나 청감을 확인한 결과는 아닙니다.
+
+성능 비교는 수정 전 운영 빌드를 `artifacts/transition-baseline-site/`, 수정 후 빌드를 `artifacts/transition-candidate-site/`에 별도로 보존하여 **optimized 대 optimized**로 수행합니다. 브라우저 버전·화면 1440×1080·18초 관찰·텍스트 DOM 계측을 같게 유지하며, CPU 1×/4× × 소리 끔/켬을 각각 3회 측정합니다. 각 보고서는 서빙한 빌드 전체의 SHA-256과 실행 조건을 기록합니다. 이 첫 개선 당시 합격 기준은 JavaScript 실행 시간 감소, 첫 프레임 지연·50 ms 초과 프레임 수의 10% 이내 회귀 제한이었습니다. 초반 공백 추가 개선은 위의 새 기준선과 별도 판정 기준을 사용합니다.
+
+변경 전후 총 **24회**가 최종 문자·로고, 문자 DOM 유지, 종료 후 애니메이션 정리, 브라우저 오류 검사를 통과했습니다. 각 값은 3회 중앙값이며 `이전 → 수정` 순서입니다. 최대 간격도 각 실행의 최대값 3개에 대한 중앙값입니다.
+
+| CPU | 소리 | JS 실행 시간 | 첫 프레임 지연 | 50 ms 초과 간격 | 최대 프레임 간격 |
+|---|---|---:|---:|---:|---:|
+| 1× | 끔 | 154.1 → 157.3 ms | 17.9 → 13.2 ms | 7 → 4회 | 100.0 → 83.3 ms |
+| 1× | 켬 | 262.9 → 239.7 ms | 21.3 → 10.1 ms | 2 → 3회 | 66.7 → 50.1 ms |
+| 4× | 끔 | 526.3 → 565.7 ms | 86.5 → 58.9 ms | 30 → 30회 | 366.7 → 416.6 ms |
+| 4× | 켬 | 959.5 → 828.7 ms | 88.2 → 52.8 ms | 33 → 31회 | 350.0 → 416.6 ms |
+
+계획한 **4×·소리 켬 합격 기준은 모두 통과**했습니다. JS 실행 시간은 13.6%, 첫 프레임 지연은 40.1% 감소했으며 긴 작업 총시간은 3,328 → 3,249 ms였습니다. 다만 4×에서 최대 간격은 커졌고 음소거 JS 시간도 증가했습니다. 화면 렉이 없어졌거나 모든 성능 지표가 개선됐다고 해석하지 않습니다. rAF 간격은 메인 스레드 콜백 기회이며 실제 표시 FPS가 아닙니다. 기준선 마지막 조건에 짧은 프런트엔드 테스트·빌드가 겹친 실행 조건도 두 보고서와 비교 보고서에 기록했습니다. 수정 후 측정은 다른 브라우저·빌드·테스트와 겹치지 않았습니다.
+
+전체 수치와 빌드 SHA-256: `artifacts/transition-performance-baseline.json`, `artifacts/transition-performance-candidate.json`, `artifacts/transition-performance-comparison.json`.
+
+비교 영상 `artifacts/transition-comparison.mp4`는 **38.31초, 1440×1080 H.264/AAC, 약 2.93 MB**입니다. 변경 전 약 19초 다음에 수정 후 약 19초가 이어집니다. 두 경우 모두 실제 앱 믹서를 기본 30% 음량으로 녹음하고, 다음 페이지 → 200 ms 화면 작업 정지 → 이전/다음 연속 이동 → 최종 정착을 촬영했습니다. 원본 개별 영상은 `transition-before.mp4`·`transition-after.mp4`, 동작 시각과 녹음 정렬 오차는 `transition-comparison.json`에 보존합니다. 녹화는 성능 측정이 끝난 뒤 별도로 수행했으며, 영상 프레임 수로 벤치마크 수치를 대체하지 않습니다.
+
+재현 명령은 저장소 루트에서 실행합니다. 사전에 프런트엔드를 빌드하고, 일반 API 회귀 검사는 실시간 수집을 끈 로컬 백엔드에서 수행합니다.
+
+```bash
+KORAIL_TEST_URL=http://127.0.0.1:8000 node scripts/browser_audio_resilience.mjs
+KORAIL_TEST_URL=http://127.0.0.1:8000 node scripts/browser_audio.mjs
+# 각 디렉터리를 별도 로컬 HTTP 서버로 서빙한 후 측정
+KORAIL_PERF_STAGE=baseline KORAIL_PERF_ROOT=artifacts/transition-baseline-site KORAIL_TEST_URL=http://127.0.0.1:4173 node scripts/browser_transition_performance.mjs
+KORAIL_PERF_STAGE=candidate KORAIL_PERF_ROOT=artifacts/transition-candidate-site KORAIL_TEST_URL=http://127.0.0.1:4174 node scripts/browser_transition_performance.mjs
+KORAIL_PERF_STAGE=compare node scripts/browser_transition_performance.mjs
+KORAIL_BEFORE_URL=http://127.0.0.1:4173 KORAIL_AFTER_URL=http://127.0.0.1:4174 node scripts/record_transition_comparison.mjs
+```
+
+별도 Playwright/Chromium 경로는 이 문서 아래의 `KORAIL_BROWSER_MODULE`·`KORAIL_BROWSER_EXECUTABLE` 설정을 사용합니다. 성능 측정 중에는 다른 브라우저 검사·영상 녹화·인코딩을 겹쳐 실행하지 않습니다. 기존 아래 항목의 24음 등은 각 날짜 당시 구현의 검증 이력입니다.
 
 ### 현재 데모 및 IBM Plex Sans KR 확정 — 2026-10-30 KST
 

@@ -2,11 +2,12 @@
 import assert from 'node:assert/strict';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { resolve } from 'node:path';
 import { installAudioProbe } from './audio_probe.mjs';
 
 const modulePath = process.env.KORAIL_BROWSER_MODULE || new URL('../frontend/node_modules/playwright/index.mjs', import.meta.url).href;
 const { chromium } = await import(modulePath);
-const out = fileURLToPath(new URL('../artifacts/', import.meta.url));
+const out = process.env.KORAIL_ARTIFACT_DIR ? resolve(process.env.KORAIL_ARTIFACT_DIR) : fileURLToPath(new URL('../artifacts/', import.meta.url));
 await mkdir(out, { recursive: true });
 const stationNames = JSON.parse(await readFile(new URL('../frontend/src/stationRotor.json', import.meta.url), 'utf8'));
 const stationRotor = [' ', ...new Set(stationNames.flatMap(name => Array.from(name.normalize('NFC'))))].sort();
@@ -250,8 +251,8 @@ try {
         for (const [, delta] of edges) { active += delta; peak = Math.max(peak, active); }
         return peak;
       });
-      assert.ok(audiblePeak <= 24, `At most 24 simultaneously audible voices, got ${audiblePeak}`);
-      checks.push('Offline sound plays with at most 24 voices; rapid previous/next/previous retargeting settles with no remaining sounds');
+      assert.ok(audiblePeak <= 8, `At most 8 simultaneously audible voices, including fade tails, got ${audiblePeak}`);
+      checks.push('Offline sound plays with at most 8 voices including fade tails; rapid previous/next/previous retargeting settles with no remaining sounds');
       await page.getByRole('button', { name: '다음 페이지', exact: true }).click();
       await page.waitForTimeout(300);
       await page.evaluate(() => {

@@ -138,6 +138,9 @@ main { padding-top: 16px; }
 .flap-optimized .flap-motion { visibility: hidden; pointer-events: none; }
 .flap-optimized[data-flipping="true"] .flap-motion { visibility: visible; }
 .flap-optimized .flap-shade { position: absolute; inset: 0; background: #000; opacity: 0; pointer-events: none; }
+.flap-panel-optimized .flap-out, .flap-panel-optimized .flap-in { animation: none; }
+.flap-panel-optimized .flap-motion { visibility: hidden; pointer-events: none; }
+.flap-panel-optimized[data-flipping="true"] .flap-motion { visibility: visible; }
 @keyframes flap-out { from { transform: rotateX(0); filter: brightness(1); } to { transform: rotateX(-90deg); filter: brightness(.55); } }
 @keyframes flap-in { from { transform: rotateX(90deg); filter: brightness(.65); } 87% { transform: rotateX(-3deg); filter: brightness(1.02); } to { transform: rotateX(0); filter: brightness(1); } }
 .empty-row { opacity: .45; }

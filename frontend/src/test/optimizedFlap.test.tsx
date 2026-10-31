@@ -3,7 +3,7 @@ import { act, cleanup, render } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { flapAudio } from "../audio";
 import { OptimizedFlapCharacter } from "../components/OptimizedFlapCharacter";
-import { DIGIT_ROTOR, FLAP_MS } from "../flapMotion";
+import { DIGIT_ROTOR, FLAP_MS, makeIndexedFlapPlan } from "../flapMotion";
 import { getFlapSchedulerState } from "../flapScheduler";
 import { STATION_CHARACTER_ROTOR } from "../stationCharacters";
 
@@ -33,7 +33,8 @@ function browserClock() {
         callbacks.forEach(callback => callback(time));
       });
     },
-    flush() { this.frameAt(now); },
+    async prepare() { await act(async () => { await Promise.resolve(); }); },
+    async flush() { await this.prepare(); this.frameAt(now); },
   };
 }
 
@@ -74,8 +75,9 @@ beforeEach(() => {
   });
 });
 
-afterEach(() => {
+afterEach(async () => {
   cleanup();
+  await clock.prepare();
   expect(getFlapSchedulerState()).toEqual({ activeCells: 0, framePending: false });
   expect(clock.pending).toBe(0);
   vi.unstubAllGlobals();
@@ -91,7 +93,90 @@ const incoming = (container: HTMLElement) => container.querySelector(".flap-in >
 const scheduled = () => vi.mocked(flapAudio.schedule).mock.calls.at(-1)![1];
 
 describe("optimized physical flap renderer", () => {
-  it("shows an indexed initial value without work and preserves every 8 → 2 leaf and sound", () => {
+  it("reuses warmed board positions across page values before registering spatial audio", async () => {
+    vi.stubGlobal("ResizeObserver", class { observe() {} unobserve() {} disconnect() {} });
+    const board = (values: string[]) => <section className="board-housing"><div className="display-table">
+      {values.map((value, index) => <OptimizedFlapCharacter key={index} value={value}
+        index={index} reduced={false} rotor={DIGIT_ROTOR} />)}
+    </div></section>;
+    const { container, rerender } = render(board(["8", "3"]));
+    const roots = [...container.querySelectorAll<HTMLElement>(".flap")];
+    const reads = roots.map((root, index) => vi.spyOn(root, "getBoundingClientRect").mockReturnValue({
+      left: window.innerWidth * (index ? .7 : .1), width: window.innerWidth * .2,
+    } as DOMRect));
+    await clock.prepare();
+    reads.forEach(read => expect(read).toHaveBeenCalledOnce());
+    expect(flapAudio.schedule).not.toHaveBeenCalled();
+    const start = clock.now;
+    rerender(board(["2", "7"]));
+    await clock.prepare();
+    reads.forEach(read => expect(read).toHaveBeenCalledOnce());
+    vi.mocked(flapAudio.schedule).mock.calls.forEach(([owner, events], index) => {
+      const plan = makeIndexedFlapPlan(index ? "3" : "8", index ? "7" : "2", DIGIT_ROTOR, `${owner}:${index}`, start);
+      expect(events.map(event => event.at)).toEqual(plan.steps.map(step => step.landAt));
+      events.forEach(event => expect(event.pan).toBeCloseTo(index ? .6 : -.6));
+    });
+    expect(animations).toHaveLength(0);
+  });
+
+  it("registers spatially panned audio after all geometry reads but before the first frame", async () => {
+    const group = (values: string[]) => <>{values.map((value, index) =>
+      <OptimizedFlapCharacter key={index} value={value} index={index} reduced={false} rotor={DIGIT_ROTOR} />)}</>;
+    const { container, rerender } = render(group(["8", "3"]));
+    const order: string[] = [];
+    const roots = [...container.querySelectorAll<HTMLElement>(".flap")];
+    const width = window.innerWidth;
+    roots.forEach((root, index) => vi.spyOn(root, "getBoundingClientRect").mockImplementation(() => {
+      order.push(`read-${index}`);
+      return { left: width * (index ? .7 : .1), width: width * .2 } as DOMRect;
+    }));
+    vi.mocked(flapAudio.schedule).mockImplementation(() => { order.push("audio"); });
+    const start = clock.now;
+    rerender(group(["2", "7"]));
+    expect(order).toEqual([]);
+    expect(clock.pending).toBe(0);
+    await clock.prepare();
+    expect(order).toEqual(["read-0", "read-1", "audio", "audio"]);
+    expect(animations).toHaveLength(0);
+    expect(clock.pending).toBe(1);
+    const calls = vi.mocked(flapAudio.schedule).mock.calls;
+    calls.forEach(([owner, events], index) => {
+      const plan = makeIndexedFlapPlan(index ? "3" : "8", index ? "7" : "2", DIGIT_ROTOR, `${owner}:${index}`, start);
+      expect(events.map(event => event.at)).toEqual(plan.steps.map(step => step.landAt));
+      events.forEach(event => expect(event.pan).toBeCloseTo(index ? .6 : -.6));
+    });
+    clock.frameAt(start + 300);
+    expect(flapAudio.schedule).toHaveBeenCalledTimes(2);
+  });
+
+  it.each(["unmount", "hidden", "reduced", "disconnected"])("does not register audio when %s precedes preparation", async mode => {
+    const { container, rerender, unmount } = render(cell("8"));
+    rerender(cell("2"));
+    if (mode === "unmount") unmount();
+    if (mode === "hidden") {
+      vi.spyOn(document, "hidden", "get").mockReturnValue(true);
+      act(() => document.dispatchEvent(new Event("visibilitychange")));
+    }
+    if (mode === "reduced") rerender(cell("2", true));
+    if (mode === "disconnected") container.remove();
+    await clock.prepare();
+    expect(flapAudio.schedule).not.toHaveBeenCalled();
+    expect(animations).toHaveLength(0);
+    expect(clock.pending).toBe(0);
+    expect(getFlapSchedulerState()).toEqual({ activeCells: 0, framePending: false });
+  });
+
+  it("only registers the latest target when it changes before preparation", async () => {
+    const { rerender } = render(cell("8"));
+    rerender(cell("2"));
+    rerender(cell("4"));
+    await clock.prepare();
+    expect(flapAudio.schedule).toHaveBeenCalledTimes(1);
+    expect(scheduled()).toHaveLength(6); // 8 → 9 → 0 → 1 → 2 → 3 → 4.
+    expect(animations).toHaveLength(0);
+  });
+
+  it("shows an indexed initial value without work and preserves every 8 → 2 leaf and sound", async () => {
     const { container, rerender } = render(cell("8"));
     expect(top(container)).toBe("8");
     expect(bottom(container)).toBe("8");
@@ -100,7 +185,7 @@ describe("optimized physical flap renderer", () => {
     const faces = [...container.querySelectorAll(".flap-motion, .flap-motion *")];
 
     rerender(cell("2"));
-    clock.flush();
+    await clock.flush();
     const events = scheduled();
     expect(events).toHaveLength(4);
     expect(events.map(event => event.kind)).toEqual(["flip", "flip", "flip", "stop"]);
@@ -124,16 +209,16 @@ describe("optimized physical flap renderer", () => {
 
     vi.mocked(flapAudio.schedule).mockClear();
     rerender(cell("2"));
-    clock.flush();
+    await clock.flush();
     expect(flapAudio.schedule).not.toHaveBeenCalled();
     expect(clock.pending).toBe(0);
   });
 
-  it("keeps every syllable of the longest station drum transition and turns back to the blank leaf", () => {
+  it("keeps every syllable of the longest station drum transition and turns back to the blank leaf", async () => {
     const rotor = STATION_CHARACTER_ROTOR;
     const { container, rerender } = render(cell(rotor[0], false, rotor));
     rerender(cell(rotor.at(-1)!, false, rotor));
-    clock.flush();
+    await clock.flush();
     const events = scheduled();
     expect(events).toHaveLength(rotor.length - 1);
     const observed: string[] = [];
@@ -145,24 +230,24 @@ describe("optimized physical flap renderer", () => {
     clock.frameAt(events.at(-1)!.at);
     expect(top(container)).toBe(rotor.at(-1));
     rerender(cell(" ", false, rotor));
-    clock.flush();
+    await clock.flush();
     expect(scheduled()).toHaveLength(1);
     clock.frameAt(scheduled()[0].at);
     expect(top(container)).toBe(" ");
     expect(bottom(container)).toBe(" ");
   });
 
-  it("redirects from the last landed leaf and cancels the old sound owner", () => {
+  it("redirects from the last landed leaf and cancels the old sound owner", async () => {
     const { container, rerender } = render(cell("8"));
     rerender(cell("2"));
-    clock.flush();
+    await clock.flush();
     const [owner, events] = vi.mocked(flapAudio.schedule).mock.calls[0];
     clock.frameAt(events[0].at + FLAP_MS / 2);
     expect(incoming(container)).toBe("0"); // 9 has landed; 0 is still falling.
     vi.mocked(flapAudio.cancel).mockClear();
 
     rerender(cell("0"));
-    clock.flush();
+    await clock.flush();
     expect(flapAudio.cancel).toHaveBeenCalledWith(owner);
     expect(scheduled()).toHaveLength(1); // 9 → 0, not 8 → 9 → 0.
     clock.frameAt(scheduled()[0].at);
@@ -171,23 +256,64 @@ describe("optimized physical flap renderer", () => {
     expect(clock.pending).toBe(0);
   });
 
-  it("reconciles a landed leaf before retargeting even if no frame callback ran", () => {
+  it("skips redundant native cancellation after settling while preserving restarts and interruption", async () => {
+    const { container, rerender, unmount } = render(cell("0"));
+    rerender(cell("1"));
+    await clock.prepare();
+    clock.frameAt(scheduled()[0].at - FLAP_MS / 2);
+    expect(animations).toHaveLength(4);
+    clock.frameAt(scheduled()[0].at);
+    expect(animations.every(animation => animation.playState === "idle")).toBe(true);
+    animations.forEach(animation => animation.cancel.mockClear());
+
+    rerender(cell("3"));
+    await clock.prepare();
+    animations.forEach(animation => expect(animation.cancel).not.toHaveBeenCalled());
+    const events = scheduled();
+    clock.frameAt(events[0].at - FLAP_MS / 2);
+    expect(incoming(container)).toBe("2");
+    clock.frameAt(events[1].at - FLAP_MS / 2);
+    expect(incoming(container)).toBe("3");
+    animations.forEach(animation => {
+      expect(animation.cancel).toHaveBeenCalledTimes(2);
+      expect(animation.playState).toBe("running");
+      animation.cancel.mockClear();
+    });
+
+    rerender(cell("4")); // 2 landed; 3 is interrupted and must stop exactly once.
+    await clock.prepare();
+    expect(scheduled()).toHaveLength(2);
+    animations.forEach(animation => {
+      expect(animation.cancel).toHaveBeenCalledOnce();
+      expect(animation.playState).toBe("idle");
+    });
+    clock.frameAt(scheduled()[0].at - FLAP_MS / 2);
+    expect(incoming(container)).toBe("3");
+    expect(animations.every(animation => animation.playState === "running")).toBe(true);
+    clock.frameAt(scheduled().at(-1)!.at);
+    expect(top(container)).toBe("4");
+    animations.forEach(animation => animation.cancel.mockClear());
+    unmount();
+    animations.forEach(animation => expect(animation.cancel).not.toHaveBeenCalled());
+  });
+
+  it("reconciles a landed leaf before retargeting even if no frame callback ran", async () => {
     const { container, rerender } = render(cell("8"));
     rerender(cell("2"));
-    clock.flush();
+    await clock.flush();
     const events = scheduled();
     clock.elapseTo(events[1].at + 10); // 0 landed during a blocked frame.
     rerender(cell("1"));
-    clock.flush();
+    await clock.flush();
     expect(scheduled()).toHaveLength(1);
     clock.frameAt(scheduled()[0].at);
     expect(top(container)).toBe("1");
   });
 
-  it("cancels an unfinished turn when the target returns to the settled value", () => {
+  it("cancels an unfinished turn when the target returns to the settled value", async () => {
     const { container, rerender } = render(cell("8"));
     rerender(cell("2"));
-    clock.flush();
+    await clock.flush();
     clock.frameAt(scheduled()[0].at - FLAP_MS / 2);
     vi.mocked(flapAudio.schedule).mockClear();
     rerender(cell("8"));
@@ -198,10 +324,10 @@ describe("optimized physical flap renderer", () => {
     expect(animations.every(animation => animation.playState === "idle")).toBe(true);
   });
 
-  it("resumes at the current phase after a stalled frame without replaying expired leaves", () => {
+  it("resumes at the current phase after a stalled frame without replaying expired leaves", async () => {
     const { container, rerender } = render(cell("8"));
     rerender(cell("2"));
-    clock.flush();
+    await clock.flush();
     const events = scheduled();
     const playsBeforeStall = animations.reduce((count, animation) => count + animation.play.mock.calls.length, 0);
     const time = events[2].at - 40; // Third leaf (0 → 1), 120ms into its 160ms turn.
@@ -218,14 +344,15 @@ describe("optimized physical flap renderer", () => {
     expect(clock.pending).toBe(0);
   });
 
-  it("uses one pending frame for multiple active cells and stops after all settle", () => {
+  it("uses one pending frame for multiple active cells and stops after all settle", async () => {
     const group = (values: string[]) => <>{values.map((value, index) =>
       <OptimizedFlapCharacter key={index} value={value} index={index} reduced={false} rotor={DIGIT_ROTOR} />)}</>;
     const { rerender } = render(group(["8", "3", "1"]));
     rerender(group(["2", "7", "1"]));
+    await clock.prepare();
     expect(clock.pending).toBe(1);
     expect(getFlapSchedulerState()).toEqual({ activeCells: 2, framePending: true });
-    clock.flush();
+    await clock.flush();
     expect(flapAudio.schedule).toHaveBeenCalledTimes(2);
     clock.frameAt(clock.now + 100);
     expect(clock.pending).toBe(1);
@@ -235,10 +362,10 @@ describe("optimized physical flap renderer", () => {
     expect(clock.pending).toBe(0);
   });
 
-  it("settles immediately on hide and reduced motion, cancelling sounds and animations", () => {
+  it("settles immediately on hide and reduced motion, cancelling sounds and animations", async () => {
     const { container, rerender } = render(cell("8"));
     rerender(cell("2"));
-    clock.flush();
+    await clock.flush();
     clock.frameAt(scheduled()[0].at - 40);
     const owner = vi.mocked(flapAudio.schedule).mock.calls[0][0];
     vi.spyOn(document, "hidden", "get").mockReturnValue(true);
@@ -251,7 +378,7 @@ describe("optimized physical flap renderer", () => {
 
     vi.spyOn(document, "hidden", "get").mockReturnValue(false);
     rerender(cell("7"));
-    clock.flush();
+    await clock.flush();
     clock.frameAt(scheduled()[0].at - 40);
     rerender(cell("7", true));
     expect(top(container)).toBe("7");
@@ -264,7 +391,7 @@ describe("optimized physical flap renderer", () => {
     expect(flapAudio.schedule).not.toHaveBeenCalled();
   });
 
-  it("shows a character missing from the drum directly without scheduling work", () => {
+  it("shows a character missing from the drum directly without scheduling work", async () => {
     const { container, rerender } = render(cell("8"));
     rerender(cell("?"));
     expect(top(container)).toBe("?");
@@ -276,10 +403,10 @@ describe("optimized physical flap renderer", () => {
     expect(flapAudio.schedule).not.toHaveBeenCalled();
   });
 
-  it("keeps the hidden-settled target when time passes before a visible retarget", () => {
+  it("keeps the hidden-settled target when time passes before a visible retarget", async () => {
     const { container, rerender } = render(cell("1"));
     rerender(cell("8"));
-    clock.flush();
+    await clock.flush();
     const oldEvents = scheduled();
     clock.frameAt(oldEvents[0].at + 10);
     vi.spyOn(document, "hidden", "get").mockReturnValue(true);
@@ -292,24 +419,26 @@ describe("optimized physical flap renderer", () => {
     vi.spyOn(document, "hidden", "get").mockReturnValue(false);
     act(() => document.dispatchEvent(new Event("visibilitychange")));
     rerender(cell("9"));
-    clock.flush();
+    await clock.flush();
     expect(scheduled()).toHaveLength(1); // Must start at 8, not resume the old plan.
     clock.frameAt(scheduled()[0].at);
     expect(top(container)).toBe("9");
     expect(bottom(container)).toBe("9");
   });
 
-  it("cleans up StrictMode remounts and an unmount in mid-flip", () => {
+  it("cleans up StrictMode remounts and an unmount in mid-flip", async () => {
     const view = (value: string) => <StrictMode>
       <OptimizedFlapCharacter value={value} index={0} reduced={false} />
     </StrictMode>;
     const { container, rerender, unmount } = render(view("A"));
+    await clock.prepare();
     expect(clock.pending).toBe(1);
-    clock.flush();
+    expect(flapAudio.schedule).toHaveBeenCalledTimes(1);
+    await clock.flush();
     const latest = scheduled();
     clock.frameAt(latest[0].at - 40);
     rerender(view("B"));
-    clock.flush();
+    await clock.flush();
     expect(clock.pending).toBe(1);
     clock.frameAt(scheduled()[0].at - 40);
     expect(container.querySelector(".flap")).toHaveAttribute("data-flipping", "true");

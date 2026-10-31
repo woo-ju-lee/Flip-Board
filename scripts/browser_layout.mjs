@@ -2,11 +2,12 @@
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
+import { resolve } from 'node:path';
 
 const modulePath = process.env.KORAIL_BROWSER_MODULE || new URL('../frontend/node_modules/playwright/index.mjs', import.meta.url).href;
 const { chromium } = await import(modulePath);
 const base = process.env.KORAIL_TEST_URL || 'http://127.0.0.1:8000';
-const out = fileURLToPath(new URL('../artifacts/', import.meta.url));
+const out = process.env.KORAIL_ARTIFACT_DIR ? resolve(process.env.KORAIL_ARTIFACT_DIR) : fileURLToPath(new URL('../artifacts/', import.meta.url));
 await mkdir(out, { recursive:true });
 const browser = await chromium.launch({ headless:true,
   ...(process.env.KORAIL_BROWSER_EXECUTABLE ? { executablePath:process.env.KORAIL_BROWSER_EXECUTABLE } : {}),
@@ -22,7 +23,7 @@ try {
   await page.evaluate(()=>document.fonts.ready);
   assert.equal(await page.locator('.rows .board-row').count(),10);
   assert.equal(await page.locator('.board-columns > [role=columnheader]').count(),5);
-  assert.equal(await page.locator('.logo-leaf[data-value="KTX-청룡"] .flap-top img').evaluate(img=>img.complete&&img.naturalWidth>0),true);
+  assert.equal(await page.locator('.logo-leaf[data-value="KTX-청룡"] > .flap-top img').evaluate(img=>img.complete&&img.naturalWidth>0),true);
   const characterLeaves=page.locator('.rows .flap:not(.flap-panel)');
   assert.equal(await characterLeaves.evaluateAll(leaves=>leaves.every(el=>
     getComputedStyle(el).fontWeight==='400'&&getComputedStyle(el).fontFamily.startsWith('"IBM Plex Sans KR"'))),true);

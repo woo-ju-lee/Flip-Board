@@ -2,11 +2,12 @@
 import assert from 'node:assert/strict';
 import { readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
+import { resolve } from 'node:path';
 import { installAudioProbe } from './audio_probe.mjs';
 
 const modulePath = process.env.KORAIL_BROWSER_MODULE || new URL('../frontend/node_modules/playwright/index.mjs', import.meta.url).href;
 const { chromium } = await import(modulePath);
-const out = fileURLToPath(new URL('../artifacts/', import.meta.url));
+const out = process.env.KORAIL_ARTIFACT_DIR ? resolve(process.env.KORAIL_ARTIFACT_DIR) : fileURLToPath(new URL('../artifacts/', import.meta.url));
 const prefix = 'rotor-demo-character-layout';
 const browser = await chromium.launch({ headless: true,
   ...(process.env.KORAIL_BROWSER_EXECUTABLE ? { executablePath: process.env.KORAIL_BROWSER_EXECUTABLE } : {}),

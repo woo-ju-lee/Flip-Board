@@ -2,6 +2,7 @@ import { memo, useEffect, useId, useRef } from "react";
 import { flapAudio } from "../audio";
 import { FLAP_MS, makeFlapPlan, makeIndexedFlapPlan, soundEvents, type FlapStep } from "../flapMotion";
 import { scheduleFlap } from "../flapScheduler";
+import { readFlapPan, registerFlapPan } from "../flapPan";
 
 type Faces = {
   top: Text;
@@ -13,6 +14,7 @@ type Faces = {
   outShade: HTMLElement;
   inShade: HTMLElement;
   animations: Animation[] | null;
+  animationsActive: boolean;
 };
 
 function text(node: Text, value: string) {
@@ -32,11 +34,14 @@ function facesFor(root: HTMLElement): Faces {
     outShade: out.querySelector<HTMLElement>(".flap-shade")!,
     inShade: into.querySelector<HTMLElement>(".flap-shade")!,
     animations: null,
+    animationsActive: false,
   };
 }
 
 function cancelAnimations(faces: Faces) {
+  if (!faces.animationsActive) return;
   faces.animations?.forEach(animation => animation.cancel());
+  faces.animationsActive = false;
 }
 
 function showSettled(root: HTMLElement, faces: Faces, value: string) {
@@ -45,7 +50,7 @@ function showSettled(root: HTMLElement, faces: Faces, value: string) {
   text(faces.bottom, value);
   text(faces.outgoing, value);
   text(faces.incoming, value);
-  root.dataset.flipping = "false";
+  if (root.dataset.flipping !== "false") root.dataset.flipping = "false";
 }
 
 function startLeaf(root: HTMLElement, faces: Faces, step: FlapStep, elapsed: number) {
@@ -85,6 +90,7 @@ function startLeaf(root: HTMLElement, faces: Faces, step: FlapStep, elapsed: num
     // its clock on a later frame. The fallback also supports test DOMs.
     if (typeof timelineTime === "number") animation.startTime = timelineTime - elapsed;
   }
+  faces.animationsActive = true;
 }
 
 /**
@@ -100,6 +106,8 @@ export const OptimizedFlapCharacter = memo(function OptimizedFlapCharacter({ val
   const initial = useRef(rotor ? value : " ");
   const settled = useRef(initial.current);
   const faces = useRef<Faces | null>(null);
+
+  useEffect(() => registerFlapPan(element.current!), []);
 
   useEffect(() => {
     const root = element.current!;
@@ -125,7 +133,6 @@ export const OptimizedFlapCharacter = memo(function OptimizedFlapCharacter({ val
     let landed = 0;
     let displayed = -1;
     let pan = 0;
-    let soundScheduled = false;
     let cancelled = false;
     let unregister = () => {};
     const reconcileLanded = (time: number) => {
@@ -145,15 +152,15 @@ export const OptimizedFlapCharacter = memo(function OptimizedFlapCharacter({ val
     };
     unregister = scheduleFlap({
       prepare() {
-        const bounds = root.getBoundingClientRect();
-        pan = ((bounds.left + bounds.width / 2) / Math.max(1, window.innerWidth)) * 2 - 1;
+        if (cancelled || !root.isConnected) { cancel(); return; }
+        pan = readFlapPan(root);
+      },
+      onPrepared() {
+        if (cancelled || !root.isConnected) { cancel(); return; }
+        flapAudio.schedule(owner, soundEvents(plan, pan));
       },
       update(time) {
-        if (cancelled) return false;
-        if (!soundScheduled) {
-          soundScheduled = true;
-          flapAudio.schedule(owner, soundEvents(plan, pan));
-        }
+        if (cancelled || !root.isConnected) { cancel(); return false; }
         reconcileLanded(time);
         if (landed === plan.steps.length) {
           finish();

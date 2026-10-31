@@ -3,10 +3,10 @@
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 
 const frontend = fileURLToPath(new URL('../frontend/', import.meta.url));
-const out = fileURLToPath(new URL('../artifacts/', import.meta.url));
+const out = process.env.KORAIL_ARTIFACT_DIR ? resolve(process.env.KORAIL_ARTIFACT_DIR) : fileURLToPath(new URL('../artifacts/', import.meta.url));
 const require = createRequire(join(frontend, 'package.json'));
 const { build } = require('esbuild');
 const performanceDemo = process.argv.includes('--performance');
