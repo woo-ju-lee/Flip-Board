@@ -1,5 +1,6 @@
 // Produce offline demos from the same React components and audio engine.
 // --performance writes separate optimized and legacy comparison files.
+// --services writes the station-stop and service-route filtering demo.
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
@@ -10,7 +11,10 @@ const out = process.env.KORAIL_ARTIFACT_DIR ? resolve(process.env.KORAIL_ARTIFAC
 const require = createRequire(join(frontend, 'package.json'));
 const { build } = require('esbuild');
 const performanceDemo = process.argv.includes('--performance');
-const variants = performanceDemo
+const serviceDemo = process.argv.includes('--services');
+const variants = serviceDemo
+  ? [{ file: 'station-service-demo.html', title: '정차역·운행 노선 · 스플릿 플랩 데모', component: 'ServiceDemo', props: '' }]
+  : performanceDemo
   ? ['optimized', 'legacy'].map(renderer => ({
     file: `flap-performance-${renderer}.html`,
     title: `스플릿 플랩 성능 비교 · ${renderer === 'optimized' ? '개선판' : '기존판'}`,

@@ -12,6 +12,14 @@ export interface Train {
   delay_status: "unknown" | "on_time" | "delayed";
   received_at: string;
   source_timestamp: string | null;
+  service?: {
+    line_id: string;
+    line_name: string;
+    stop_names: string[];
+    source_title: string;
+    source_url: string;
+    service_date: string;
+  };
   match: {
     status: "matched" | "unknown" | "ambiguous";
     line_id: string | null;
@@ -52,6 +60,9 @@ export interface TrainResponse {
     state: string;
     message: string;
     available_line_ids: string[];
+    basis?: "timetable";
+    mapped_count?: number;
+    unmapped_count?: number;
   };
 }
 export interface RailLine {

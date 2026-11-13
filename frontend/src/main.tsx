@@ -10,6 +10,7 @@ import "./board-layout.css";
 
 const RotorDemo = lazy(() => import("./RotorDemo"));
 const PerformanceDemo = lazy(() => import("./PerformanceDemo"));
+const ServiceDemo = lazy(() => import("./ServiceDemo"));
 const params = new URLSearchParams(window.location.search);
 const demo = params.get("demo");
 
@@ -18,7 +19,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <div className="board-theme monochrome-board">
       <FlapRendererProvider>
         <Suspense fallback={null}>
-          {demo === "performance"
+          {demo === "services" ? <ServiceDemo /> : demo === "performance"
             ? <PerformanceDemo renderer={params.get("renderer") === "legacy" ? "legacy" : "optimized"} />
             : demo === "rotors" ? <RotorDemo /> : <App />}
         </Suspense>

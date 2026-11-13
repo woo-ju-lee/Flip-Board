@@ -6,10 +6,12 @@ import type { Train, Source } from "../types";
 export function TrainDetail({
   train,
   source,
+  timetableDemo = false,
   onClose,
 }: {
   train: Train;
   source: Source;
+  timetableDemo?: boolean;
   onClose: () => void;
 }) {
   useEffect(() => {
@@ -47,6 +49,27 @@ export function TrainDetail({
         {train.origin} <span>→</span> {train.destination}
       </p>
       <dl>
+        {timetableDemo && (
+          <>
+            <div>
+              <dt>운행 노선</dt>
+              <dd>{train.service?.line_name ?? "시간표 미확인"}</dd>
+            </div>
+            <div>
+              <dt>정차역</dt>
+              <dd>{train.service?.stop_names.join(" → ") ?? "공식 시간표와 일치하는 정차 정보를 확인하지 못했습니다."}</dd>
+            </div>
+            {train.service && (
+              <div>
+                <dt>정차역 출처</dt>
+                <dd>
+                  <a href={train.service.source_url} target="_blank" rel="noreferrer">{train.service.source_title}</a>
+                  {" · "}{train.service.service_date} 운행 기준
+                </dd>
+              </div>
+            )}
+          </>
+        )}
         <div>
           <dt>현재 위치 문구</dt>
           <dd>{train.position_label}</dd>
@@ -60,7 +83,7 @@ export function TrainDetail({
           <dd>{train.coordinates.map((n) => n.toFixed(6)).join(", ")}</dd>
         </div>
         <div>
-          <dt>노선 판별</dt>
+          <dt>{timetableDemo ? "현재 주행 선로" : "노선 판별"}</dt>
           <dd>
             {train.match.status === "matched"
               ? `${train.match.line_id} · 도형 기준 추정`

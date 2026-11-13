@@ -1,0 +1,5765 @@
+{
+  "schema_version": 1,
+  "service_date": "2026-10-26",
+  "sources": [
+    {
+      "id": "korail-ktx-20260901",
+      "title": "코레일 KTX 열차시간표 (2026.9.1. 시행)",
+      "url": "https://www.korail.com/file/cubedata/COMMON/jfile/202608/25/202608251a036897009480.xlsx",
+      "effective_from": "2026-09-01",
+      "effective_until": "2026-11-01",
+      "sha256": "cf69ea35e0b6ad9fb82c0e0b44f60833e34eadab55ea610eaf6784622351e9d0"
+    },
+    {
+      "id": "korail-regular-20260901",
+      "title": "코레일 일반열차 시간표 (2026.9.1. 시행)",
+      "url": "https://www.korail.com/file/cubedata/COMMON/jfile/202608/25/202608251a036890aa0430.xlsx",
+      "effective_from": "2026-09-01",
+      "effective_until": "2026-11-01",
+      "sha256": "2c1531ebce6ffd9aa18f51cc91d8fe4bffd7d95093dc970e21f5cc1964d3b61d"
+    }
+  ],
+  "lines": [
+    {
+      "id": "service-gyeongbu",
+      "name": "경부선",
+      "type": "service",
+      "coverage": "partial",
+      "note": "공식 시간표와 운행일·열차번호·출발/도착역·예정시각이 일치한 기록만 포함합니다.",
+      "source": "코레일 2026.9.1. 시행 시간표의 노선별 시트"
+    },
+    {
+      "id": "service-gyeongjeon",
+      "name": "경전선",
+      "type": "service",
+      "coverage": "partial",
+      "note": "공식 시간표와 운행일·열차번호·출발/도착역·예정시각이 일치한 기록만 포함합니다.",
+      "source": "코레일 2026.9.1. 시행 시간표의 노선별 시트"
+    },
+    {
+      "id": "service-donghae",
+      "name": "동해선",
+      "type": "service",
+      "coverage": "partial",
+      "note": "공식 시간표와 운행일·열차번호·출발/도착역·예정시각이 일치한 기록만 포함합니다.",
+      "source": "코레일 2026.9.1. 시행 시간표의 노선별 시트"
+    },
+    {
+      "id": "service-honam",
+      "name": "호남선",
+      "type": "service",
+      "coverage": "partial",
+      "note": "공식 시간표와 운행일·열차번호·출발/도착역·예정시각이 일치한 기록만 포함합니다.",
+      "source": "코레일 2026.9.1. 시행 시간표의 노선별 시트"
+    },
+    {
+      "id": "service-jeolla",
+      "name": "전라선",
+      "type": "service",
+      "coverage": "partial",
+      "note": "공식 시간표와 운행일·열차번호·출발/도착역·예정시각이 일치한 기록만 포함합니다.",
+      "source": "코레일 2026.9.1. 시행 시간표의 노선별 시트"
+    },
+    {
+      "id": "service-gangneung",
+      "name": "강릉선",
+      "type": "service",
+      "coverage": "partial",
+      "note": "공식 시간표와 운행일·열차번호·출발/도착역·예정시각이 일치한 기록만 포함합니다.",
+      "source": "코레일 2026.9.1. 시행 시간표의 노선별 시트"
+    },
+    {
+      "id": "service-jungang",
+      "name": "중앙선",
+      "type": "service",
+      "coverage": "partial",
+      "note": "공식 시간표와 운행일·열차번호·출발/도착역·예정시각이 일치한 기록만 포함합니다.",
+      "source": "코레일 2026.9.1. 시행 시간표의 노선별 시트"
+    },
+    {
+      "id": "service-janghang",
+      "name": "장항선",
+      "type": "service",
+      "coverage": "partial",
+      "note": "공식 시간표와 운행일·열차번호·출발/도착역·예정시각이 일치한 기록만 포함합니다.",
+      "source": "코레일 2026.9.1. 시행 시간표의 노선별 시트"
+    },
+    {
+      "id": "service-chungbuk",
+      "name": "충북선",
+      "type": "service",
+      "coverage": "partial",
+      "note": "공식 시간표와 운행일·열차번호·출발/도착역·예정시각이 일치한 기록만 포함합니다.",
+      "source": "코레일 2026.9.1. 시행 시간표의 노선별 시트"
+    },
+    {
+      "id": "service-gyeongbuk",
+      "name": "경북선",
+      "type": "service",
+      "coverage": "partial",
+      "note": "공식 시간표와 운행일·열차번호·출발/도착역·예정시각이 일치한 기록만 포함합니다.",
+      "source": "코레일 2026.9.1. 시행 시간표의 노선별 시트"
+    },
+    {
+      "id": "service-seohae",
+      "name": "서해선",
+      "type": "service",
+      "coverage": "partial",
+      "note": "공식 시간표와 운행일·열차번호·출발/도착역·예정시각이 일치한 기록만 포함합니다.",
+      "source": "코레일 2026.9.1. 시행 시간표의 노선별 시트"
+    }
+  ],
+  "stations": [
+    {
+      "id": "강경",
+      "name": "강경",
+      "aliases": [
+        "강경",
+        "강경역"
+      ],
+      "line_ids": [
+        "service-honam",
+        "service-jeolla"
+      ]
+    },
+    {
+      "id": "강릉",
+      "name": "강릉",
+      "aliases": [
+        "강릉",
+        "강릉역"
+      ],
+      "line_ids": [
+        "service-donghae",
+        "service-gangneung"
+      ]
+    },
+    {
+      "id": "개포",
+      "name": "개포",
+      "aliases": [
+        "개포",
+        "개포역"
+      ],
+      "line_ids": [
+        "service-gyeongbuk"
+      ]
+    },
+    {
+      "id": "경산",
+      "name": "경산",
+      "aliases": [
+        "경산",
+        "경산역"
+      ],
+      "line_ids": [
+        "service-gyeongbu",
+        "service-gyeongjeon"
+      ]
+    },
+    {
+      "id": "경주",
+      "name": "경주",
+      "aliases": [
+        "경주",
+        "경주역"
+      ],
+      "line_ids": [
+        "service-donghae",
+        "service-gyeongbu",
+        "service-jungang"
+      ]
+    },
+    {
+      "id": "계룡",
+      "name": "계룡",
+      "aliases": [
+        "계룡",
+        "계룡역"
+      ],
+      "line_ids": [
+        "service-honam",
+        "service-jeolla"
+      ]
+    },
+    {
+      "id": "고래불",
+      "name": "고래불",
+      "aliases": [
+        "고래불",
+        "고래불역"
+      ],
+      "line_ids": [
+        "service-donghae"
+      ]
+    },
+    {
+      "id": "곡성",
+      "name": "곡성",
+      "aliases": [
+        "곡성",
+        "곡성역"
+      ],
+      "line_ids": [
+        "service-jeolla"
+      ]
+    },
+    {
+      "id": "공주",
+      "name": "공주",
+      "aliases": [
+        "공주",
+        "공주역"
+      ],
+      "line_ids": [
+        "service-honam",
+        "service-jeolla"
+      ]
+    },
+    {
+      "id": "광명",
+      "name": "광명",
+      "aliases": [
+        "광명",
+        "광명역"
+      ],
+      "line_ids": [
+        "service-donghae",
+        "service-gyeongbu",
+        "service-gyeongjeon",
+        "service-honam",
+        "service-jeolla"
+      ]
+    },
+    {
+      "id": "광주",
+      "name": "광주",
+      "aliases": [
+        "광주",
+        "광주역"
+      ],
+      "line_ids": [
+        "service-honam"
+      ]
+    },
+    {
+      "id": "광주송정",
+      "name": "광주송정",
+      "aliases": [
+        "광주송정",
+        "광주송정역"
+      ],
+      "line_ids": [
+        "service-honam"
+      ]
+    },
+    {
+      "id": "광천",
+      "name": "광천",
+      "aliases": [
+        "광천",
+        "광천역"
+      ],
+      "line_ids": [
+        "service-janghang"
+      ]
+    },
+    {
+      "id": "구례구",
+      "name": "구례구",
+      "aliases": [
+        "구례구",
+        "구례구역"
+      ],
+      "line_ids": [
+        "service-jeolla"
+      ]
+    },
+    {
+      "id": "구미",
+      "name": "구미",
+      "aliases": [
+        "구미",
+        "구미역"
+      ],
+      "line_ids": [
+        "service-gyeongbu"
+      ]
+    },
+    {
+      "id": "구포",
+      "name": "구포",
+      "aliases": [
+        "구포",
+        "구포역"
+      ],
+      "line_ids": [
+        "service-gyeongbu"
+      ]
+    },
+    {
+      "id": "군북",
+      "name": "군북",
+      "aliases": [
+        "군북",
+        "군북역"
+      ],
+      "line_ids": [
+        "service-gyeongjeon"
+      ]
+    },
+    {
+      "id": "군산",
+      "name": "군산",
+      "aliases": [
+        "군산",
+        "군산역"
+      ],
+      "line_ids": [
+        "service-janghang"
+      ]
+    },
+    {
+      "id": "극락강",
+      "name": "극락강",
+      "aliases": [
+        "극락강",
+        "극락강역"
+      ],
+      "line_ids": [
+        "service-honam"
+      ]
+    },
+    {
+      "id": "근덕",
+      "name": "근덕",
+      "aliases": [
+        "근덕",
+        "근덕역"
+      ],
+      "line_ids": [
+        "service-donghae"
+      ]
+    },
+    {
+      "id": "기성",
+      "name": "기성",
+      "aliases": [
+        "기성",
+        "기성역"
+      ],
+      "line_ids": [
+        "service-donghae"
+      ]
+    },
+    {
+      "id": "기장",
+      "name": "기장",
+      "aliases": [
+        "기장",
+        "기장역"
+      ],
+      "line_ids": [
+        "service-donghae"
+      ]
+    },
+    {
+      "id": "김제",
+      "name": "김제",
+      "aliases": [
+        "김제",
+        "김제역"
+      ],
+      "line_ids": [
+        "service-honam"
+      ]
+    },
+    {
+      "id": "김천",
+      "name": "김천",
+      "aliases": [
+        "김천",
+        "김천역"
+      ],
+      "line_ids": [
+        "service-gyeongbu",
+        "service-gyeongbuk"
+      ]
+    },
+    {
+      "id": "김천구미",
+      "name": "김천구미",
+      "aliases": [
+        "김천(구미)",
+        "김천구미",
+        "김천구미역"
+      ],
+      "line_ids": [
+        "service-gyeongbu",
+        "service-gyeongjeon"
+      ]
+    },
+    {
+      "id": "나주",
+      "name": "나주",
+      "aliases": [
+        "나주",
+        "나주역"
+      ],
+      "line_ids": [
+        "service-honam"
+      ]
+    },
+    {
+      "id": "남성현",
+      "name": "남성현",
+      "aliases": [
+        "남성현",
+        "남성현역"
+      ],
+      "line_ids": [
+        "service-gyeongbu"
+      ]
+    },
+    {
+      "id": "남원",
+      "name": "남원",
+      "aliases": [
+        "남원",
+        "남원역"
+      ],
+      "line_ids": [
+        "service-jeolla"
+      ]
+    },
+    {
+      "id": "남창",
+      "name": "남창",
+      "aliases": [
+        "남창",
+        "남창역"
+      ],
+      "line_ids": [
+        "service-jungang"
+      ]
+    },
+    {
+      "id": "논산",
+      "name": "논산",
+      "aliases": [
+        "논산",
+        "논산역"
+      ],
+      "line_ids": [
+        "service-honam",
+        "service-jeolla"
+      ]
+    },
+    {
+      "id": "단양",
+      "name": "단양",
+      "aliases": [
+        "단양",
+        "단양역"
+      ],
+      "line_ids": [
+        "service-jungang"
+      ]
+    },
+    {
+      "id": "대구",
+      "name": "대구",
+      "aliases": [
+        "대구",
+        "대구역"
+      ],
+      "line_ids": [
+        "service-gyeongbu"
+      ]
+    },
+    {
+      "id": "대야",
+      "name": "대야",
+      "aliases": [
+        "대야",
+        "대야역"
+      ],
+      "line_ids": [
+        "service-janghang"
+      ]
+    },
+    {
+      "id": "대전",
+      "name": "대전",
+      "aliases": [
+        "대전",
+        "대전역"
+      ],
+      "line_ids": [
+        "service-chungbuk",
+        "service-donghae",
+        "service-gyeongbu",
+        "service-gyeongjeon"
+      ]
+    },
+    {
+      "id": "대천",
+      "name": "대천",
+      "aliases": [
+        "대천",
+        "대천역"
+      ],
+      "line_ids": [
+        "service-janghang"
+      ]
+    },
+    {
+      "id": "덕소",
+      "name": "덕소",
+      "aliases": [
+        "덕소",
+        "덕소역"
+      ],
+      "line_ids": [
+        "service-jungang"
+      ]
+    },
+    {
+      "id": "도고온천",
+      "name": "도고온천",
+      "aliases": [
+        "도고온천",
+        "도고온천역"
+      ],
+      "line_ids": [
+        "service-janghang"
+      ]
+    },
+    {
+      "id": "동대구",
+      "name": "동대구",
+      "aliases": [
+        "동대구",
+        "동대구역"
+      ],
+      "line_ids": [
+        "service-donghae",
+        "service-gyeongbu",
+        "service-gyeongjeon"
+      ]
+    },
+    {
+      "id": "동탄",
+      "name": "동탄",
+      "aliases": [
+        "동탄",
+        "동탄역"
+      ],
+      "line_ids": [
+        "service-gyeongbu",
+        "service-gyeongjeon",
+        "service-honam"
+      ]
+    },
+    {
+      "id": "동해",
+      "name": "동해",
+      "aliases": [
+        "동해",
+        "동해역"
+      ],
+      "line_ids": [
+        "service-donghae",
+        "service-gangneung"
+      ]
+    },
+    {
+      "id": "둔내",
+      "name": "둔내",
+      "aliases": [
+        "둔내",
+        "둔내역"
+      ],
+      "line_ids": [
+        "service-gangneung"
+      ]
+    },
+    {
+      "id": "마산",
+      "name": "마산",
+      "aliases": [
+        "마산",
+        "마산역"
+      ],
+      "line_ids": [
+        "service-gyeongjeon"
+      ]
+    },
+    {
+      "id": "만종",
+      "name": "만종",
+      "aliases": [
+        "만종",
+        "만종역"
+      ],
+      "line_ids": [
+        "service-gangneung"
+      ]
+    },
+    {
+      "id": "매화",
+      "name": "매화",
+      "aliases": [
+        "매화",
+        "매화역"
+      ],
+      "line_ids": [
+        "service-donghae"
+      ]
+    },
+    {
+      "id": "목포",
+      "name": "목포",
+      "aliases": [
+        "목포",
+        "목포역"
+      ],
+      "line_ids": [
+        "service-honam"
+      ]
+    },
+    {
+      "id": "몽탄",
+      "name": "몽탄",
+      "aliases": [
+        "몽탄",
+        "몽탄역"
+      ],
+      "line_ids": [
+        "service-honam"
+      ]
+    },
+    {
+      "id": "무안",
+      "name": "무안",
+      "aliases": [
+        "무안",
+        "무안역"
+      ],
+      "line_ids": [
+        "service-honam"
+      ]
+    },
+    {
+      "id": "묵호",
+      "name": "묵호",
+      "aliases": [
+        "묵호",
+        "묵호역"
+      ],
+      "line_ids": [
+        "service-donghae",
+        "service-gangneung"
+      ]
+    },
+    {
+      "id": "물금",
+      "name": "물금",
+      "aliases": [
+        "물금",
+        "물금역"
+      ],
+      "line_ids": [
+        "service-gyeongbu"
+      ]
+    },
+    {
+      "id": "밀양",
+      "name": "밀양",
+      "aliases": [
+        "밀양",
+        "밀양역"
+      ],
+      "line_ids": [
+        "service-gyeongbu",
+        "service-gyeongjeon"
+      ]
+    },
+    {
+      "id": "백양사",
+      "name": "백양사",
+      "aliases": [
+        "백양사",
+        "백양사역"
+      ],
+      "line_ids": [
+        "service-honam"
+      ]
+    },
+    {
+      "id": "부강",
+      "name": "부강",
+      "aliases": [
+        "부강",
+        "부강역"
+      ],
+      "line_ids": [
+        "service-gyeongbu",
+        "service-jeolla"
+      ]
+    },
+    {
+      "id": "부산",
+      "name": "부산",
+      "aliases": [
+        "부산",
+        "부산역"
+      ],
+      "line_ids": [
+        "service-gyeongbu"
+      ]
+    },
+    {
+      "id": "부전",
+      "name": "부전",
+      "aliases": [
+        "부전",
+        "부전역"
+      ],
+      "line_ids": [
+        "service-donghae",
+        "service-jungang"
+      ]
+    },
+    {
+      "id": "북울산",
+      "name": "북울산",
+      "aliases": [
+        "북울산",
+        "북울산역"
+      ],
+      "line_ids": [
+        "service-donghae"
+      ]
+    },
+    {
+      "id": "삼랑진",
+      "name": "삼랑진",
+      "aliases": [
+        "삼랑진",
+        "삼랑진역"
+      ],
+      "line_ids": [
+        "service-gyeongbu"
+      ]
+    },
+    {
+      "id": "삼례",
+      "name": "삼례",
+      "aliases": [
+        "삼례",
+        "삼례역"
+      ],
+      "line_ids": [
+        "service-jeolla"
+      ]
+    },
+    {
+      "id": "삼척",
+      "name": "삼척",
+      "aliases": [
+        "삼척",
+        "삼척역"
+      ],
+      "line_ids": [
+        "service-donghae"
+      ]
+    },
+    {
+      "id": "삽교",
+      "name": "삽교",
+      "aliases": [
+        "삽교",
+        "삽교역"
+      ],
+      "line_ids": [
+        "service-janghang",
+        "service-seohae"
+      ]
+    },
+    {
+      "id": "상동",
+      "name": "상동",
+      "aliases": [
+        "상동",
+        "상동역"
+      ],
+      "line_ids": [
+        "service-gyeongbu",
+        "service-gyeongjeon"
+      ]
+    },
+    {
+      "id": "상봉",
+      "name": "상봉",
+      "aliases": [
+        "상봉",
+        "상봉역"
+      ],
+      "line_ids": [
+        "service-gangneung",
+        "service-jungang"
+      ]
+    },
+    {
+      "id": "상주",
+      "name": "상주",
+      "aliases": [
+        "상주",
+        "상주역"
+      ],
+      "line_ids": [
+        "service-gyeongbuk"
+      ]
+    },
+    {
+      "id": "서경주",
+      "name": "서경주",
+      "aliases": [
+        "서경주",
+        "서경주역"
+      ],
+      "line_ids": [
+        "service-donghae"
+      ]
+    },
+    {
+      "id": "서대구",
+      "name": "서대구",
+      "aliases": [
+        "서대구",
+        "서대구역"
+      ],
+      "line_ids": [
+        "service-donghae",
+        "service-gyeongbu",
+        "service-gyeongjeon"
+      ]
+    },
+    {
+      "id": "서대전",
+      "name": "서대전",
+      "aliases": [
+        "서대전",
+        "서대전역"
+      ],
+      "line_ids": [
+        "service-honam",
+        "service-jeolla"
+      ]
+    },
+    {
+      "id": "서울",
+      "name": "서울",
+      "aliases": [
+        "서울",
+        "서울역"
+      ],
+      "line_ids": [
+        "service-donghae",
+        "service-gangneung",
+        "service-gyeongbu",
+        "service-gyeongjeon",
+        "service-honam",
+        "service-jeolla",
+        "service-jungang"
+      ]
+    },
+    {
+      "id": "서원주",
+      "name": "서원주",
+      "aliases": [
+        "서원주",
+        "서원주역"
+      ],
+      "line_ids": [
+        "service-gangneung",
+        "service-jungang"
+      ]
+    },
+    {
+      "id": "서정리",
+      "name": "서정리",
+      "aliases": [
+        "서정리",
+        "서정리역"
+      ],
+      "line_ids": [
+        "service-honam"
+      ]
+    },
+    {
+      "id": "서천",
+      "name": "서천",
+      "aliases": [
+        "서천",
+        "서천역"
+      ],
+      "line_ids": [
+        "service-janghang"
+      ]
+    },
+    {
+      "id": "서화성",
+      "name": "서화성",
+      "aliases": [
+        "서화성",
+        "서화성역"
+      ],
+      "line_ids": [
+        "service-seohae"
+      ]
+    },
+    {
+      "id": "수서",
+      "name": "수서",
+      "aliases": [
+        "수서",
+        "수서역"
+      ],
+      "line_ids": [
+        "service-donghae",
+        "service-gyeongbu",
+        "service-gyeongjeon",
+        "service-honam",
+        "service-jeolla"
+      ]
+    },
+    {
+      "id": "수원",
+      "name": "수원",
+      "aliases": [
+        "수원",
+        "수원역"
+      ],
+      "line_ids": [
+        "service-gyeongbu",
+        "service-honam",
+        "service-janghang",
+        "service-jeolla"
+      ]
+    },
+    {
+      "id": "순천",
+      "name": "순천",
+      "aliases": [
+        "순천",
+        "순천역"
+      ],
+      "line_ids": [
+        "service-jeolla"
+      ]
+    },
+    {
+      "id": "신동",
+      "name": "신동",
+      "aliases": [
+        "신동",
+        "신동역"
+      ],
+      "line_ids": [
+        "service-gyeongbu"
+      ]
+    },
+    {
+      "id": "신례원",
+      "name": "신례원",
+      "aliases": [
+        "신례원",
+        "신례원역"
+      ],
+      "line_ids": [
+        "service-janghang",
+        "service-seohae"
+      ]
+    },
+    {
+      "id": "신탄진",
+      "name": "신탄진",
+      "aliases": [
+        "신탄진",
+        "신탄진역"
+      ],
+      "line_ids": [
+        "service-chungbuk",
+        "service-gyeongbu",
+        "service-honam",
+        "service-jeolla"
+      ]
+    },
+    {
+      "id": "신태인",
+      "name": "신태인",
+      "aliases": [
+        "신태인",
+        "신태인역"
+      ],
+      "line_ids": [
+        "service-honam"
+      ]
+    },
+    {
+      "id": "신해운대",
+      "name": "신해운대",
+      "aliases": [
+        "신해운대",
+        "신해운대역"
+      ],
+      "line_ids": [
+        "service-donghae",
+        "service-jungang"
+      ]
+    },
+    {
+      "id": "심천",
+      "name": "심천",
+      "aliases": [
+        "심천",
+        "심천역"
+      ],
+      "line_ids": [
+        "service-gyeongbu"
+      ]
+    },
+    {
+      "id": "아산",
+      "name": "아산",
+      "aliases": [
+        "아산",
+        "아산역"
+      ],
+      "line_ids": [
+        "service-janghang",
+        "service-seohae"
+      ]
+    },
+    {
+      "id": "안동",
+      "name": "안동",
+      "aliases": [
+        "안동",
+        "안동역"
+      ],
+      "line_ids": [
+        "service-jungang"
+      ]
+    },
+    {
+      "id": "안양",
+      "name": "안양",
+      "aliases": [
+        "안양",
+        "안양역"
+      ],
+      "line_ids": [
+        "service-gyeongbu"
+      ]
+    },
+    {
+      "id": "안중",
+      "name": "안중",
+      "aliases": [
+        "안중",
+        "안중역"
+      ],
+      "line_ids": [
+        "service-seohae"
+      ]
+    },
+    {
+      "id": "약목",
+      "name": "약목",
+      "aliases": [
+        "약목",
+        "약목역"
+      ],
+      "line_ids": [
+        "service-gyeongbu"
+      ]
+    },
+    {
+      "id": "양동",
+      "name": "양동",
+      "aliases": [
+        "양동",
+        "양동역"
+      ],
+      "line_ids": [
+        "service-jungang"
+      ]
+    },
+    {
+      "id": "양평",
+      "name": "양평",
+      "aliases": [
+        "양평",
+        "양평역"
+      ],
+      "line_ids": [
+        "service-gangneung",
+        "service-jungang"
+      ]
+    },
+    {
+      "id": "여수엑스포",
+      "name": "여수엑스포",
+      "aliases": [
+        "여수엑스포",
+        "여수엑스포역"
+      ],
+      "line_ids": [
+        "service-jeolla"
+      ]
+    },
+    {
+      "id": "여천",
+      "name": "여천",
+      "aliases": [
+        "여천",
+        "여천역"
+      ],
+      "line_ids": [
+        "service-jeolla"
+      ]
+    },
+    {
+      "id": "연산",
+      "name": "연산",
+      "aliases": [
+        "연산",
+        "연산역"
+      ],
+      "line_ids": [
+        "service-honam",
+        "service-jeolla"
+      ]
+    },
+    {
+      "id": "영덕",
+      "name": "영덕",
+      "aliases": [
+        "영덕",
+        "영덕역"
+      ],
+      "line_ids": [
+        "service-donghae"
+      ]
+    },
+    {
+      "id": "영동",
+      "name": "영동",
+      "aliases": [
+        "영동",
+        "영동역"
+      ],
+      "line_ids": [
+        "service-gyeongbu"
+      ]
+    },
+    {
+      "id": "영등포",
+      "name": "영등포",
+      "aliases": [
+        "영등포",
+        "영등포역"
+      ],
+      "line_ids": [
+        "service-gyeongbu",
+        "service-honam",
+        "service-janghang",
+        "service-jeolla"
+      ]
+    },
+    {
+      "id": "영주",
+      "name": "영주",
+      "aliases": [
+        "영주",
+        "영주역"
+      ],
+      "line_ids": [
+        "service-gyeongbuk",
+        "service-jungang"
+      ]
+    },
+    {
+      "id": "영천",
+      "name": "영천",
+      "aliases": [
+        "영천",
+        "영천역"
+      ],
+      "line_ids": [
+        "service-jungang"
+      ]
+    },
+    {
+      "id": "영해",
+      "name": "영해",
+      "aliases": [
+        "영해",
+        "영해역"
+      ],
+      "line_ids": [
+        "service-donghae"
+      ]
+    },
+    {
+      "id": "예산",
+      "name": "예산",
+      "aliases": [
+        "예산",
+        "예산역"
+      ],
+      "line_ids": [
+        "service-janghang",
+        "service-seohae"
+      ]
+    },
+    {
+      "id": "예천",
+      "name": "예천",
+      "aliases": [
+        "예천",
+        "예천역"
+      ],
+      "line_ids": [
+        "service-gyeongbuk"
+      ]
+    },
+    {
+      "id": "오근장",
+      "name": "오근장",
+      "aliases": [
+        "오근장",
+        "오근장역"
+      ],
+      "line_ids": [
+        "service-chungbuk"
+      ]
+    },
+    {
+      "id": "오산",
+      "name": "오산",
+      "aliases": [
+        "오산",
+        "오산역"
+      ],
+      "line_ids": [
+        "service-honam"
+      ]
+    },
+    {
+      "id": "오송",
+      "name": "오송",
+      "aliases": [
+        "오송",
+        "오송역"
+      ],
+      "line_ids": [
+        "service-chungbuk",
+        "service-donghae",
+        "service-gyeongbu",
+        "service-gyeongjeon",
+        "service-honam",
+        "service-jeolla"
+      ]
+    },
+    {
+      "id": "오수",
+      "name": "오수",
+      "aliases": [
+        "오수",
+        "오수역"
+      ],
+      "line_ids": [
+        "service-jeolla"
+      ]
+    },
+    {
+      "id": "옥산",
+      "name": "옥산",
+      "aliases": [
+        "옥산",
+        "옥산역"
+      ],
+      "line_ids": [
+        "service-gyeongbuk"
+      ]
+    },
+    {
+      "id": "옥천",
+      "name": "옥천",
+      "aliases": [
+        "옥천",
+        "옥천역"
+      ],
+      "line_ids": [
+        "service-gyeongbu"
+      ]
+    },
+    {
+      "id": "온양온천",
+      "name": "온양온천",
+      "aliases": [
+        "온양온천",
+        "온양온천역"
+      ],
+      "line_ids": [
+        "service-janghang",
+        "service-seohae"
+      ]
+    },
+    {
+      "id": "왜관",
+      "name": "왜관",
+      "aliases": [
+        "왜관",
+        "왜관역"
+      ],
+      "line_ids": [
+        "service-gyeongbu"
+      ]
+    },
+    {
+      "id": "용궁",
+      "name": "용궁",
+      "aliases": [
+        "용궁",
+        "용궁역"
+      ],
+      "line_ids": [
+        "service-gyeongbuk"
+      ]
+    },
+    {
+      "id": "용문",
+      "name": "용문",
+      "aliases": [
+        "용문",
+        "용문역"
+      ],
+      "line_ids": [
+        "service-jungang"
+      ]
+    },
+    {
+      "id": "용산",
+      "name": "용산",
+      "aliases": [
+        "용산",
+        "용산역"
+      ],
+      "line_ids": [
+        "service-honam",
+        "service-janghang",
+        "service-jeolla"
+      ]
+    },
+    {
+      "id": "ulsan",
+      "name": "울산",
+      "aliases": [
+        "울산",
+        "울산(통도사)",
+        "울산역"
+      ],
+      "line_ids": [
+        "service-gyeongbu"
+      ]
+    },
+    {
+      "id": "울진",
+      "name": "울진",
+      "aliases": [
+        "울진",
+        "울진역"
+      ],
+      "line_ids": [
+        "service-donghae"
+      ]
+    },
+    {
+      "id": "웅천",
+      "name": "웅천",
+      "aliases": [
+        "웅천",
+        "웅천역"
+      ],
+      "line_ids": [
+        "service-janghang"
+      ]
+    },
+    {
+      "id": "원동",
+      "name": "원동",
+      "aliases": [
+        "원동",
+        "원동역"
+      ],
+      "line_ids": [
+        "service-gyeongbu"
+      ]
+    },
+    {
+      "id": "원주",
+      "name": "원주",
+      "aliases": [
+        "원주",
+        "원주역"
+      ],
+      "line_ids": [
+        "service-jungang"
+      ]
+    },
+    {
+      "id": "월포",
+      "name": "월포",
+      "aliases": [
+        "월포",
+        "월포역"
+      ],
+      "line_ids": [
+        "service-donghae"
+      ]
+    },
+    {
+      "id": "음성",
+      "name": "음성",
+      "aliases": [
+        "음성",
+        "음성역"
+      ],
+      "line_ids": [
+        "service-chungbuk"
+      ]
+    },
+    {
+      "id": "의성",
+      "name": "의성",
+      "aliases": [
+        "의성",
+        "의성역"
+      ],
+      "line_ids": [
+        "service-jungang"
+      ]
+    },
+    {
+      "id": "이원",
+      "name": "이원",
+      "aliases": [
+        "이원",
+        "이원역"
+      ],
+      "line_ids": [
+        "service-gyeongbu"
+      ]
+    },
+    {
+      "id": "익산",
+      "name": "익산",
+      "aliases": [
+        "익산",
+        "익산역"
+      ],
+      "line_ids": [
+        "service-honam",
+        "service-janghang",
+        "service-jeolla"
+      ]
+    },
+    {
+      "id": "인주",
+      "name": "인주",
+      "aliases": [
+        "인주",
+        "인주역"
+      ],
+      "line_ids": [
+        "service-seohae"
+      ]
+    },
+    {
+      "id": "일로",
+      "name": "일로",
+      "aliases": [
+        "일로",
+        "일로역"
+      ],
+      "line_ids": [
+        "service-honam"
+      ]
+    },
+    {
+      "id": "임실",
+      "name": "임실",
+      "aliases": [
+        "임실",
+        "임실역"
+      ],
+      "line_ids": [
+        "service-jeolla"
+      ]
+    },
+    {
+      "id": "장사",
+      "name": "장사",
+      "aliases": [
+        "장사",
+        "장사역"
+      ],
+      "line_ids": [
+        "service-donghae"
+      ]
+    },
+    {
+      "id": "장성",
+      "name": "장성",
+      "aliases": [
+        "장성",
+        "장성역"
+      ],
+      "line_ids": [
+        "service-honam"
+      ]
+    },
+    {
+      "id": "장항",
+      "name": "장항",
+      "aliases": [
+        "장항",
+        "장항역"
+      ],
+      "line_ids": [
+        "service-janghang"
+      ]
+    },
+    {
+      "id": "전의",
+      "name": "전의",
+      "aliases": [
+        "전의",
+        "전의역"
+      ],
+      "line_ids": [
+        "service-gyeongbu",
+        "service-honam",
+        "service-jeolla"
+      ]
+    },
+    {
+      "id": "전주",
+      "name": "전주",
+      "aliases": [
+        "전주",
+        "전주역"
+      ],
+      "line_ids": [
+        "service-jeolla"
+      ]
+    },
+    {
+      "id": "점촌",
+      "name": "점촌",
+      "aliases": [
+        "점촌",
+        "점촌역"
+      ],
+      "line_ids": [
+        "service-gyeongbuk"
+      ]
+    },
+    {
+      "id": "정동진",
+      "name": "정동진",
+      "aliases": [
+        "정동진",
+        "정동진역"
+      ],
+      "line_ids": [
+        "service-donghae",
+        "service-gangneung"
+      ]
+    },
+    {
+      "id": "정읍",
+      "name": "정읍",
+      "aliases": [
+        "정읍",
+        "정읍역"
+      ],
+      "line_ids": [
+        "service-honam"
+      ]
+    },
+    {
+      "id": "제천",
+      "name": "제천",
+      "aliases": [
+        "제천",
+        "제천역"
+      ],
+      "line_ids": [
+        "service-chungbuk",
+        "service-jungang"
+      ]
+    },
+    {
+      "id": "조치원",
+      "name": "조치원",
+      "aliases": [
+        "조치원",
+        "조치원역"
+      ],
+      "line_ids": [
+        "service-chungbuk",
+        "service-gyeongbu",
+        "service-honam",
+        "service-jeolla"
+      ]
+    },
+    {
+      "id": "주덕",
+      "name": "주덕",
+      "aliases": [
+        "주덕",
+        "주덕역"
+      ],
+      "line_ids": [
+        "service-chungbuk"
+      ]
+    },
+    {
+      "id": "죽변",
+      "name": "죽변",
+      "aliases": [
+        "죽변",
+        "죽변역"
+      ],
+      "line_ids": [
+        "service-donghae"
+      ]
+    },
+    {
+      "id": "증평",
+      "name": "증평",
+      "aliases": [
+        "증평",
+        "증평역"
+      ],
+      "line_ids": [
+        "service-chungbuk"
+      ]
+    },
+    {
+      "id": "지탄",
+      "name": "지탄",
+      "aliases": [
+        "지탄",
+        "지탄역"
+      ],
+      "line_ids": [
+        "service-gyeongbu"
+      ]
+    },
+    {
+      "id": "진부",
+      "name": "진부",
+      "aliases": [
+        "진부",
+        "진부(오대산)",
+        "진부역"
+      ],
+      "line_ids": [
+        "service-gangneung"
+      ]
+    },
+    {
+      "id": "진영",
+      "name": "진영",
+      "aliases": [
+        "진영",
+        "진영역"
+      ],
+      "line_ids": [
+        "service-gyeongjeon"
+      ]
+    },
+    {
+      "id": "진주",
+      "name": "진주",
+      "aliases": [
+        "진주",
+        "진주역"
+      ],
+      "line_ids": [
+        "service-gyeongjeon"
+      ]
+    },
+    {
+      "id": "창원",
+      "name": "창원",
+      "aliases": [
+        "창원",
+        "창원역"
+      ],
+      "line_ids": [
+        "service-gyeongjeon"
+      ]
+    },
+    {
+      "id": "창원중앙",
+      "name": "창원중앙",
+      "aliases": [
+        "창원중앙",
+        "창원중앙역"
+      ],
+      "line_ids": [
+        "service-gyeongjeon"
+      ]
+    },
+    {
+      "id": "천안",
+      "name": "천안",
+      "aliases": [
+        "천안",
+        "천안역"
+      ],
+      "line_ids": [
+        "service-gyeongbu",
+        "service-honam",
+        "service-janghang",
+        "service-jeolla",
+        "service-seohae"
+      ]
+    },
+    {
+      "id": "천안아산",
+      "name": "천안아산",
+      "aliases": [
+        "천안아산",
+        "천안아산(온양온천)",
+        "천안아산역"
+      ],
+      "line_ids": [
+        "service-donghae",
+        "service-gyeongbu",
+        "service-gyeongjeon",
+        "service-honam",
+        "service-jeolla"
+      ]
+    },
+    {
+      "id": "청도",
+      "name": "청도",
+      "aliases": [
+        "청도",
+        "청도역"
+      ],
+      "line_ids": [
+        "service-gyeongbu",
+        "service-gyeongjeon"
+      ]
+    },
+    {
+      "id": "청량리",
+      "name": "청량리",
+      "aliases": [
+        "청량리",
+        "청량리역"
+      ],
+      "line_ids": [
+        "service-gangneung",
+        "service-jungang"
+      ]
+    },
+    {
+      "id": "청리",
+      "name": "청리",
+      "aliases": [
+        "청리",
+        "청리역"
+      ],
+      "line_ids": [
+        "service-gyeongbuk"
+      ]
+    },
+    {
+      "id": "청소",
+      "name": "청소",
+      "aliases": [
+        "청소",
+        "청소역"
+      ],
+      "line_ids": [
+        "service-janghang"
+      ]
+    },
+    {
+      "id": "청주",
+      "name": "청주",
+      "aliases": [
+        "청주",
+        "청주역"
+      ],
+      "line_ids": [
+        "service-chungbuk"
+      ]
+    },
+    {
+      "id": "청주공항",
+      "name": "청주공항",
+      "aliases": [
+        "청주공항",
+        "청주공항역"
+      ],
+      "line_ids": [
+        "service-chungbuk"
+      ]
+    },
+    {
+      "id": "추풍령",
+      "name": "추풍령",
+      "aliases": [
+        "추풍령",
+        "추풍령역"
+      ],
+      "line_ids": [
+        "service-gyeongbu"
+      ]
+    },
+    {
+      "id": "충주",
+      "name": "충주",
+      "aliases": [
+        "충주",
+        "충주역"
+      ],
+      "line_ids": [
+        "service-chungbuk"
+      ]
+    },
+    {
+      "id": "태화강",
+      "name": "태화강",
+      "aliases": [
+        "태화강",
+        "태화강역"
+      ],
+      "line_ids": [
+        "service-donghae",
+        "service-jungang"
+      ]
+    },
+    {
+      "id": "판교",
+      "name": "판교",
+      "aliases": [
+        "판교",
+        "판교역"
+      ],
+      "line_ids": [
+        "service-janghang"
+      ]
+    },
+    {
+      "id": "평창",
+      "name": "평창",
+      "aliases": [
+        "평창",
+        "평창역"
+      ],
+      "line_ids": [
+        "service-gangneung"
+      ]
+    },
+    {
+      "id": "평택",
+      "name": "평택",
+      "aliases": [
+        "평택",
+        "평택역"
+      ],
+      "line_ids": [
+        "service-gyeongbu",
+        "service-honam",
+        "service-janghang",
+        "service-jeolla",
+        "service-seohae"
+      ]
+    },
+    {
+      "id": "평택지제",
+      "name": "평택지제",
+      "aliases": [
+        "평택지제",
+        "평택지제역"
+      ],
+      "line_ids": [
+        "service-donghae",
+        "service-gyeongbu",
+        "service-gyeongjeon",
+        "service-honam",
+        "service-jeolla"
+      ]
+    },
+    {
+      "id": "평해",
+      "name": "평해",
+      "aliases": [
+        "평해",
+        "평해역"
+      ],
+      "line_ids": [
+        "service-donghae"
+      ]
+    },
+    {
+      "id": "포항",
+      "name": "포항",
+      "aliases": [
+        "포항",
+        "포항역"
+      ],
+      "line_ids": [
+        "service-donghae"
+      ]
+    },
+    {
+      "id": "풍기",
+      "name": "풍기",
+      "aliases": [
+        "풍기",
+        "풍기역"
+      ],
+      "line_ids": [
+        "service-jungang"
+      ]
+    },
+    {
+      "id": "한림정",
+      "name": "한림정",
+      "aliases": [
+        "한림정",
+        "한림정역"
+      ],
+      "line_ids": [
+        "service-gyeongjeon"
+      ]
+    },
+    {
+      "id": "함안",
+      "name": "함안",
+      "aliases": [
+        "함안",
+        "함안역"
+      ],
+      "line_ids": [
+        "service-gyeongjeon"
+      ]
+    },
+    {
+      "id": "함열",
+      "name": "함열",
+      "aliases": [
+        "함열",
+        "함열역"
+      ],
+      "line_ids": [
+        "service-honam",
+        "service-jeolla"
+      ]
+    },
+    {
+      "id": "함창",
+      "name": "함창",
+      "aliases": [
+        "함창",
+        "함창역"
+      ],
+      "line_ids": [
+        "service-gyeongbuk"
+      ]
+    },
+    {
+      "id": "함평",
+      "name": "함평",
+      "aliases": [
+        "함평",
+        "함평역"
+      ],
+      "line_ids": [
+        "service-honam"
+      ]
+    },
+    {
+      "id": "합덕",
+      "name": "합덕",
+      "aliases": [
+        "합덕",
+        "합덕역"
+      ],
+      "line_ids": [
+        "service-seohae"
+      ]
+    },
+    {
+      "id": "행신",
+      "name": "행신",
+      "aliases": [
+        "행신",
+        "행신역"
+      ],
+      "line_ids": [
+        "service-donghae",
+        "service-gyeongbu",
+        "service-gyeongjeon",
+        "service-honam",
+        "service-jeolla"
+      ]
+    },
+    {
+      "id": "향남",
+      "name": "향남",
+      "aliases": [
+        "향남",
+        "향남역"
+      ],
+      "line_ids": [
+        "service-seohae"
+      ]
+    },
+    {
+      "id": "홍성",
+      "name": "홍성",
+      "aliases": [
+        "홍성",
+        "홍성(도착)",
+        "홍성(출발)",
+        "홍성역"
+      ],
+      "line_ids": [
+        "service-janghang",
+        "service-seohae"
+      ]
+    },
+    {
+      "id": "화명",
+      "name": "화명",
+      "aliases": [
+        "화명",
+        "화명역"
+      ],
+      "line_ids": [
+        "service-gyeongbu"
+      ]
+    },
+    {
+      "id": "화성시청",
+      "name": "화성시청",
+      "aliases": [
+        "화성시청",
+        "화성시청역"
+      ],
+      "line_ids": [
+        "service-seohae"
+      ]
+    },
+    {
+      "id": "황간",
+      "name": "황간",
+      "aliases": [
+        "황간",
+        "황간역"
+      ],
+      "line_ids": [
+        "service-gyeongbu"
+      ]
+    },
+    {
+      "id": "횡성",
+      "name": "횡성",
+      "aliases": [
+        "횡성",
+        "횡성역"
+      ],
+      "line_ids": [
+        "service-gangneung"
+      ]
+    },
+    {
+      "id": "후포",
+      "name": "후포",
+      "aliases": [
+        "후포",
+        "후포역"
+      ],
+      "line_ids": [
+        "service-donghae"
+      ]
+    },
+    {
+      "id": "흥부",
+      "name": "흥부",
+      "aliases": [
+        "흥부",
+        "흥부역"
+      ],
+      "line_ids": [
+        "service-donghae"
+      ]
+    }
+  ],
+  "services": [
+    {
+      "train_id": "train-7b3d39a4aefc74b0af5d0baf",
+      "number": "31",
+      "origin": "서울",
+      "destination": "부산",
+      "planned_departure": "2026-10-26T11:58:00+09:00",
+      "planned_arrival": "2026-10-26T14:42:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "서울",
+        "광명",
+        "천안아산",
+        "대전",
+        "동대구",
+        "경주",
+        "ulsan",
+        "부산"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "B50",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-cf51c4063e3140340e81ebfa",
+      "number": "33",
+      "origin": "서울",
+      "destination": "부산",
+      "planned_departure": "2026-10-26T12:16:00+09:00",
+      "planned_arrival": "2026-10-26T14:58:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "서울",
+        "광명",
+        "천안아산",
+        "대전",
+        "김천구미",
+        "동대구",
+        "ulsan",
+        "부산"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "B53",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-ea01a885e373afa1a71435b2",
+      "number": "34",
+      "origin": "부산",
+      "destination": "서울",
+      "planned_departure": "2026-10-26T12:00:00+09:00",
+      "planned_arrival": "2026-10-26T14:51:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "부산",
+        "ulsan",
+        "동대구",
+        "김천구미",
+        "대전",
+        "오송",
+        "천안아산",
+        "광명",
+        "서울"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "AA57",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-8300db96f2e81f94476a08cf",
+      "number": "35",
+      "origin": "서울",
+      "destination": "부산",
+      "planned_departure": "2026-10-26T12:58:00+09:00",
+      "planned_arrival": "2026-10-26T15:47:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "서울",
+        "광명",
+        "천안아산",
+        "오송",
+        "대전",
+        "동대구",
+        "경주",
+        "부산"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "B57",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-8aa650ef0fdf2e203f1b8965",
+      "number": "36",
+      "origin": "부산",
+      "destination": "서울",
+      "planned_departure": "2026-10-26T12:34:00+09:00",
+      "planned_arrival": "2026-10-26T15:00:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "부산",
+        "동대구",
+        "대전",
+        "천안아산",
+        "서울"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "AA59",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-af3413590f948fa470e1b608",
+      "number": "37",
+      "origin": "서울",
+      "destination": "부산",
+      "planned_departure": "2026-10-26T13:18:00+09:00",
+      "planned_arrival": "2026-10-26T15:59:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "서울",
+        "광명",
+        "천안아산",
+        "오송",
+        "대전",
+        "동대구",
+        "ulsan",
+        "부산"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "B59",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-c67a96e79afc7c98cebebcb0",
+      "number": "38",
+      "origin": "부산",
+      "destination": "서울",
+      "planned_departure": "2026-10-26T13:03:00+09:00",
+      "planned_arrival": "2026-10-26T15:47:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "부산",
+        "ulsan",
+        "경주",
+        "동대구",
+        "김천구미",
+        "대전",
+        "천안아산",
+        "서울"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "AA64",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-674de6fdd6c16b651e624a34",
+      "number": "39",
+      "origin": "서울",
+      "destination": "부산",
+      "planned_departure": "2026-10-26T13:49:00+09:00",
+      "planned_arrival": "2026-10-26T16:25:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "서울",
+        "광명",
+        "대전",
+        "김천구미",
+        "동대구",
+        "ulsan",
+        "부산"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "B62",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-b523926c051f881ec15807ae",
+      "number": "40",
+      "origin": "부산",
+      "destination": "행신",
+      "planned_departure": "2026-10-26T14:00:00+09:00",
+      "planned_arrival": "2026-10-26T17:07:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "부산",
+        "ulsan",
+        "동대구",
+        "김천구미",
+        "대전",
+        "오송",
+        "천안아산",
+        "서울",
+        "행신"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "AA72",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-9e022c1e761a93be138b6619",
+      "number": "41",
+      "origin": "행신",
+      "destination": "부산",
+      "planned_departure": "2026-10-26T13:36:00+09:00",
+      "planned_arrival": "2026-10-26T16:35:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "행신",
+        "서울",
+        "천안아산",
+        "오송",
+        "대전",
+        "동대구",
+        "경주",
+        "부산"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "B63",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-88288ea05b2a4c9d3f9b1670",
+      "number": "42",
+      "origin": "부산",
+      "destination": "서울",
+      "planned_departure": "2026-10-26T14:20:00+09:00",
+      "planned_arrival": "2026-10-26T16:53:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "부산",
+        "경주",
+        "동대구",
+        "대전",
+        "오송",
+        "서울"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "AA74",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-bcdaa8fe43e72b95c859c18c",
+      "number": "43",
+      "origin": "서울",
+      "destination": "부산",
+      "planned_departure": "2026-10-26T14:19:00+09:00",
+      "planned_arrival": "2026-10-26T16:50:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "서울",
+        "광명",
+        "오송",
+        "대전",
+        "동대구",
+        "부산"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "B65",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-79e9012e8ea1ca7a638adea0",
+      "number": "45",
+      "origin": "서울",
+      "destination": "부산",
+      "planned_departure": "2026-10-26T14:28:00+09:00",
+      "planned_arrival": "2026-10-26T17:12:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "서울",
+        "광명",
+        "천안아산",
+        "대전",
+        "동대구",
+        "경주",
+        "ulsan",
+        "부산"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "B67",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-e90507d997a5202a90a354db",
+      "number": "105",
+      "origin": "서울",
+      "destination": "부산",
+      "planned_departure": "2026-10-26T13:13:00+09:00",
+      "planned_arrival": "2026-10-26T16:33:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "서울",
+        "광명",
+        "천안아산",
+        "대전",
+        "김천구미",
+        "서대구",
+        "동대구",
+        "밀양",
+        "물금",
+        "구포",
+        "부산"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "B58",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-641f56fb78f07228aaca3a70",
+      "number": "106",
+      "origin": "부산",
+      "destination": "서울",
+      "planned_departure": "2026-10-26T12:19:00+09:00",
+      "planned_arrival": "2026-10-26T15:19:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "부산",
+        "구포",
+        "동대구",
+        "대전",
+        "오송",
+        "서울"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "AA62",
+      "operating_days": "월화수목"
+    },
+    {
+      "train_id": "train-7ddea7fb1e3ed66c61e31e71",
+      "number": "108",
+      "origin": "부산",
+      "destination": "서울",
+      "planned_departure": "2026-10-26T13:22:00+09:00",
+      "planned_arrival": "2026-10-26T16:41:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "부산",
+        "구포",
+        "물금",
+        "밀양",
+        "동대구",
+        "대전",
+        "오송",
+        "천안아산",
+        "광명",
+        "서울"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "AA71",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-908c0d9d972c2ab1210d947a",
+      "number": "124",
+      "origin": "부산",
+      "destination": "서울",
+      "planned_departure": "2026-10-26T13:17:00+09:00",
+      "planned_arrival": "2026-10-26T16:34:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "부산",
+        "ulsan",
+        "동대구",
+        "대전",
+        "수원",
+        "영등포",
+        "서울"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "AA66",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-6a62a8b4b9c44dc8fb62fdb1",
+      "number": "210",
+      "origin": "마산",
+      "destination": "서울",
+      "planned_departure": "2026-10-26T12:42:00+09:00",
+      "planned_arrival": "2026-10-26T15:38:00+09:00",
+      "line_id": "service-gyeongjeon",
+      "stop_station_ids": [
+        "마산",
+        "창원중앙",
+        "밀양",
+        "동대구",
+        "대전",
+        "천안아산",
+        "서울"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경전선",
+      "source_cell": "Y18",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-ffdc8603e71928382bb46df7",
+      "number": "212",
+      "origin": "진주",
+      "destination": "서울",
+      "planned_departure": "2026-10-26T12:46:00+09:00",
+      "planned_arrival": "2026-10-26T16:22:00+09:00",
+      "line_id": "service-gyeongjeon",
+      "stop_station_ids": [
+        "진주",
+        "마산",
+        "창원",
+        "창원중앙",
+        "진영",
+        "밀양",
+        "동대구",
+        "서대구",
+        "대전",
+        "광명",
+        "서울"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경전선",
+      "source_cell": "Y19",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-d3a278de714d50dab6ba5bad",
+      "number": "213",
+      "origin": "서울",
+      "destination": "진주",
+      "planned_departure": "2026-10-26T10:43:00+09:00",
+      "planned_arrival": "2026-10-26T14:20:00+09:00",
+      "line_id": "service-gyeongjeon",
+      "stop_station_ids": [
+        "서울",
+        "광명",
+        "천안아산",
+        "오송",
+        "대전",
+        "동대구",
+        "밀양",
+        "진영",
+        "창원중앙",
+        "마산",
+        "진주"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경전선",
+      "source_cell": "A19",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-fdb90dec88205658a0f323e5",
+      "number": "214",
+      "origin": "진주",
+      "destination": "서울",
+      "planned_departure": "2026-10-26T14:30:00+09:00",
+      "planned_arrival": "2026-10-26T17:50:00+09:00",
+      "line_id": "service-gyeongjeon",
+      "stop_station_ids": [
+        "진주",
+        "마산",
+        "창원중앙",
+        "밀양",
+        "동대구",
+        "대전",
+        "광명",
+        "서울"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경전선",
+      "source_cell": "Y20",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-f5c6bb8400455c5d2a11e85f",
+      "number": "215",
+      "origin": "서울",
+      "destination": "마산",
+      "planned_departure": "2026-10-26T12:16:00+09:00",
+      "planned_arrival": "2026-10-26T15:26:00+09:00",
+      "line_id": "service-gyeongjeon",
+      "stop_station_ids": [
+        "서울",
+        "광명",
+        "천안아산",
+        "대전",
+        "김천구미",
+        "동대구",
+        "진영",
+        "창원중앙",
+        "마산"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경전선",
+      "source_cell": "A21",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-35fedcc4018c5b5bc2b2d3cd",
+      "number": "217",
+      "origin": "행신",
+      "destination": "진주",
+      "planned_departure": "2026-10-26T13:14:00+09:00",
+      "planned_arrival": "2026-10-26T17:08:00+09:00",
+      "line_id": "service-gyeongjeon",
+      "stop_station_ids": [
+        "행신",
+        "서울",
+        "천안아산",
+        "대전",
+        "서대구",
+        "동대구",
+        "밀양",
+        "창원중앙",
+        "창원",
+        "마산",
+        "진주"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경전선",
+      "source_cell": "A22",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-d2826b0ccf582f59ebff9205",
+      "number": "264",
+      "origin": "포항",
+      "destination": "서울",
+      "planned_departure": "2026-10-26T12:16:00+09:00",
+      "planned_arrival": "2026-10-26T14:56:00+09:00",
+      "line_id": "service-donghae",
+      "stop_station_ids": [
+        "포항",
+        "동대구",
+        "서대구",
+        "대전",
+        "천안아산",
+        "광명",
+        "서울"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "동해선(서울~포항)",
+      "source_cell": "T18",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-561b8e1f5b299a7b2d07808d",
+      "number": "265",
+      "origin": "서울",
+      "destination": "포항",
+      "planned_departure": "2026-10-26T12:39:00+09:00",
+      "planned_arrival": "2026-10-26T14:59:00+09:00",
+      "line_id": "service-donghae",
+      "stop_station_ids": [
+        "서울",
+        "오송",
+        "대전",
+        "동대구",
+        "포항"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "동해선(서울~포항)",
+      "source_cell": "B20",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-ed7229915a016b2958eba27f",
+      "number": "266",
+      "origin": "포항",
+      "destination": "서울",
+      "planned_departure": "2026-10-26T12:52:00+09:00",
+      "planned_arrival": "2026-10-26T15:19:00+09:00",
+      "line_id": "service-donghae",
+      "stop_station_ids": [
+        "포항",
+        "동대구",
+        "대전",
+        "오송",
+        "서울"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "동해선(서울~포항)",
+      "source_cell": "T21",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-18c372044fe0b6bae5c3222b",
+      "number": "267",
+      "origin": "서울",
+      "destination": "포항",
+      "planned_departure": "2026-10-26T12:58:00+09:00",
+      "planned_arrival": "2026-10-26T15:32:00+09:00",
+      "line_id": "service-donghae",
+      "stop_station_ids": [
+        "서울",
+        "광명",
+        "천안아산",
+        "오송",
+        "대전",
+        "동대구",
+        "포항"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "동해선(서울~포항)",
+      "source_cell": "B21",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-804dbef0f6e4218bea8c81d2",
+      "number": "268",
+      "origin": "포항",
+      "destination": "서울",
+      "planned_departure": "2026-10-26T14:03:00+09:00",
+      "planned_arrival": "2026-10-26T16:41:00+09:00",
+      "line_id": "service-donghae",
+      "stop_station_ids": [
+        "포항",
+        "동대구",
+        "대전",
+        "오송",
+        "천안아산",
+        "광명",
+        "서울"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "동해선(서울~포항)",
+      "source_cell": "T22",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-403a2a283a5cb2335e12c125",
+      "number": "269",
+      "origin": "행신",
+      "destination": "포항",
+      "planned_departure": "2026-10-26T14:11:00+09:00",
+      "planned_arrival": "2026-10-26T17:07:00+09:00",
+      "line_id": "service-donghae",
+      "stop_station_ids": [
+        "행신",
+        "서울",
+        "광명",
+        "천안아산",
+        "대전",
+        "서대구",
+        "동대구",
+        "포항"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "동해선(서울~포항)",
+      "source_cell": "B22",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-2edcd2a9a57d203828fc1700",
+      "number": "325",
+      "origin": "수서",
+      "destination": "부산",
+      "planned_departure": "2026-10-26T12:28:00+09:00",
+      "planned_arrival": "2026-10-26T15:03:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "수서",
+        "평택지제",
+        "천안아산",
+        "오송",
+        "대전",
+        "동대구",
+        "경주",
+        "부산"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "B54",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-0b18daea39abad494d88b506",
+      "number": "326",
+      "origin": "부산",
+      "destination": "수서",
+      "planned_departure": "2026-10-26T12:12:00+09:00",
+      "planned_arrival": "2026-10-26T14:52:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "부산",
+        "ulsan",
+        "경주",
+        "동대구",
+        "대전",
+        "천안아산",
+        "평택지제",
+        "수서"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "AA58",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-75a0de7890bfc3a30070bff1",
+      "number": "327",
+      "origin": "수서",
+      "destination": "부산",
+      "planned_departure": "2026-10-26T12:50:00+09:00",
+      "planned_arrival": "2026-10-26T15:16:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "수서",
+        "동탄",
+        "대전",
+        "서대구",
+        "동대구",
+        "부산"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "B55",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-07d77b18cca1b1fcbf4f25c0",
+      "number": "328",
+      "origin": "부산",
+      "destination": "수서",
+      "planned_departure": "2026-10-26T12:39:00+09:00",
+      "planned_arrival": "2026-10-26T15:09:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "부산",
+        "동대구",
+        "대전",
+        "오송",
+        "동탄",
+        "수서"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "AA61",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-32f904f31807de05675fb5b6",
+      "number": "329",
+      "origin": "수서",
+      "destination": "부산",
+      "planned_departure": "2026-10-26T13:00:00+09:00",
+      "planned_arrival": "2026-10-26T15:39:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "수서",
+        "평택지제",
+        "천안아산",
+        "대전",
+        "김천구미",
+        "동대구",
+        "경주",
+        "ulsan",
+        "부산"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "B56",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-412a9840bddbc9332c2d0bb2",
+      "number": "330",
+      "origin": "부산",
+      "destination": "수서",
+      "planned_departure": "2026-10-26T12:44:00+09:00",
+      "planned_arrival": "2026-10-26T15:23:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "부산",
+        "ulsan",
+        "경주",
+        "동대구",
+        "서대구",
+        "대전",
+        "천안아산",
+        "수서"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "AA63",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-2434077a114be1217102cdf4",
+      "number": "331",
+      "origin": "수서",
+      "destination": "부산",
+      "planned_departure": "2026-10-26T13:30:00+09:00",
+      "planned_arrival": "2026-10-26T16:06:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "수서",
+        "동탄",
+        "천안아산",
+        "오송",
+        "대전",
+        "동대구",
+        "ulsan",
+        "부산"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "B60",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-49269cf85fca613724fcd3c3",
+      "number": "332",
+      "origin": "부산",
+      "destination": "수서",
+      "planned_departure": "2026-10-26T13:34:00+09:00",
+      "planned_arrival": "2026-10-26T16:04:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "부산",
+        "경주",
+        "동대구",
+        "대전",
+        "천안아산",
+        "동탄",
+        "수서"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "AA68",
+      "operating_days": "월화수목"
+    },
+    {
+      "train_id": "train-b86cc2d1710a12b91ab80ba3",
+      "number": "333",
+      "origin": "수서",
+      "destination": "부산",
+      "planned_departure": "2026-10-26T13:55:00+09:00",
+      "planned_arrival": "2026-10-26T16:14:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "수서",
+        "대전",
+        "동대구",
+        "경주",
+        "부산"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "B61",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-61bd2e46e11cf65b5d170032",
+      "number": "334",
+      "origin": "부산",
+      "destination": "수서",
+      "planned_departure": "2026-10-26T13:38:00+09:00",
+      "planned_arrival": "2026-10-26T16:09:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "부산",
+        "ulsan",
+        "동대구",
+        "대전",
+        "오송",
+        "평택지제",
+        "수서"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "AA70",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-88dcf966ec429ae1fffafb37",
+      "number": "335",
+      "origin": "수서",
+      "destination": "부산",
+      "planned_departure": "2026-10-26T14:30:00+09:00",
+      "planned_arrival": "2026-10-26T16:59:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "수서",
+        "평택지제",
+        "천안아산",
+        "대전",
+        "동대구",
+        "ulsan",
+        "부산"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "B66",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-7d7048edddbd0cd2a3ed66e0",
+      "number": "336",
+      "origin": "부산",
+      "destination": "수서",
+      "planned_departure": "2026-10-26T14:09:00+09:00",
+      "planned_arrival": "2026-10-26T16:46:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "부산",
+        "ulsan",
+        "동대구",
+        "김천구미",
+        "대전",
+        "천안아산",
+        "동탄",
+        "수서"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "AA73",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-7ced8f4ca726661e76ecd4da",
+      "number": "338",
+      "origin": "부산",
+      "destination": "수서",
+      "planned_departure": "2026-10-26T14:24:00+09:00",
+      "planned_arrival": "2026-10-26T17:01:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "부산",
+        "ulsan",
+        "경주",
+        "동대구",
+        "대전",
+        "오송",
+        "평택지제",
+        "수서"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "AA75",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-b0f7c64ea96d710bd98d5906",
+      "number": "383",
+      "origin": "수서",
+      "destination": "진주",
+      "planned_departure": "2026-10-26T12:04:00+09:00",
+      "planned_arrival": "2026-10-26T15:44:00+09:00",
+      "line_id": "service-gyeongjeon",
+      "stop_station_ids": [
+        "수서",
+        "동탄",
+        "평택지제",
+        "천안아산",
+        "대전",
+        "김천구미",
+        "동대구",
+        "밀양",
+        "진영",
+        "창원중앙",
+        "창원",
+        "마산",
+        "진주"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경전선",
+      "source_cell": "A20",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-030d3ba48ac5ef3812d4e976",
+      "number": "384",
+      "origin": "진주",
+      "destination": "수서",
+      "planned_departure": "2026-10-26T11:45:00+09:00",
+      "planned_arrival": "2026-10-26T15:09:00+09:00",
+      "line_id": "service-gyeongjeon",
+      "stop_station_ids": [
+        "진주",
+        "마산",
+        "창원중앙",
+        "밀양",
+        "동대구",
+        "대전",
+        "오송",
+        "동탄",
+        "수서"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경전선",
+      "source_cell": "Y16",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-15f1122e22f2d486a97da0b2",
+      "number": "394",
+      "origin": "포항",
+      "destination": "수서",
+      "planned_departure": "2026-10-26T12:25:00+09:00",
+      "planned_arrival": "2026-10-26T14:52:00+09:00",
+      "line_id": "service-donghae",
+      "stop_station_ids": [
+        "포항",
+        "동대구",
+        "대전",
+        "천안아산",
+        "평택지제",
+        "수서"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "동해선(서울~포항)",
+      "source_cell": "T19",
+      "operating_days": "월화수목"
+    },
+    {
+      "train_id": "train-ddb25b58ad4208239c4b11a6",
+      "number": "420",
+      "origin": "목포",
+      "destination": "용산",
+      "planned_departure": "2026-10-26T13:02:00+09:00",
+      "planned_arrival": "2026-10-26T15:52:00+09:00",
+      "line_id": "service-honam",
+      "stop_station_ids": [
+        "목포",
+        "나주",
+        "광주송정",
+        "정읍",
+        "익산",
+        "공주",
+        "오송",
+        "천안아산",
+        "용산"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "호남선",
+      "source_cell": "AA37",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-e57685cb9fa63bf6004e3a29",
+      "number": "421",
+      "origin": "행신",
+      "destination": "목포",
+      "planned_departure": "2026-10-26T12:25:00+09:00",
+      "planned_arrival": "2026-10-26T15:15:00+09:00",
+      "line_id": "service-honam",
+      "stop_station_ids": [
+        "행신",
+        "용산",
+        "광명",
+        "천안아산",
+        "익산",
+        "정읍",
+        "광주송정",
+        "목포"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "호남선",
+      "source_cell": "B36",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-428051bded285c9b6d749d4b",
+      "number": "422",
+      "origin": "목포",
+      "destination": "행신",
+      "planned_departure": "2026-10-26T13:31:00+09:00",
+      "planned_arrival": "2026-10-26T16:27:00+09:00",
+      "line_id": "service-honam",
+      "stop_station_ids": [
+        "목포",
+        "나주",
+        "광주송정",
+        "익산",
+        "천안아산",
+        "광명",
+        "용산",
+        "행신"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "호남선",
+      "source_cell": "AA38",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-ca183abbcc9cf5eb9d08b884",
+      "number": "423",
+      "origin": "용산",
+      "destination": "광주송정",
+      "planned_departure": "2026-10-26T14:08:00+09:00",
+      "planned_arrival": "2026-10-26T16:12:00+09:00",
+      "line_id": "service-honam",
+      "stop_station_ids": [
+        "용산",
+        "영등포",
+        "광명",
+        "오송",
+        "공주",
+        "익산",
+        "정읍",
+        "광주송정"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "호남선",
+      "source_cell": "B40",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-2ba88ac9abe004eb125956d3",
+      "number": "424",
+      "origin": "광주송정",
+      "destination": "용산",
+      "planned_departure": "2026-10-26T14:29:00+09:00",
+      "planned_arrival": "2026-10-26T16:26:00+09:00",
+      "line_id": "service-honam",
+      "stop_station_ids": [
+        "광주송정",
+        "익산",
+        "오송",
+        "광명",
+        "용산"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "호남선",
+      "source_cell": "AA39",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-fb1fb5b1ad5f4a2640b3a79e",
+      "number": "456",
+      "origin": "목포",
+      "destination": "서울",
+      "planned_departure": "2026-10-26T11:43:00+09:00",
+      "planned_arrival": "2026-10-26T15:22:00+09:00",
+      "line_id": "service-honam",
+      "stop_station_ids": [
+        "목포",
+        "광주송정",
+        "정읍",
+        "익산",
+        "논산",
+        "계룡",
+        "서대전",
+        "오송",
+        "천안아산",
+        "광명",
+        "용산",
+        "서울"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "호남선",
+      "source_cell": "AA34",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-021c16bca649ddaf21627ce9",
+      "number": "463",
+      "origin": "행신",
+      "destination": "목포",
+      "planned_departure": "2026-10-26T12:17:00+09:00",
+      "planned_arrival": "2026-10-26T15:31:00+09:00",
+      "line_id": "service-honam",
+      "stop_station_ids": [
+        "행신",
+        "용산",
+        "오송",
+        "익산",
+        "김제",
+        "장성",
+        "광주송정",
+        "나주",
+        "목포"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "호남선",
+      "source_cell": "B35",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-ac8f150628f40ee1c9b9c9ca",
+      "number": "512",
+      "origin": "여수엑스포",
+      "destination": "용산",
+      "planned_departure": "2026-10-26T11:56:00+09:00",
+      "planned_arrival": "2026-10-26T15:03:00+09:00",
+      "line_id": "service-jeolla",
+      "stop_station_ids": [
+        "여수엑스포",
+        "여천",
+        "순천",
+        "곡성",
+        "남원",
+        "전주",
+        "익산",
+        "공주",
+        "오송",
+        "천안아산",
+        "용산"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "전라선",
+      "source_cell": "AB19",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-3686430ba46a24b6cdcd93e5",
+      "number": "513",
+      "origin": "서울",
+      "destination": "여수엑스포",
+      "planned_departure": "2026-10-26T12:19:00+09:00",
+      "planned_arrival": "2026-10-26T15:22:00+09:00",
+      "line_id": "service-jeolla",
+      "stop_station_ids": [
+        "서울",
+        "용산",
+        "광명",
+        "천안아산",
+        "익산",
+        "전주",
+        "남원",
+        "곡성",
+        "순천",
+        "여수엑스포"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "전라선",
+      "source_cell": "B24",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-5b98092686f579b17f6b7c7a",
+      "number": "514",
+      "origin": "여수엑스포",
+      "destination": "서울",
+      "planned_departure": "2026-10-26T12:31:00+09:00",
+      "planned_arrival": "2026-10-26T15:31:00+09:00",
+      "line_id": "service-jeolla",
+      "stop_station_ids": [
+        "여수엑스포",
+        "순천",
+        "구례구",
+        "남원",
+        "전주",
+        "익산",
+        "오송",
+        "용산",
+        "서울"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "전라선",
+      "source_cell": "AB20",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-7ee5fd859c9cbca48fbae3c3",
+      "number": "515",
+      "origin": "행신",
+      "destination": "여수엑스포",
+      "planned_departure": "2026-10-26T12:17:00+09:00",
+      "planned_arrival": "2026-10-26T15:43:00+09:00",
+      "line_id": "service-jeolla",
+      "stop_station_ids": [
+        "행신",
+        "용산",
+        "오송",
+        "익산",
+        "전주",
+        "남원",
+        "구례구",
+        "순천",
+        "여천",
+        "여수엑스포"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "전라선",
+      "source_cell": "B25",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-d6aeaa97076783667db81917",
+      "number": "516",
+      "origin": "여수엑스포",
+      "destination": "용산",
+      "planned_departure": "2026-10-26T12:43:00+09:00",
+      "planned_arrival": "2026-10-26T15:52:00+09:00",
+      "line_id": "service-jeolla",
+      "stop_station_ids": [
+        "여수엑스포",
+        "여천",
+        "순천",
+        "남원",
+        "전주",
+        "익산",
+        "공주",
+        "오송",
+        "천안아산",
+        "용산"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "전라선",
+      "source_cell": "AB21",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-a24bb44c1b6c0c976f286c3d",
+      "number": "517",
+      "origin": "용산",
+      "destination": "여수엑스포",
+      "planned_departure": "2026-10-26T13:30:00+09:00",
+      "planned_arrival": "2026-10-26T16:32:00+09:00",
+      "line_id": "service-jeolla",
+      "stop_station_ids": [
+        "용산",
+        "광명",
+        "천안아산",
+        "공주",
+        "익산",
+        "전주",
+        "남원",
+        "순천",
+        "여천",
+        "여수엑스포"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "전라선",
+      "source_cell": "B28",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-1bc96c0b36de8237802a5139",
+      "number": "518",
+      "origin": "여수엑스포",
+      "destination": "용산",
+      "planned_departure": "2026-10-26T13:32:00+09:00",
+      "planned_arrival": "2026-10-26T16:26:00+09:00",
+      "line_id": "service-jeolla",
+      "stop_station_ids": [
+        "여수엑스포",
+        "순천",
+        "남원",
+        "전주",
+        "익산",
+        "오송",
+        "광명",
+        "용산"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "전라선",
+      "source_cell": "AB22",
+      "operating_days": "월화수목"
+    },
+    {
+      "train_id": "train-b2c11c401cc6db414bb54b3b",
+      "number": "519",
+      "origin": "용산",
+      "destination": "여수엑스포",
+      "planned_departure": "2026-10-26T14:08:00+09:00",
+      "planned_arrival": "2026-10-26T17:20:00+09:00",
+      "line_id": "service-jeolla",
+      "stop_station_ids": [
+        "용산",
+        "영등포",
+        "광명",
+        "오송",
+        "공주",
+        "익산",
+        "전주",
+        "남원",
+        "구례구",
+        "순천",
+        "여천",
+        "여수엑스포"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "전라선",
+      "source_cell": "B30",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-d27c0a8df31663f39a9c309b",
+      "number": "615",
+      "origin": "수서",
+      "destination": "목포",
+      "planned_departure": "2026-10-26T12:20:00+09:00",
+      "planned_arrival": "2026-10-26T14:40:00+09:00",
+      "line_id": "service-honam",
+      "stop_station_ids": [
+        "수서",
+        "천안아산",
+        "공주",
+        "익산",
+        "광주송정",
+        "나주",
+        "목포"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "호남선",
+      "source_cell": "B34",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-432a2b52e4e05c44df3d0dd5",
+      "number": "616",
+      "origin": "목포",
+      "destination": "수서",
+      "planned_departure": "2026-10-26T12:12:00+09:00",
+      "planned_arrival": "2026-10-26T14:37:00+09:00",
+      "line_id": "service-honam",
+      "stop_station_ids": [
+        "목포",
+        "나주",
+        "광주송정",
+        "익산",
+        "동탄",
+        "수서"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "호남선",
+      "source_cell": "AA35",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-a2d2f3947b322b82db044d92",
+      "number": "617",
+      "origin": "수서",
+      "destination": "목포",
+      "planned_departure": "2026-10-26T13:09:00+09:00",
+      "planned_arrival": "2026-10-26T15:44:00+09:00",
+      "line_id": "service-honam",
+      "stop_station_ids": [
+        "수서",
+        "평택지제",
+        "천안아산",
+        "오송",
+        "공주",
+        "익산",
+        "정읍",
+        "광주송정",
+        "나주",
+        "목포"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "호남선",
+      "source_cell": "B37",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-176ba7665e473dcdc6fd8e86",
+      "number": "618",
+      "origin": "목포",
+      "destination": "수서",
+      "planned_departure": "2026-10-26T14:00:00+09:00",
+      "planned_arrival": "2026-10-26T16:37:00+09:00",
+      "line_id": "service-honam",
+      "stop_station_ids": [
+        "목포",
+        "나주",
+        "광주송정",
+        "정읍",
+        "익산",
+        "공주",
+        "천안아산",
+        "동탄",
+        "수서"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "호남선",
+      "source_cell": "AA40",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-00bb15b4ddaeee1f33ccb426",
+      "number": "619",
+      "origin": "수서",
+      "destination": "광주송정",
+      "planned_departure": "2026-10-26T14:09:00+09:00",
+      "planned_arrival": "2026-10-26T15:55:00+09:00",
+      "line_id": "service-honam",
+      "stop_station_ids": [
+        "수서",
+        "동탄",
+        "오송",
+        "익산",
+        "정읍",
+        "광주송정"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "호남선",
+      "source_cell": "B38",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-b44dab7a8db38b86bb5f785f",
+      "number": "654",
+      "origin": "광주송정",
+      "destination": "수서",
+      "planned_departure": "2026-10-26T13:02:00+09:00",
+      "planned_arrival": "2026-10-26T15:40:00+09:00",
+      "line_id": "service-honam",
+      "stop_station_ids": [
+        "광주송정",
+        "정읍",
+        "익산",
+        "논산",
+        "계룡",
+        "서대전",
+        "천안아산",
+        "평택지제",
+        "수서"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "호남선",
+      "source_cell": "AA36",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-09b70a562768325559b9ac77",
+      "number": "665",
+      "origin": "수서",
+      "destination": "여수엑스포",
+      "planned_departure": "2026-10-26T13:09:00+09:00",
+      "planned_arrival": "2026-10-26T16:15:00+09:00",
+      "line_id": "service-jeolla",
+      "stop_station_ids": [
+        "수서",
+        "평택지제",
+        "천안아산",
+        "오송",
+        "공주",
+        "익산",
+        "전주",
+        "남원",
+        "곡성",
+        "순천",
+        "여천",
+        "여수엑스포"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "전라선",
+      "source_cell": "B27",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-ad5f0fc1e81e58ac42175e68",
+      "number": "707",
+      "origin": "서울",
+      "destination": "부전",
+      "planned_departure": "2026-10-26T10:59:00+09:00",
+      "planned_arrival": "2026-10-26T15:27:00+09:00",
+      "line_id": "service-jungang",
+      "stop_station_ids": [
+        "서울",
+        "청량리",
+        "양평",
+        "서원주",
+        "원주",
+        "제천",
+        "단양",
+        "풍기",
+        "영주",
+        "안동",
+        "영천",
+        "경주",
+        "태화강",
+        "신해운대",
+        "부전"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "중앙선",
+      "source_cell": "B14",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-0bcafc72f43de701c54b791f",
+      "number": "709",
+      "origin": "서울",
+      "destination": "부전",
+      "planned_departure": "2026-10-26T12:55:00+09:00",
+      "planned_arrival": "2026-10-26T17:00:00+09:00",
+      "line_id": "service-jungang",
+      "stop_station_ids": [
+        "서울",
+        "청량리",
+        "서원주",
+        "원주",
+        "제천",
+        "단양",
+        "영주",
+        "안동",
+        "경주",
+        "태화강",
+        "부전"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "중앙선",
+      "source_cell": "B15",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-52ae1009216b340aceec5577",
+      "number": "710",
+      "origin": "부전",
+      "destination": "서울",
+      "planned_departure": "2026-10-26T10:02:00+09:00",
+      "planned_arrival": "2026-10-26T14:33:00+09:00",
+      "line_id": "service-jungang",
+      "stop_station_ids": [
+        "부전",
+        "남창",
+        "태화강",
+        "경주",
+        "영천",
+        "안동",
+        "영주",
+        "풍기",
+        "단양",
+        "제천",
+        "원주",
+        "서원주",
+        "양평",
+        "청량리",
+        "서울"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "중앙선",
+      "source_cell": "AB15",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-97e2fb10c858f1e1954ee1e4",
+      "number": "711",
+      "origin": "서울",
+      "destination": "부전",
+      "planned_departure": "2026-10-26T13:55:00+09:00",
+      "planned_arrival": "2026-10-26T18:04:00+09:00",
+      "line_id": "service-jungang",
+      "stop_station_ids": [
+        "서울",
+        "청량리",
+        "서원주",
+        "원주",
+        "제천",
+        "영주",
+        "안동",
+        "경주",
+        "태화강",
+        "부전"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "중앙선",
+      "source_cell": "B17",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-4a495f7e69b58f5d79c7f63a",
+      "number": "712",
+      "origin": "부전",
+      "destination": "청량리",
+      "planned_departure": "2026-10-26T12:07:00+09:00",
+      "planned_arrival": "2026-10-26T16:04:00+09:00",
+      "line_id": "service-jungang",
+      "stop_station_ids": [
+        "부전",
+        "신해운대",
+        "태화강",
+        "경주",
+        "의성",
+        "안동",
+        "영주",
+        "풍기",
+        "단양",
+        "제천",
+        "원주",
+        "양평",
+        "상봉",
+        "청량리"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "중앙선",
+      "source_cell": "AB16",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-2d0435bcad7eb5752b4340fc",
+      "number": "714",
+      "origin": "부전",
+      "destination": "서울",
+      "planned_departure": "2026-10-26T13:29:00+09:00",
+      "planned_arrival": "2026-10-26T17:41:00+09:00",
+      "line_id": "service-jungang",
+      "stop_station_ids": [
+        "부전",
+        "태화강",
+        "경주",
+        "안동",
+        "영주",
+        "제천",
+        "원주",
+        "서원주",
+        "청량리",
+        "서울"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "중앙선",
+      "source_cell": "AB17",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-3dbb06f4b40f8b168c147b04",
+      "number": "753",
+      "origin": "부전",
+      "destination": "강릉",
+      "planned_departure": "2026-10-26T13:58:00+09:00",
+      "planned_arrival": "2026-10-26T17:51:00+09:00",
+      "line_id": "service-donghae",
+      "stop_station_ids": [
+        "부전",
+        "태화강",
+        "경주",
+        "포항",
+        "영덕",
+        "울진",
+        "삼척",
+        "동해",
+        "묵호",
+        "정동진",
+        "강릉"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "동해선(부전-강릉)",
+      "source_cell": "B11",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-5e98d89985036f21ca2c6958",
+      "number": "811",
+      "origin": "서울",
+      "destination": "강릉",
+      "planned_departure": "2026-10-26T12:11:00+09:00",
+      "planned_arrival": "2026-10-26T14:14:00+09:00",
+      "line_id": "service-gangneung",
+      "stop_station_ids": [
+        "서울",
+        "청량리",
+        "상봉",
+        "만종",
+        "횡성",
+        "평창",
+        "진부",
+        "강릉"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "강릉선",
+      "source_cell": "B23",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-232a38c33c98f4a2d03fcfc7",
+      "number": "813",
+      "origin": "서울",
+      "destination": "강릉",
+      "planned_departure": "2026-10-26T12:55:00+09:00",
+      "planned_arrival": "2026-10-26T14:56:00+09:00",
+      "line_id": "service-gangneung",
+      "stop_station_ids": [
+        "서울",
+        "청량리",
+        "서원주",
+        "만종",
+        "횡성",
+        "둔내",
+        "강릉"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "강릉선",
+      "source_cell": "B25",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-f9dcb03e0a9ba947dabf31c6",
+      "number": "814",
+      "origin": "강릉",
+      "destination": "서울",
+      "planned_departure": "2026-10-26T12:23:00+09:00",
+      "planned_arrival": "2026-10-26T14:33:00+09:00",
+      "line_id": "service-gangneung",
+      "stop_station_ids": [
+        "강릉",
+        "진부",
+        "평창",
+        "횡성",
+        "서원주",
+        "양평",
+        "청량리",
+        "서울"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "강릉선",
+      "source_cell": "V23",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-15768ccc3e2bdde28ee3dc43",
+      "number": "815",
+      "origin": "서울",
+      "destination": "강릉",
+      "planned_departure": "2026-10-26T13:55:00+09:00",
+      "planned_arrival": "2026-10-26T15:57:00+09:00",
+      "line_id": "service-gangneung",
+      "stop_station_ids": [
+        "서울",
+        "청량리",
+        "서원주",
+        "만종",
+        "횡성",
+        "평창",
+        "강릉"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "강릉선",
+      "source_cell": "B28",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-77c72c8a9e462f2dbf65803d",
+      "number": "844",
+      "origin": "동해",
+      "destination": "서울",
+      "planned_departure": "2026-10-26T14:02:00+09:00",
+      "planned_arrival": "2026-10-26T16:39:00+09:00",
+      "line_id": "service-gangneung",
+      "stop_station_ids": [
+        "동해",
+        "묵호",
+        "정동진",
+        "진부",
+        "횡성",
+        "만종",
+        "양평",
+        "청량리",
+        "서울"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "강릉선",
+      "source_cell": "V26",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-54951e4c3178dcea687e0eda",
+      "number": "869",
+      "origin": "청량리",
+      "destination": "강릉",
+      "planned_departure": "2026-10-26T13:42:00+09:00",
+      "planned_arrival": "2026-10-26T15:18:00+09:00",
+      "line_id": "service-gangneung",
+      "stop_station_ids": [
+        "청량리",
+        "양평",
+        "만종",
+        "평창",
+        "강릉"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "강릉선",
+      "source_cell": "B26",
+      "operating_days": "월화수목금"
+    },
+    {
+      "train_id": "train-0f6ad11c0de13a025d47a2bf",
+      "number": "1009",
+      "origin": "서울",
+      "destination": "부산",
+      "planned_departure": "2026-10-26T10:23:00+09:00",
+      "planned_arrival": "2026-10-26T15:21:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "서울",
+        "영등포",
+        "수원",
+        "평택",
+        "천안",
+        "조치원",
+        "신탄진",
+        "대전",
+        "영동",
+        "김천",
+        "구미",
+        "왜관",
+        "대구",
+        "동대구",
+        "경산",
+        "밀양",
+        "물금",
+        "구포",
+        "부산"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "O9",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-e96fc1f48065b8cfb800e4c6",
+      "number": "1010",
+      "origin": "부산",
+      "destination": "서울",
+      "planned_departure": "2026-10-26T11:56:00+09:00",
+      "planned_arrival": "2026-10-26T16:59:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "부산",
+        "구포",
+        "물금",
+        "밀양",
+        "청도",
+        "경산",
+        "동대구",
+        "대구",
+        "구미",
+        "김천",
+        "영동",
+        "옥천",
+        "대전",
+        "조치원",
+        "천안",
+        "평택",
+        "수원",
+        "영등포",
+        "서울"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "T67",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-03b8cf61fa8f908aef754d7c",
+      "number": "1011",
+      "origin": "서울",
+      "destination": "부산",
+      "planned_departure": "2026-10-26T10:48:00+09:00",
+      "planned_arrival": "2026-10-26T15:31:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "서울",
+        "영등포",
+        "수원",
+        "천안",
+        "대전",
+        "김천",
+        "구미",
+        "대구",
+        "동대구",
+        "구포",
+        "부산"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "P9",
+      "operating_days": "00:00:00"
+    },
+    {
+      "train_id": "train-b6e73d48b5c22a537fb5c4b2",
+      "number": "1012",
+      "origin": "부산",
+      "destination": "서울",
+      "planned_departure": "2026-10-26T13:07:00+09:00",
+      "planned_arrival": "2026-10-26T18:15:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "부산",
+        "구포",
+        "물금",
+        "밀양",
+        "청도",
+        "동대구",
+        "대구",
+        "구미",
+        "김천",
+        "영동",
+        "대전",
+        "조치원",
+        "천안",
+        "평택",
+        "수원",
+        "영등포",
+        "서울"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "W67",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-88090ee4cc2be1a6b131c796",
+      "number": "1013",
+      "origin": "서울",
+      "destination": "부산",
+      "planned_departure": "2026-10-26T12:02:00+09:00",
+      "planned_arrival": "2026-10-26T16:54:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "서울",
+        "영등포",
+        "수원",
+        "평택",
+        "천안",
+        "조치원",
+        "신탄진",
+        "대전",
+        "김천",
+        "구미",
+        "대구",
+        "동대구",
+        "청도",
+        "밀양",
+        "구포",
+        "부산"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "S9",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-ea1788368878fee69fa52fbb",
+      "number": "1015",
+      "origin": "서울",
+      "destination": "부산",
+      "planned_departure": "2026-10-26T12:22:00+09:00",
+      "planned_arrival": "2026-10-26T17:27:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "서울",
+        "영등포",
+        "수원",
+        "평택",
+        "천안",
+        "조치원",
+        "대전",
+        "옥천",
+        "영동",
+        "김천",
+        "구미",
+        "왜관",
+        "대구",
+        "동대구",
+        "경산",
+        "청도",
+        "밀양",
+        "삼랑진",
+        "물금",
+        "구포",
+        "부산"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "U9",
+      "operating_days": "00:00:00"
+    },
+    {
+      "train_id": "train-ff2446788c41e4b67789f0e9",
+      "number": "1017",
+      "origin": "서울",
+      "destination": "부산",
+      "planned_departure": "2026-10-26T13:53:00+09:00",
+      "planned_arrival": "2026-10-26T18:45:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "서울",
+        "영등포",
+        "수원",
+        "평택",
+        "천안",
+        "조치원",
+        "대전",
+        "영동",
+        "김천",
+        "구미",
+        "왜관",
+        "대구",
+        "동대구",
+        "청도",
+        "밀양",
+        "구포",
+        "부산"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "W9",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-e7bd7c9439863fb4ed7d0465",
+      "number": "1131",
+      "origin": "대전",
+      "destination": "부산",
+      "planned_departure": "2026-10-26T12:44:00+09:00",
+      "planned_arrival": "2026-10-26T16:21:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "대전",
+        "옥천",
+        "지탄",
+        "영동",
+        "황간",
+        "추풍령",
+        "김천",
+        "구미",
+        "왜관",
+        "대구",
+        "동대구",
+        "경산",
+        "청도",
+        "밀양",
+        "삼랑진",
+        "원동",
+        "물금",
+        "화명",
+        "구포",
+        "부산"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "Q9",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-b5cf3f08d1a26b8684a9dde9",
+      "number": "1156",
+      "origin": "부산",
+      "destination": "서울",
+      "planned_departure": "2026-10-26T09:42:00+09:00",
+      "planned_arrival": "2026-10-26T15:32:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "부산",
+        "구포",
+        "화명",
+        "물금",
+        "삼랑진",
+        "밀양",
+        "상동",
+        "청도",
+        "남성현",
+        "경산",
+        "동대구",
+        "대구",
+        "왜관",
+        "구미",
+        "김천",
+        "황간",
+        "영동",
+        "옥천",
+        "대전",
+        "신탄진",
+        "조치원",
+        "천안",
+        "평택",
+        "수원",
+        "영등포",
+        "서울"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "R67",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-0ebe693bfcaf354be86dfa63",
+      "number": "1157",
+      "origin": "서울",
+      "destination": "부산",
+      "planned_departure": "2026-10-26T13:02:00+09:00",
+      "planned_arrival": "2026-10-26T18:57:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "서울",
+        "영등포",
+        "수원",
+        "평택",
+        "천안",
+        "조치원",
+        "신탄진",
+        "대전",
+        "옥천",
+        "심천",
+        "영동",
+        "황간",
+        "추풍령",
+        "김천",
+        "구미",
+        "약목",
+        "왜관",
+        "신동",
+        "대구",
+        "동대구",
+        "경산",
+        "청도",
+        "상동",
+        "밀양",
+        "삼랑진",
+        "원동",
+        "물금",
+        "구포",
+        "부산"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "V9",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-b05706922d5b7ca40e5a9adf",
+      "number": "1158",
+      "origin": "부산",
+      "destination": "서울",
+      "planned_departure": "2026-10-26T10:21:00+09:00",
+      "planned_arrival": "2026-10-26T15:59:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "부산",
+        "구포",
+        "화명",
+        "물금",
+        "원동",
+        "삼랑진",
+        "밀양",
+        "청도",
+        "경산",
+        "동대구",
+        "대구",
+        "왜관",
+        "구미",
+        "김천",
+        "추풍령",
+        "황간",
+        "영동",
+        "옥천",
+        "대전",
+        "신탄진",
+        "천안",
+        "평택",
+        "수원",
+        "영등포",
+        "서울"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "S67",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-3a380772e2cf2a4a6aec2ca9",
+      "number": "1159",
+      "origin": "서울",
+      "destination": "부산",
+      "planned_departure": "2026-10-26T14:02:00+09:00",
+      "planned_arrival": "2026-10-26T19:50:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "서울",
+        "영등포",
+        "수원",
+        "평택",
+        "천안",
+        "전의",
+        "조치원",
+        "신탄진",
+        "대전",
+        "옥천",
+        "이원",
+        "영동",
+        "김천",
+        "구미",
+        "왜관",
+        "대구",
+        "동대구",
+        "경산",
+        "청도",
+        "상동",
+        "밀양",
+        "삼랑진",
+        "물금",
+        "구포",
+        "부산"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "X9",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-50151d77029c20feb2f6352f",
+      "number": "1160",
+      "origin": "부산",
+      "destination": "서울",
+      "planned_departure": "2026-10-26T12:33:00+09:00",
+      "planned_arrival": "2026-10-26T18:10:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "부산",
+        "구포",
+        "물금",
+        "원동",
+        "삼랑진",
+        "밀양",
+        "상동",
+        "청도",
+        "남성현",
+        "경산",
+        "동대구",
+        "대구",
+        "왜관",
+        "구미",
+        "김천",
+        "추풍령",
+        "영동",
+        "옥천",
+        "대전",
+        "신탄진",
+        "조치원",
+        "천안",
+        "평택",
+        "수원",
+        "안양",
+        "영등포",
+        "서울"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "V67",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-6269e357720b01e774416a11",
+      "number": "1162",
+      "origin": "부산",
+      "destination": "서울",
+      "planned_departure": "2026-10-26T13:34:00+09:00",
+      "planned_arrival": "2026-10-26T19:25:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "부산",
+        "구포",
+        "물금",
+        "삼랑진",
+        "밀양",
+        "청도",
+        "경산",
+        "동대구",
+        "대구",
+        "왜관",
+        "구미",
+        "김천",
+        "황간",
+        "영동",
+        "심천",
+        "이원",
+        "옥천",
+        "대전",
+        "신탄진",
+        "부강",
+        "조치원",
+        "전의",
+        "천안",
+        "평택",
+        "수원",
+        "안양",
+        "영등포",
+        "서울"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "Y67",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-1288c4ba776c7a71fa992770",
+      "number": "1203",
+      "origin": "용산",
+      "destination": "익산",
+      "planned_departure": "2026-10-26T12:33:00+09:00",
+      "planned_arrival": "2026-10-26T16:07:00+09:00",
+      "line_id": "service-janghang",
+      "stop_station_ids": [
+        "용산",
+        "영등포",
+        "수원",
+        "천안",
+        "아산",
+        "온양온천",
+        "예산",
+        "삽교",
+        "홍성",
+        "광천",
+        "대천",
+        "웅천",
+        "서천",
+        "장항",
+        "군산",
+        "익산"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "장항선",
+      "source_cell": "K9",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-a8262c209928d9ad105dd9a6",
+      "number": "1205",
+      "origin": "용산",
+      "destination": "익산",
+      "planned_departure": "2026-10-26T13:43:00+09:00",
+      "planned_arrival": "2026-10-26T17:15:00+09:00",
+      "line_id": "service-janghang",
+      "stop_station_ids": [
+        "용산",
+        "영등포",
+        "수원",
+        "평택",
+        "천안",
+        "아산",
+        "온양온천",
+        "예산",
+        "삽교",
+        "홍성",
+        "광천",
+        "대천",
+        "웅천",
+        "서천",
+        "장항",
+        "군산",
+        "익산"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "장항선",
+      "source_cell": "M9",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-52ef1461d293798019b6815d",
+      "number": "1208",
+      "origin": "익산",
+      "destination": "용산",
+      "planned_departure": "2026-10-26T14:19:00+09:00",
+      "planned_arrival": "2026-10-26T17:51:00+09:00",
+      "line_id": "service-janghang",
+      "stop_station_ids": [
+        "익산",
+        "군산",
+        "장항",
+        "서천",
+        "웅천",
+        "대천",
+        "광천",
+        "홍성",
+        "예산",
+        "온양온천",
+        "아산",
+        "천안",
+        "수원",
+        "영등포",
+        "용산"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "장항선",
+      "source_cell": "M50",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-91f3cf7ceaa37fb8fb5be0e1",
+      "number": "1236",
+      "origin": "홍성",
+      "destination": "서화성",
+      "planned_departure": "2026-10-26T13:58:00+09:00",
+      "planned_arrival": "2026-10-26T15:05:00+09:00",
+      "line_id": "service-seohae",
+      "stop_station_ids": [
+        "홍성",
+        "합덕",
+        "인주",
+        "안중",
+        "향남",
+        "화성시청",
+        "서화성"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "서해선",
+      "source_cell": "R9",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-6a53b13775aade618607d25a",
+      "number": "1244",
+      "origin": "홍성",
+      "destination": "홍성",
+      "planned_departure": "2026-10-26T12:12:00+09:00",
+      "planned_arrival": "2026-10-26T14:17:00+09:00",
+      "line_id": "service-seohae",
+      "stop_station_ids": [
+        "홍성",
+        "삽교",
+        "예산",
+        "신례원",
+        "온양온천",
+        "아산",
+        "천안",
+        "평택",
+        "안중",
+        "인주",
+        "합덕",
+        "홍성"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "서해선",
+      "source_cell": "E9",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-6c73d7dafd3ea516d84bed3a",
+      "number": "1277",
+      "origin": "용산",
+      "destination": "익산",
+      "planned_departure": "2026-10-26T10:33:00+09:00",
+      "planned_arrival": "2026-10-26T14:16:00+09:00",
+      "line_id": "service-janghang",
+      "stop_station_ids": [
+        "용산",
+        "영등포",
+        "수원",
+        "평택",
+        "천안",
+        "아산",
+        "온양온천",
+        "도고온천",
+        "신례원",
+        "예산",
+        "삽교",
+        "홍성",
+        "광천",
+        "대천",
+        "웅천",
+        "판교",
+        "서천",
+        "장항",
+        "군산",
+        "대야",
+        "익산"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "장항선",
+      "source_cell": "I9",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-58ff2d9a91b3948c83f83d7d",
+      "number": "1278",
+      "origin": "익산",
+      "destination": "용산",
+      "planned_departure": "2026-10-26T11:44:00+09:00",
+      "planned_arrival": "2026-10-26T15:48:00+09:00",
+      "line_id": "service-janghang",
+      "stop_station_ids": [
+        "익산",
+        "대야",
+        "군산",
+        "장항",
+        "서천",
+        "판교",
+        "웅천",
+        "대천",
+        "청소",
+        "광천",
+        "홍성",
+        "삽교",
+        "예산",
+        "신례원",
+        "온양온천",
+        "아산",
+        "천안",
+        "평택",
+        "수원",
+        "영등포",
+        "용산"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "장항선",
+      "source_cell": "J50",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-0c7df7318a384b76a3c0db22",
+      "number": "1279",
+      "origin": "용산",
+      "destination": "익산",
+      "planned_departure": "2026-10-26T12:53:00+09:00",
+      "planned_arrival": "2026-10-26T16:41:00+09:00",
+      "line_id": "service-janghang",
+      "stop_station_ids": [
+        "용산",
+        "영등포",
+        "수원",
+        "평택",
+        "천안",
+        "아산",
+        "온양온천",
+        "도고온천",
+        "신례원",
+        "예산",
+        "삽교",
+        "홍성",
+        "광천",
+        "청소",
+        "대천",
+        "웅천",
+        "판교",
+        "서천",
+        "장항",
+        "군산",
+        "대야",
+        "익산"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "장항선",
+      "source_cell": "L9",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-d2002fd70c2d6a6c7d6f6dcf",
+      "number": "1280",
+      "origin": "익산",
+      "destination": "용산",
+      "planned_departure": "2026-10-26T12:30:00+09:00",
+      "planned_arrival": "2026-10-26T16:23:00+09:00",
+      "line_id": "service-janghang",
+      "stop_station_ids": [
+        "익산",
+        "대야",
+        "군산",
+        "장항",
+        "서천",
+        "판교",
+        "웅천",
+        "대천",
+        "청소",
+        "광천",
+        "홍성",
+        "삽교",
+        "예산",
+        "신례원",
+        "도고온천",
+        "온양온천",
+        "아산",
+        "천안",
+        "평택",
+        "수원",
+        "영등포",
+        "용산"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "장항선",
+      "source_cell": "K50",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-ba46f82a7e972be5d625fdba",
+      "number": "1281",
+      "origin": "용산",
+      "destination": "익산",
+      "planned_departure": "2026-10-26T14:25:00+09:00",
+      "planned_arrival": "2026-10-26T18:20:00+09:00",
+      "line_id": "service-janghang",
+      "stop_station_ids": [
+        "용산",
+        "영등포",
+        "수원",
+        "평택",
+        "천안",
+        "아산",
+        "온양온천",
+        "도고온천",
+        "신례원",
+        "예산",
+        "삽교",
+        "홍성",
+        "광천",
+        "청소",
+        "대천",
+        "웅천",
+        "판교",
+        "서천",
+        "장항",
+        "군산",
+        "대야",
+        "익산"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "장항선",
+      "source_cell": "N9",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-64378e15ac6086f07610fcea",
+      "number": "1312",
+      "origin": "목포",
+      "destination": "익산",
+      "planned_departure": "2026-10-26T12:36:00+09:00",
+      "planned_arrival": "2026-10-26T14:34:00+09:00",
+      "line_id": "service-honam",
+      "stop_station_ids": [
+        "목포",
+        "일로",
+        "몽탄",
+        "무안",
+        "함평",
+        "나주",
+        "광주송정",
+        "장성",
+        "정읍",
+        "김제",
+        "익산"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "호남선",
+      "source_cell": "M62",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-67a8aa727b40ecdac7fced62",
+      "number": "1402",
+      "origin": "목포",
+      "destination": "용산",
+      "planned_departure": "2026-10-26T10:16:00+09:00",
+      "planned_arrival": "2026-10-26T15:08:00+09:00",
+      "line_id": "service-honam",
+      "stop_station_ids": [
+        "목포",
+        "일로",
+        "몽탄",
+        "함평",
+        "나주",
+        "광주송정",
+        "장성",
+        "정읍",
+        "신태인",
+        "김제",
+        "익산",
+        "강경",
+        "논산",
+        "계룡",
+        "서대전",
+        "조치원",
+        "천안",
+        "평택",
+        "수원",
+        "영등포",
+        "용산"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "호남선",
+      "source_cell": "H62",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-48056585832756e00088c6f3",
+      "number": "1403",
+      "origin": "용산",
+      "destination": "목포",
+      "planned_departure": "2026-10-26T09:47:00+09:00",
+      "planned_arrival": "2026-10-26T14:12:00+09:00",
+      "line_id": "service-honam",
+      "stop_station_ids": [
+        "용산",
+        "영등포",
+        "수원",
+        "평택",
+        "천안",
+        "서대전",
+        "논산",
+        "익산",
+        "김제",
+        "정읍",
+        "장성",
+        "광주송정",
+        "나주",
+        "함평",
+        "목포"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "호남선",
+      "source_cell": "H9",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-31b07ca1fceeb9e4a09a150f",
+      "number": "1404",
+      "origin": "목포",
+      "destination": "용산",
+      "planned_departure": "2026-10-26T11:02:00+09:00",
+      "planned_arrival": "2026-10-26T15:39:00+09:00",
+      "line_id": "service-honam",
+      "stop_station_ids": [
+        "목포",
+        "일로",
+        "함평",
+        "나주",
+        "광주송정",
+        "장성",
+        "정읍",
+        "김제",
+        "익산",
+        "논산",
+        "서대전",
+        "천안",
+        "수원",
+        "영등포",
+        "용산"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "호남선",
+      "source_cell": "I62",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-afc1bb56fc28b62c0c2c7279",
+      "number": "1405",
+      "origin": "용산",
+      "destination": "목포",
+      "planned_departure": "2026-10-26T12:07:00+09:00",
+      "planned_arrival": "2026-10-26T16:56:00+09:00",
+      "line_id": "service-honam",
+      "stop_station_ids": [
+        "용산",
+        "영등포",
+        "수원",
+        "오산",
+        "평택",
+        "천안",
+        "조치원",
+        "서대전",
+        "계룡",
+        "논산",
+        "강경",
+        "익산",
+        "김제",
+        "신태인",
+        "정읍",
+        "장성",
+        "광주송정",
+        "나주",
+        "함평",
+        "몽탄",
+        "일로",
+        "목포"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "호남선",
+      "source_cell": "K9",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-df4835963ec8773dd55c83bd",
+      "number": "1423",
+      "origin": "용산",
+      "destination": "광주",
+      "planned_departure": "2026-10-26T13:24:00+09:00",
+      "planned_arrival": "2026-10-26T17:36:00+09:00",
+      "line_id": "service-honam",
+      "stop_station_ids": [
+        "용산",
+        "영등포",
+        "수원",
+        "서정리",
+        "평택",
+        "천안",
+        "조치원",
+        "신탄진",
+        "서대전",
+        "계룡",
+        "논산",
+        "강경",
+        "익산",
+        "김제",
+        "정읍",
+        "백양사",
+        "장성",
+        "광주"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "호남선",
+      "source_cell": "M9",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-c18471b49d22f3376b0b72a5",
+      "number": "1426",
+      "origin": "광주",
+      "destination": "용산",
+      "planned_departure": "2026-10-26T13:32:00+09:00",
+      "planned_arrival": "2026-10-26T17:36:00+09:00",
+      "line_id": "service-honam",
+      "stop_station_ids": [
+        "광주",
+        "장성",
+        "백양사",
+        "정읍",
+        "신태인",
+        "김제",
+        "익산",
+        "논산",
+        "계룡",
+        "서대전",
+        "조치원",
+        "천안",
+        "평택",
+        "수원",
+        "영등포",
+        "용산"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "호남선",
+      "source_cell": "N62",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-5cf91f7e45873c1bee526bdb",
+      "number": "1442",
+      "origin": "익산",
+      "destination": "용산",
+      "planned_departure": "2026-10-26T14:15:00+09:00",
+      "planned_arrival": "2026-10-26T17:16:00+09:00",
+      "line_id": "service-honam",
+      "stop_station_ids": [
+        "익산",
+        "강경",
+        "논산",
+        "계룡",
+        "서대전",
+        "신탄진",
+        "조치원",
+        "천안",
+        "평택",
+        "수원",
+        "영등포",
+        "용산"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "호남선",
+      "source_cell": "K62",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-5627366a912f5accfe0a878c",
+      "number": "1462",
+      "origin": "광주",
+      "destination": "용산",
+      "planned_departure": "2026-10-26T11:50:00+09:00",
+      "planned_arrival": "2026-10-26T16:46:00+09:00",
+      "line_id": "service-honam",
+      "stop_station_ids": [
+        "광주",
+        "극락강",
+        "장성",
+        "백양사",
+        "정읍",
+        "신태인",
+        "김제",
+        "익산",
+        "함열",
+        "강경",
+        "논산",
+        "계룡",
+        "서대전",
+        "신탄진",
+        "조치원",
+        "전의",
+        "천안",
+        "평택",
+        "수원",
+        "영등포",
+        "용산"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "호남선",
+      "source_cell": "J62",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-8066ee67e8fec7bb8c991941",
+      "number": "1482",
+      "origin": "광주",
+      "destination": "서대전",
+      "planned_departure": "2026-10-26T13:05:00+09:00",
+      "planned_arrival": "2026-10-26T15:35:00+09:00",
+      "line_id": "service-honam",
+      "stop_station_ids": [
+        "광주",
+        "장성",
+        "백양사",
+        "정읍",
+        "신태인",
+        "김제",
+        "익산",
+        "함열",
+        "강경",
+        "논산",
+        "연산",
+        "계룡",
+        "서대전"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "호남선",
+      "source_cell": "L62",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-66e66064ff7f3c6326fddf74",
+      "number": "1483",
+      "origin": "서대전",
+      "destination": "광주",
+      "planned_departure": "2026-10-26T12:56:00+09:00",
+      "planned_arrival": "2026-10-26T15:33:00+09:00",
+      "line_id": "service-honam",
+      "stop_station_ids": [
+        "서대전",
+        "계룡",
+        "연산",
+        "논산",
+        "강경",
+        "함열",
+        "익산",
+        "김제",
+        "신태인",
+        "정읍",
+        "백양사",
+        "장성",
+        "광주"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "호남선",
+      "source_cell": "J9",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-ba5a093f49b6f1c0bf75539f",
+      "number": "1504",
+      "origin": "여수엑스포",
+      "destination": "용산",
+      "planned_departure": "2026-10-26T14:10:00+09:00",
+      "planned_arrival": "2026-10-26T19:06:00+09:00",
+      "line_id": "service-jeolla",
+      "stop_station_ids": [
+        "여수엑스포",
+        "여천",
+        "순천",
+        "구례구",
+        "곡성",
+        "남원",
+        "임실",
+        "전주",
+        "삼례",
+        "익산",
+        "강경",
+        "논산",
+        "계룡",
+        "서대전",
+        "신탄진",
+        "조치원",
+        "천안",
+        "평택",
+        "수원",
+        "영등포",
+        "용산"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "전라선",
+      "source_cell": "I54",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-8f94aa1e57a9f99cd7e9575b",
+      "number": "1512",
+      "origin": "순천",
+      "destination": "용산",
+      "planned_departure": "2026-10-26T11:27:00+09:00",
+      "planned_arrival": "2026-10-26T15:39:00+09:00",
+      "line_id": "service-jeolla",
+      "stop_station_ids": [
+        "순천",
+        "남원",
+        "전주",
+        "익산",
+        "논산",
+        "서대전",
+        "천안",
+        "수원",
+        "영등포",
+        "용산"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "전라선",
+      "source_cell": "F54",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-856ce54f801a16065bc829ed",
+      "number": "1525",
+      "origin": "익산",
+      "destination": "여수엑스포",
+      "planned_departure": "2026-10-26T13:53:00+09:00",
+      "planned_arrival": "2026-10-26T16:02:00+09:00",
+      "line_id": "service-jeolla",
+      "stop_station_ids": [
+        "익산",
+        "삼례",
+        "전주",
+        "임실",
+        "오수",
+        "남원",
+        "곡성",
+        "구례구",
+        "순천",
+        "여천",
+        "여수엑스포"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "전라선",
+      "source_cell": "I9",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-abe0c7a8b561115af6c431a8",
+      "number": "1571",
+      "origin": "용산",
+      "destination": "여수엑스포",
+      "planned_departure": "2026-10-26T09:38:00+09:00",
+      "planned_arrival": "2026-10-26T15:11:00+09:00",
+      "line_id": "service-jeolla",
+      "stop_station_ids": [
+        "용산",
+        "영등포",
+        "수원",
+        "평택",
+        "천안",
+        "전의",
+        "조치원",
+        "부강",
+        "신탄진",
+        "서대전",
+        "계룡",
+        "연산",
+        "논산",
+        "강경",
+        "함열",
+        "익산",
+        "삼례",
+        "전주",
+        "임실",
+        "오수",
+        "남원",
+        "곡성",
+        "구례구",
+        "순천",
+        "여천",
+        "여수엑스포"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "전라선",
+      "source_cell": "H9",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-8a026d115f6a6b90e4acbffc",
+      "number": "1574",
+      "origin": "여수엑스포",
+      "destination": "용산",
+      "planned_departure": "2026-10-26T13:11:00+09:00",
+      "planned_arrival": "2026-10-26T18:52:00+09:00",
+      "line_id": "service-jeolla",
+      "stop_station_ids": [
+        "여수엑스포",
+        "여천",
+        "순천",
+        "구례구",
+        "곡성",
+        "남원",
+        "오수",
+        "임실",
+        "전주",
+        "익산",
+        "함열",
+        "강경",
+        "논산",
+        "연산",
+        "계룡",
+        "서대전",
+        "신탄진",
+        "조치원",
+        "전의",
+        "천안",
+        "평택",
+        "수원",
+        "영등포",
+        "용산"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "전라선",
+      "source_cell": "H54",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-587dee1210c8e9efaf64590f",
+      "number": "1614",
+      "origin": "안동",
+      "destination": "청량리",
+      "planned_departure": "2026-10-26T14:30:00+09:00",
+      "planned_arrival": "2026-10-26T17:06:00+09:00",
+      "line_id": "service-jungang",
+      "stop_station_ids": [
+        "안동",
+        "영주",
+        "풍기",
+        "단양",
+        "제천",
+        "원주",
+        "서원주",
+        "양동",
+        "용문",
+        "양평",
+        "덕소",
+        "청량리"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "중앙선",
+      "source_cell": "AA9",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-fef854903119a2bce90af246",
+      "number": "1701",
+      "origin": "대전",
+      "destination": "제천",
+      "planned_departure": "2026-10-26T13:11:00+09:00",
+      "planned_arrival": "2026-10-26T15:16:00+09:00",
+      "line_id": "service-chungbuk",
+      "stop_station_ids": [
+        "대전",
+        "조치원",
+        "오송",
+        "청주",
+        "오근장",
+        "청주공항",
+        "증평",
+        "음성",
+        "충주",
+        "제천"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "충북선",
+      "source_cell": "G9",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-650e7b83ccab1e49e893571e",
+      "number": "1702",
+      "origin": "제천",
+      "destination": "대전",
+      "planned_departure": "2026-10-26T13:53:00+09:00",
+      "planned_arrival": "2026-10-26T15:54:00+09:00",
+      "line_id": "service-chungbuk",
+      "stop_station_ids": [
+        "제천",
+        "충주",
+        "음성",
+        "증평",
+        "청주공항",
+        "오근장",
+        "청주",
+        "오송",
+        "조치원",
+        "대전"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "충북선",
+      "source_cell": "H46",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-cd39b0f8b4e66808c06574bc",
+      "number": "1756",
+      "origin": "제천",
+      "destination": "대전",
+      "planned_departure": "2026-10-26T13:18:00+09:00",
+      "planned_arrival": "2026-10-26T15:25:00+09:00",
+      "line_id": "service-chungbuk",
+      "stop_station_ids": [
+        "제천",
+        "충주",
+        "주덕",
+        "음성",
+        "증평",
+        "청주공항",
+        "오근장",
+        "청주",
+        "오송",
+        "조치원",
+        "신탄진",
+        "대전"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "충북선",
+      "source_cell": "G46",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-8b97b6a41cc355384d73da6f",
+      "number": "1798",
+      "origin": "영주",
+      "destination": "김천",
+      "planned_departure": "2026-10-26T14:06:00+09:00",
+      "planned_arrival": "2026-10-26T16:19:00+09:00",
+      "line_id": "service-gyeongbuk",
+      "stop_station_ids": [
+        "영주",
+        "예천",
+        "개포",
+        "용궁",
+        "점촌",
+        "함창",
+        "상주",
+        "청리",
+        "옥산",
+        "김천"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "경북선",
+      "source_cell": "N9",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-80de5dc1dcc2872eeb45d89f",
+      "number": "1802",
+      "origin": "동해",
+      "destination": "부전",
+      "planned_departure": "2026-10-26T12:12:00+09:00",
+      "planned_arrival": "2026-10-26T16:32:00+09:00",
+      "line_id": "service-donghae",
+      "stop_station_ids": [
+        "동해",
+        "삼척",
+        "흥부",
+        "죽변",
+        "울진",
+        "기성",
+        "고래불",
+        "영해",
+        "영덕",
+        "포항",
+        "서경주",
+        "경주",
+        "북울산",
+        "태화강",
+        "기장",
+        "신해운대",
+        "부전"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "동해선",
+      "source_cell": "N9",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-b162cd6bb4df4e425b471582",
+      "number": "1803",
+      "origin": "부전",
+      "destination": "동해",
+      "planned_departure": "2026-10-26T09:38:00+09:00",
+      "planned_arrival": "2026-10-26T14:15:00+09:00",
+      "line_id": "service-donghae",
+      "stop_station_ids": [
+        "부전",
+        "신해운대",
+        "기장",
+        "태화강",
+        "북울산",
+        "경주",
+        "서경주",
+        "포항",
+        "월포",
+        "장사",
+        "영덕",
+        "영해",
+        "고래불",
+        "후포",
+        "평해",
+        "매화",
+        "울진",
+        "죽변",
+        "흥부",
+        "근덕",
+        "삼척",
+        "동해"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "동해선",
+      "source_cell": "I60",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-1cd0b6c906573b2d63257102",
+      "number": "1805",
+      "origin": "부전",
+      "destination": "동해",
+      "planned_departure": "2026-10-26T11:09:00+09:00",
+      "planned_arrival": "2026-10-26T15:19:00+09:00",
+      "line_id": "service-donghae",
+      "stop_station_ids": [
+        "부전",
+        "신해운대",
+        "기장",
+        "태화강",
+        "북울산",
+        "경주",
+        "서경주",
+        "포항",
+        "영덕",
+        "고래불",
+        "기성",
+        "울진",
+        "죽변",
+        "삼척",
+        "동해"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "동해선",
+      "source_cell": "J60",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-b13c38f0e3855ebd402d6b7d",
+      "number": "1904",
+      "origin": "진주",
+      "destination": "동대구",
+      "planned_departure": "2026-10-26T12:15:00+09:00",
+      "planned_arrival": "2026-10-26T14:22:00+09:00",
+      "line_id": "service-gyeongjeon",
+      "stop_station_ids": [
+        "진주",
+        "군북",
+        "함안",
+        "마산",
+        "창원",
+        "창원중앙",
+        "진영",
+        "한림정",
+        "밀양",
+        "상동",
+        "청도",
+        "경산",
+        "동대구"
+      ],
+      "source_id": "korail-regular-20260901",
+      "source_sheet": "경전선",
+      "source_cell": "AE9",
+      "operating_days": "00:00:00"
+    },
+    {
+      "train_id": "train-4b9907b5cf420618d0bf2f8f",
+      "number": "9038",
+      "origin": "부산",
+      "destination": "서울",
+      "planned_departure": "2026-10-26T13:03:00+09:00",
+      "planned_arrival": "2026-10-26T15:47:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "부산",
+        "ulsan",
+        "경주",
+        "동대구",
+        "김천구미",
+        "대전",
+        "천안아산",
+        "서울"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "AA65",
+      "operating_days": "매일"
+    },
+    {
+      "train_id": "train-896c53a5891ed1c0fa20d641",
+      "number": "9045",
+      "origin": "서울",
+      "destination": "부산",
+      "planned_departure": "2026-10-26T14:28:00+09:00",
+      "planned_arrival": "2026-10-26T17:12:00+09:00",
+      "line_id": "service-gyeongbu",
+      "stop_station_ids": [
+        "서울",
+        "광명",
+        "천안아산",
+        "대전",
+        "동대구",
+        "경주",
+        "ulsan",
+        "부산"
+      ],
+      "source_id": "korail-ktx-20260901",
+      "source_sheet": "경부선",
+      "source_cell": "B68",
+      "operating_days": "월화수목"
+    }
+  ],
+  "unmatched": [
+    {
+      "train_id": "train-ee54c3290b65fd947d71953e",
+      "number": "426",
+      "reason": "endpoint_or_time_mismatch"
+    },
+    {
+      "train_id": "train-551834943c19e138dc4677fd",
+      "number": "520",
+      "reason": "endpoint_or_time_mismatch"
+    },
+    {
+      "train_id": "train-39274cb1ff1f15dab8c0d67e",
+      "number": "1542",
+      "reason": "incomplete_cross_line_table"
+    },
+    {
+      "train_id": "train-e66be64cb9db7b61922602f1",
+      "number": "1673",
+      "reason": "incomplete_cross_line_table"
+    },
+    {
+      "train_id": "train-8ab9be4cc83da267da057246",
+      "number": "1674",
+      "reason": "incomplete_cross_line_table"
+    },
+    {
+      "train_id": "train-403e894731194cbdfa191627",
+      "number": "1675",
+      "reason": "incomplete_cross_line_table"
+    },
+    {
+      "train_id": "train-a5d1e6b78a3f1800f010aa57",
+      "number": "1772",
+      "reason": "incomplete_cross_line_table"
+    },
+    {
+      "train_id": "train-4c0cb1b09d6ee5bbd5ddbdf8",
+      "number": "1853",
+      "reason": "incomplete_cross_line_table"
+    },
+    {
+      "train_id": "train-6549fd1cfb1cd3b3f38f7dc6",
+      "number": "1856",
+      "reason": "incomplete_cross_line_table"
+    },
+    {
+      "train_id": "train-710ebc63a7c9974b4ea1115d",
+      "number": "1874",
+      "reason": "incomplete_cross_line_table"
+    },
+    {
+      "train_id": "train-9d90a7e7a2572e246c14e111",
+      "number": "1875",
+      "reason": "incomplete_cross_line_table"
+    },
+    {
+      "train_id": "train-116ec2f6a78c2602cbf13987",
+      "number": "1888",
+      "reason": "incomplete_cross_line_table"
+    },
+    {
+      "train_id": "train-d51e92a783a5aa16d6d84f79",
+      "number": "1981",
+      "reason": "incomplete_cross_line_table"
+    },
+    {
+      "train_id": "train-19fddbe523155498f5b64f39",
+      "number": "2017",
+      "reason": "not_in_timetables_for_service_day"
+    },
+    {
+      "train_id": "train-d5a7854c647ea5e94317da8e",
+      "number": "2018",
+      "reason": "not_in_timetables_for_service_day"
+    },
+    {
+      "train_id": "train-5a54ba2c032eac1f35eadf28",
+      "number": "2020",
+      "reason": "not_in_timetables_for_service_day"
+    },
+    {
+      "train_id": "train-7fd9460e3050a22b97027024",
+      "number": "2513",
+      "reason": "not_in_timetables_for_service_day"
+    }
+  ],
+  "summary": {
+    "record_count": 148,
+    "matched_count": 131,
+    "unmatched_count": 17,
+    "matched_by_snapshot": {
+      "earlier": 128,
+      "latest": 131
+    },
+    "unmatched_reasons": {
+      "endpoint_or_time_mismatch": 2,
+      "incomplete_cross_line_table": 11,
+      "not_in_timetables_for_service_day": 4
+    },
+    "matched_by_line": {
+      "service-gyeongbu": 46,
+      "service-gyeongjeon": 9,
+      "service-donghae": 11,
+      "service-honam": 24,
+      "service-jeolla": 14,
+      "service-jungang": 7,
+      "service-gangneung": 6,
+      "service-janghang": 8,
+      "service-seohae": 2,
+      "service-chungbuk": 3,
+      "service-gyeongbuk": 1
+    }
+  }
+}

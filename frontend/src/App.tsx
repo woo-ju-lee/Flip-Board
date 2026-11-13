@@ -52,8 +52,9 @@ function usePositionLength(fullscreen: boolean) {
   return length;
 }
 
-export default function App({ request = fetch, initialSource, homeHref = "/" }: {
+export default function App({ request = fetch, initialSource, homeHref = "/", timetableDemo = false, initialMode = "all" }: {
   request?: typeof fetch; initialSource?: Source; homeHref?: string;
+  timetableDemo?: boolean; initialMode?: Mode;
 } = {}) {
   const [source, setSource] = useState<Source>(() =>
     initialSource ?? (new URLSearchParams(window.location.search).get("source") === "archive"
@@ -61,7 +62,7 @@ export default function App({ request = fetch, initialSource, homeHref = "/" }: 
       : "live"),
   );
   const [archive, setArchive] = useState("141536");
-  const [mode, setMode] = useState<Mode>("all");
+  const [mode, setMode] = useState<Mode>(initialMode);
   const [station, setStation] = useState("ulsan");
   const [line, setLine] = useState("");
   const [page, setPage] = useState(0);
@@ -75,6 +76,9 @@ export default function App({ request = fetch, initialSource, homeHref = "/" }: 
   const reduced = useReducedMotion();
   const positionLength = usePositionLength(fullscreen);
   const { lines, stations, catalogError } = useCatalog(request);
+  useEffect(() => {
+    if (timetableDemo && mode === "line" && !line && lines.length) setLine(lines[0].id);
+  }, [timetableDemo, mode, line, lines]);
   const { data, error, loading, refresh } = useBoard(
     source,
     archive,
@@ -155,7 +159,7 @@ export default function App({ request = fetch, initialSource, homeHref = "/" }: 
       ? "전체 열차"
       : mode === "station"
         ? `${selectedStation?.name ?? "울산(통도사)"}역`
-        : (selectedLine?.name ?? "경부고속선");
+        : (selectedLine?.name ?? (timetableDemo ? "노선 선택" : "경부고속선"));
   const lineOptions =
     mode === "station"
       ? lines.filter((l) => selectedStation?.line_ids.includes(l.id))
@@ -165,7 +169,7 @@ export default function App({ request = fetch, initialSource, homeHref = "/" }: 
     ["unavailable", "unmapped", "select_line"].includes(data.filter.state);
   const switchMode = (next: Mode) => {
     setMode(next);
-    setLine(next === "line" ? "gyeongbu-hsr" : "");
+    setLine(next === "line" ? (timetableDemo ? lines[0]?.id ?? "" : "gyeongbu-hsr") : "");
   };
   async function toggleFullscreen() {
     try {
@@ -260,8 +264,8 @@ export default function App({ request = fetch, initialSource, homeHref = "/" }: 
                       value={line}
                       onChange={(e) => setLine(e.target.value)}
                     >
-                      <option value="" disabled>
-                        노선을 선택하세요
+                      <option value="" disabled={!timetableDemo || mode === "line"}>
+                        {timetableDemo && mode === "station" ? "전체 노선" : "노선을 선택하세요"}
                       </option>
                       {lineOptions.map((l) => (
                         <option key={l.id} value={l.id}>
@@ -275,7 +279,9 @@ export default function App({ request = fetch, initialSource, homeHref = "/" }: 
                 {mode === "station" &&
                   (selectedStation?.line_ids.length ?? 0) <= 1 && (
                     <span className="linked-line">
-                      → {selectedLine?.name ?? "경부고속선"}
+                      {timetableDemo
+                        ? "정차 열차만 표시"
+                        : `→ ${selectedLine?.name ?? "경부고속선"}`}
                     </span>
                   )}
               </>
@@ -337,6 +343,13 @@ export default function App({ request = fetch, initialSource, homeHref = "/" }: 
           )}
         </div>
 
+        {timetableDemo && source === "archive" && (
+          <div className="source-notice archive-notice" role="status" aria-label="정차역 자료 안내">
+            <Route size={14} />
+            <span>{data?.filter.message || "공식 시간표의 정차역과 운행 노선을 확인하고 있습니다."}</span>
+          </div>
+        )}
+
         <section ref={boardElement} className="board-housing" aria-label="열차 운행 전광판">
           <i className="screw screw-tl" />
           <i className="screw screw-tr" />
@@ -353,8 +366,8 @@ export default function App({ request = fetch, initialSource, homeHref = "/" }: 
                   {mode === "all"
                     ? "ALL TRAINS"
                     : mode === "station"
-                      ? "STATION LINES"
-                      : "PHYSICAL RAIL LINE"}
+                      ? timetableDemo ? "STOPPING TRAINS" : "STATION LINES"
+                      : timetableDemo ? "TRAIN SERVICE ROUTE" : "PHYSICAL RAIL LINE"}
                 </span>
               </h2>
               <span className="count-label">
@@ -468,7 +481,9 @@ export default function App({ request = fetch, initialSource, homeHref = "/" }: 
                         ? "서버 실행 상태를 확인한 뒤 다시 조회해 주세요."
                         : state === "disabled"
                           ? "서버 설정에서 실시간 수집을 활성화한 뒤 서버를 다시 시작해 주세요.\n기록 표본으로 전광판을 먼저 살펴보세요."
-                          : "수신 상태와 선택한 노선의 지원 범위를 확인해 주세요."}
+                          : timetableDemo
+                            ? "이 수신 기록에서 선택한 역·노선의 정차 정보를 확인한 열차가 없습니다. 미확인 열차는 전체 열차에서 볼 수 있습니다."
+                            : "수신 상태와 선택한 노선의 지원 범위를 확인해 주세요."}
                   </p>
                   {unavailable ? (
                     <button onClick={() => switchMode("all")}>
@@ -592,13 +607,16 @@ export default function App({ request = fetch, initialSource, homeHref = "/" }: 
               </p>
             </div>
             <div>
-              <h3>보수적인 노선 판별</h3>
+              <h3>{timetableDemo ? "정차역과 운행 노선" : "보수적인 노선 판별"}</h3>
               <p>
-                {s?.geometry_available
+                {timetableDemo
+                  ? "공식 시간표를 운행일·열차번호·시종착역·시종착 시각으로 대조합니다. 역 선택은 그 역에 정차하는 열차만, 노선 선택은 시간표의 운행 계통을 표시합니다. 열차 상세에서 정차역 목록과 출처를 확인할 수 있습니다."
+                  : s?.geometry_available
                   ? "등록된 검증 구간만 판별합니다. 일부 구간 지원은 전체 노선의 검증을 뜻하지 않습니다."
                   : "현재 배포본은 검증된 노선 도형이 없어 노선 필터가 준비 상태입니다. 울산역의 노선 연결과 선로 도형 검증은 별개입니다."}{" "}
-                판별 불가 {data?.unknown_count ?? 0}대 · 모호{" "}
-                {data?.ambiguous_count ?? 0}대.
+                {timetableDemo
+                  ? `정차역 확인 ${data?.filter.mapped_count ?? 0}대 · 미확인 ${data?.filter.unmapped_count ?? 0}대. 운행 노선은 현재 주행 중인 물리 선로를 뜻하지 않습니다.`
+                  : `판별 불가 ${data?.unknown_count ?? 0}대 · 모호 ${data?.ambiguous_count ?? 0}대.`}
               </p>
             </div>
             <div>
@@ -632,6 +650,7 @@ export default function App({ request = fetch, initialSource, homeHref = "/" }: 
         <TrainDetail
           train={currentDetails}
           source={source}
+          timetableDemo={timetableDemo}
           onClose={() => setDetails(null)}
         />
       )}
